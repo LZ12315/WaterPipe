@@ -21,7 +21,7 @@ public class BagManager : MonoBehaviour
         if (instance == null)
             instance = this;
         else
-            Destroy(this);
+            Destroy(gameObject);
 
         cellOnHand = cell;
     }

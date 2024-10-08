@@ -5,11 +5,13 @@ using static UnityEditor.PlayerSettings;
 
 public class Cushion
 {
+    private GridMap gridMap;
     public Cell cell;
     public Vector2 corePos;
 
-    public void CushionInit(Cell cell, Vector2 pos)
+    public void CushionInit(Cell cell, Vector2 pos, GridMap gridMap)
     {
+        this.gridMap = gridMap;
         this.cell = cell;
         corePos = pos;
         cell.CellInit(pos, this);
@@ -17,9 +19,14 @@ public class Cushion
 
     public void ChangeCell(Cell newCell)
     {
+        if (cell != null)
+        {
+            GameObject.Destroy(cell.gameObject);
+        }
+
         this.cell = newCell;
-        newCell.CellInit(corePos, this);
         newCell.gameObject.SetActive(true);
+        newCell.CellInit(corePos, this);
     }
 }
 
@@ -74,7 +81,7 @@ public class GridMap : MonoBehaviour
                 newCell.gameObject.SetActive(true);
                 Cell newCellComp = newCell.GetComponent<Cell>();
 
-                gridArray[i, j].CushionInit(newCellComp,CalculateCellPos(i,j));
+                gridArray[i, j].CushionInit(newCellComp,CalculateCellPos(i,j),this);
             }
         }
     }
@@ -107,6 +114,11 @@ public class GridMap : MonoBehaviour
             newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
             lineList.Add(newLineComp);
         }
+    }
+
+    public void CellCover(Cushion cushion, Cell newCell)
+    {
+
     }
 
     private Vector2 CalculateCellPos(int i, int j)
