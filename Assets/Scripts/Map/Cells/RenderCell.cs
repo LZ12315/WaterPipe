@@ -5,17 +5,14 @@ using UnityEngine.EventSystems;
 
 public class RenderCell : Cell
 {
-    public override void ExcutiveAction()
+    private void OnMouseDown()
     {
-        base.ExcutiveAction();
+        PlaceCell();
     }
 
-    public override void HandleSelection()
+    private void OnMouseUp()
     {
-        if(mouseButton == MouseButton.Left)
-        {
-            PlaceCell();
-        }
+
     }
 
     private void PlaceCell()

@@ -58,7 +58,7 @@ public class GridMap : MonoBehaviour
         this.width = width;
         leftTopPos = leftTopPoint.transform.position;
         sideLength = GetNowSideLength();
-        gridArray = new Cushion[height,width];
+        gridArray = new Cushion[height, width];
         lineList = new List<Line>();
     }
 
@@ -75,13 +75,13 @@ public class GridMap : MonoBehaviour
             for (int j = 0; j < width; j++)
             {
                 Cushion newCushion = new Cushion();
-                gridArray[i,j] = newCushion;
+                gridArray[i, j] = newCushion;
 
                 GameObject newCell = Instantiate(emptyCell.gameObject);
                 newCell.gameObject.SetActive(true);
                 Cell newCellComp = newCell.GetComponent<Cell>();
 
-                gridArray[i, j].CushionInit(newCellComp,CalculateCellPos(i,j),this);
+                gridArray[i, j].CushionInit(newCellComp, CalculateCellPos(i, j), this);
             }
         }
     }
@@ -101,7 +101,7 @@ public class GridMap : MonoBehaviour
             newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
             lineList.Add(newLineComp);
         }
-        for (int i = 0;i <= width; i++)
+        for (int i = 0; i <= width; i++)
         {
             GameObject newLine = Instantiate(line);
             Line newLineComp = newLine.GetComponent<Line>();
@@ -125,7 +125,7 @@ public class GridMap : MonoBehaviour
     {
         float x = leftTopPos.x + j * sideLength + sideLength / 2;
         float y = leftTopPos.y - i * sideLength - sideLength / 2;
-        return new Vector2 (x,y);
+        return new Vector2(x, y);
     }
 
     private float GetNowSideLength()

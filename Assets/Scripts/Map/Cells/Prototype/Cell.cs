@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cell : MonoBehaviour,IInteractable_OBJ
+public class Cell : MonoBehaviour, IInteractable_OBJ
 {
     public BoxCollider2D boxCollider;
 
@@ -14,7 +14,7 @@ public class Cell : MonoBehaviour,IInteractable_OBJ
     private Cushion cushion;
 
     [Header("∂Øª≠±Ìœ÷")]
-    public Vector3 enlargeScale = new Vector3(1.2f,1.2f,1.2f);
+    public Vector3 enlargeScale = new Vector3(1.2f, 1.2f, 1.2f);
     public Vector3 shrinkScale = new Vector3(0.8f, 0.8f, 0.8f);
     public float duration = 0.2f;
     private Vector3 originScale;
@@ -35,11 +35,11 @@ public class Cell : MonoBehaviour,IInteractable_OBJ
 
     protected virtual void OnDestroy()
     {
-        if(scaleTween != null && scaleTween.IsActive())
+        if (scaleTween != null && scaleTween.IsActive())
             scaleTween.Kill();
     }
 
-    public virtual void CellInit(Vector2 pos,Cushion cushion)
+    public virtual void CellInit(Vector2 pos, Cushion cushion)
     {
         this.cushion = cushion;
         gameObject.transform.position = pos;
@@ -83,7 +83,7 @@ public class Cell : MonoBehaviour,IInteractable_OBJ
 
     private void OnMouseEnter()
     {
-        if(GetComponent<Transform>() != null)
+        if (GetComponent<Transform>() != null)
             scaleTween = transform.DOScale(enlargeScale, duration).SetEase(Ease.OutBack);
     }
 

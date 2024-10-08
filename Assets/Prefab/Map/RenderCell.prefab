@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 1723814264779822083}
-  cellSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  cellSprite: {fileID: 7078902532667114818, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
   resolution: 312
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}

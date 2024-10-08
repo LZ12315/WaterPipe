@@ -6,17 +6,17 @@
 
 public enum SceneType
 {
-    GameScene,MenuScene
+    GameScene, MenuScene
 };
 
 public enum PersistentType
 {
-    ReadWrite,OnltRead
+    ReadWrite, OnltRead
 };
 
 public enum ArchieveNumber
 {
-    Ar1,Ar2, Ar3
+    Ar1, Ar2, Ar3
 };
 
 public enum LineAnimeState
