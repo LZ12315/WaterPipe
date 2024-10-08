@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NewGameButton : UIButton
 {
-    [Header("面板调出")]
-    public GameObject menuCanvas;
+    [Header("目标场景的名字")]
+    public string TargetSceneName="StartScene";
 
-    public override void ExcutiveAction()
+    private void Start()
     {
-        base.ExcutiveAction();
-        menuCanvas.SetActive(true);
+        SceneManager.LoadScene(TargetSceneName);
     }
 }
