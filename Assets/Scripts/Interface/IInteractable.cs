@@ -7,7 +7,7 @@ using UnityEngine;
 /// 三个函数按照顺序依次为：负责检测交互事件的函数、检查是否可以交互的函数、启动交互行为的函数
 /// </summary>
 
-public interface IInteractable_UI
+public interface IInteractable
 {
     public void ReceiveInteraction();
 
