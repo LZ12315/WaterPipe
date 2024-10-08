@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class PipeCell : Cell
 {
-
+    public int test1;
 }

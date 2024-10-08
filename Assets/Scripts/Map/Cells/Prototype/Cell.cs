@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Cell : MonoBehaviour, IInteractable_OBJ
 {
     public BoxCollider2D boxCollider;

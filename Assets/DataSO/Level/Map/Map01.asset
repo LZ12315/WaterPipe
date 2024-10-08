@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34a04aee7499f484886cbf6cb1a915fd, type: 3}
   m_Name: Map01
   m_EditorClassIdentifier: 
+  width: 0
+  height: 0
+  gridMap: 
+  dictionary: []
