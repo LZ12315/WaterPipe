@@ -19,7 +19,7 @@ PrefabInstance:
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 7078902532667114818, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -86,19 +86,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.border.w
-      value: 0.049999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.border.x
-      value: 0.049999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.border.y
-      value: 0.049999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.border.z
-      value: 0.049999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
@@ -110,11 +110,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.16
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.16
+      value: 1.93
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 1723814264779822083}
-  cellSprite: {fileID: 7078902532667114818, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
+  cellSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   resolution: 312
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}

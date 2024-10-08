@@ -5,15 +5,7 @@ using UnityEngine.EventSystems;
 
 public class RenderCell : Cell
 {
-    private void OnMouseDown()
-    {
-        PlaceCell();
-    }
 
-    private void OnMouseUp()
-    {
-
-    }
 
     private void PlaceCell()
     {
