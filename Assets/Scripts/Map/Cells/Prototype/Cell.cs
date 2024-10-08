@@ -3,11 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-<<<<<<< HEAD
 public class Cell : MonoBehaviour, IInteractable_OBJ
-=======
-public class Cell : MonoBehaviour
->>>>>>> 4b26caab92ea37db4c76086622a04e9e55c5f812
 {
     public BoxCollider2D boxCollider;
 
@@ -22,13 +18,16 @@ public class Cell : MonoBehaviour
     public Vector3 shrinkScale = new Vector3(0.8f, 0.8f, 0.8f);
     public float duration = 0.2f;
     private Vector3 originScale;
+    private Tween scaleTween;
+
+    [Header("物体操作")]
+    protected MouseButton mouseButton;
 
     private void Awake()
     {
         CalculateSide();
     }
 
-<<<<<<< HEAD
     private void OnEnable()
     {
         originScale = transform.localScale;
@@ -41,9 +40,6 @@ public class Cell : MonoBehaviour
     }
 
     public virtual void CellInit(Vector2 pos, Cushion cushion)
-=======
-    public virtual void CellInit(Vector2 pos,Cushion cushion)
->>>>>>> 4b26caab92ea37db4c76086622a04e9e55c5f812
     {
         this.cushion = cushion;
         gameObject.transform.position = pos;
@@ -51,35 +47,50 @@ public class Cell : MonoBehaviour
         boxCollider.size = new Vector2(sideLength, sideLength);
     }
 
-    public void CellCover(Cell newCell)
+    protected virtual void CellCover(Cell newCell)
     {
-        Instantiate(newCell);
-        newCell.gameObject.SetActive(false);
+        Cell instantiatedCell = Instantiate(newCell, cushion.corePos, Quaternion.identity);
+        instantiatedCell.gameObject.SetActive(false);
 
-        if (cushion != null ) 
+        if (cushion != null)
         {
-            cushion.ChangeCell(newCell);
+            cushion.ChangeCell(instantiatedCell);
         }
+    }
 
-        Destroy(gameObject);
+    public void ReceiveInteraction(MouseButton mouseButton)
+    {
+        if (CheckIfInteractable())
+            ExcutiveAction();
+    }
+
+    public virtual bool CheckIfInteractable()
+    {
+        return true;
+    }
+
+    public virtual void ExcutiveAction()
+    {
+        HandleSelection();
+    }
+
+    public virtual void HandleSelection()
+    {
+
     }
 
     #region 动画表现
 
     private void OnMouseEnter()
     {
-<<<<<<< HEAD
         if (GetComponent<Transform>() != null)
             scaleTween = transform.DOScale(enlargeScale, duration).SetEase(Ease.OutBack);
-=======
-        originScale = transform.localScale;
-        transform.DOScale(enlargeScale, duration).SetEase(Ease.OutBack);
->>>>>>> 4b26caab92ea37db4c76086622a04e9e55c5f812
     }
 
     private void OnMouseExit()
     {
-        transform.DOScale(originScale, duration).SetEase(Ease.OutBack);
+        if (GetComponent<Transform>() != null)
+            scaleTween = transform.DOScale(originScale, duration).SetEase(Ease.OutBack);
     }
 
     #endregion

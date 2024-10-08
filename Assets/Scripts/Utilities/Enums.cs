@@ -1,7 +1,7 @@
 
 /// <summary>
 /// 一个不搭载到任何物体上的脚本 负责写一些Enum变量供开发者使用
-/// 依次是 场景类型、DataUID类型、存档序号
+/// 依次是 场景类型、DataUID类型、存档序号、Line动画状态、鼠标键位
 /// </summary>
 
 public enum SceneType
@@ -21,5 +21,10 @@ public enum ArchieveNumber
 
 public enum LineAnimeState
 {
-    None,Appear,DisAppear
-}
+    None, Appear, DisAppear
+};
+
+public enum MouseButton
+{
+    Left, Right, Middle, None
+};
