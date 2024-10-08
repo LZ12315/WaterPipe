@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class NewGameButton : UIButton
 {
     [Header("目标场景的名字")]
-    public string TargetSceneName="";
+    public string TargetSceneName="StartScene";
 
     private void Start()
     {

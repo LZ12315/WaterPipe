@@ -18,3 +18,8 @@ public enum ArchieveNumber
 {
     Ar1,Ar2, Ar3
 };
+
+public enum LineAnimeState
+{
+    None,Appear,DisAppear
+}
