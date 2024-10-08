@@ -5,11 +5,11 @@ using static UnityEditor.PlayerSettings;
 
 public class Cushion
 {
-    private GridMap gridMap;
+    private GridMapManager gridMap;
     public Cell cell;
     public Vector2 corePos;
 
-    public void CushionInit(Cell cell, Vector2 pos, GridMap gridMap)
+    public void CushionInit(Cell cell, Vector2 pos, GridMapManager gridMap)
     {
         this.gridMap = gridMap;
         this.cell = cell;
@@ -30,7 +30,7 @@ public class Cushion
     }
 }
 
-public class GridMap : MonoBehaviour
+public class GridMapManager : MonoBehaviour
 {
     private Cushion[,] gridArray;
     private List<Line> lineList;
@@ -131,7 +131,7 @@ public class GridMap : MonoBehaviour
     private float GetNowSideLength()
     {
         GameObject cell = Instantiate(emptyCell.gameObject);
-        float side = emptyCell.GetComponent<Cell>().ReturnSideLength() * 1.25f;
+        float side = emptyCell.GetComponent<Cell>().ReturnSideLength();
         Destroy(cell.gameObject);
         return side;
     }

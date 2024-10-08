@@ -28,3 +28,8 @@ public enum MouseButton
 {
     Left, Right, Middle, None
 };
+
+public enum CellDirection
+{
+    Up, Down, Left, Right
+};

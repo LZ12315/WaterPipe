@@ -21,6 +21,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -9179612199595370063, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 2001848339
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
@@ -127,8 +139,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 4853723832683348082}
-  cellSprite: {fileID: 21300000, guid: a7b75b5ddace2e34b89e0a284f2a637a, type: 3}
-  resolution: 312
+  cellSprite: {fileID: -9179612199595370063, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
+  resolution: 115
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
   duration: 0.2

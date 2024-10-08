@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 1403120762}
   - component: {fileID: 1403120763}
   m_Layer: 0
-  m_Name: GridMap
+  m_Name: GridMapManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
