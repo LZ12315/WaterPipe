@@ -4,11 +4,13 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
-{
+{//0
     public static SelectionManager instance;
     private Camera mainCamera;
 
-    private List<IInteractable_OBJ> selectedObjects = new List<IInteractable_OBJ>();
+    private Queue<IInteractable_OBJ> selectedObjects = new Queue<IInteractable_OBJ>();
+    private Queue<Cell> recentSelectedCells = new Queue<Cell>();
+    public Cell formerPlacedCell = null;
 
     [Header("鼠标选择参数")]
     private MouseButton mouseButton = MouseButton.None;
@@ -42,7 +44,7 @@ public class SelectionManager : MonoBehaviour
                 HandleMouseClick();
             }
 
-            if (Input.GetMouseButtonDown(2) && mouseButton == MouseButton.None)
+            if (Input.GetMouseButtonDown(1) && mouseButton == MouseButton.None)
             {
                 mouseButton = MouseButton.Right;
                 HandleMouseClick();
@@ -56,7 +58,7 @@ public class SelectionManager : MonoBehaviour
             mouseOriginPos = Input.mousePosition;
         }
 
-        if ((Input.GetMouseButtonUp(0) && mouseButton == MouseButton.Left) || (Input.GetMouseButtonUp(2) && mouseButton == MouseButton.Right))
+        if ((Input.GetMouseButtonUp(0) && mouseButton == MouseButton.Left) || (Input.GetMouseButtonUp(1) && mouseButton == MouseButton.Right))
         {
             mouseButton = MouseButton.None;
 
@@ -80,10 +82,10 @@ public class SelectionManager : MonoBehaviour
         if (hit.collider != null)
         {
             GameObject selectedObject = hit.collider.gameObject;
-            IInteractable_OBJ obj = selectedObject.GetComponent<IInteractable_OBJ>();
-            if (obj != null)
+            Cell cellObject = selectedObject?.GetComponent<Cell>();
+            if (cellObject != null)
             {
-                obj.ReceiveInteraction(mouseButton);
+                SelectObject(cellObject);
             }
             else
             {
@@ -100,13 +102,17 @@ public class SelectionManager : MonoBehaviour
         if (hit.collider != null)
         {
             GameObject selectedObject = hit.collider.gameObject;
-            IInteractable_OBJ obj = selectedObject?.GetComponent<IInteractable_OBJ>();
-            if (obj != null)
+            IInteractable_OBJ interactableObject = selectedObject?.GetComponent<IInteractable_OBJ>();
+            Cell cellObject = selectedObject?.GetComponent<Cell>();
+            if (interactableObject != null)
             {
-                if (!selectedObjects.Contains(obj))
+                if (!selectedObjects.Contains(interactableObject))
                 {
-                    obj.ReceiveInteraction(mouseButton);
-                    selectedObjects.Add(obj);
+                    if(cellObject != null)
+                    {
+                        SelectObject(cellObject);
+                    }
+                    selectedObjects.Enqueue(interactableObject);
                 }
                 else
                 {
@@ -118,11 +124,47 @@ public class SelectionManager : MonoBehaviour
                 //这里用来写取消选中的逻辑
             }
         }
+        else
+        {
+            if(selectedObjects.Count != 0)
+            {
+                selectedObjects.Clear();
+            }
+        }
     }
 
-    public void AddToSelectedObjects(IInteractable_OBJ newObject)
+    private void SelectObject(Cell objectToSelect)
     {
-        selectedObjects.Add(newObject);
+        objectToSelect.ReceiveInteraction(mouseButton);
+        //if(recentSelectedCells.Count >= 2)
+        //{
+        //    recentSelectedCells.Clear();
+        //    recentSelectedCells.Enqueue(objectToSelect);
+        //}
+        //else
+        //    recentSelectedCells.Enqueue(objectToSelect);
+    }
+
+    public void SetFormerPlacedCell(Cell formerCell)
+    {
+        formerPlacedCell = formerCell;
+    }
+
+    public Cell ReturnRecentSelectedCells()
+    {
+        return formerPlacedCell;
+    }
+
+    public Queue<IInteractable_OBJ> ReturnSelectedObjects(int nums)
+    {
+        Queue<IInteractable_OBJ> queue = new Queue<IInteractable_OBJ>();
+        IInteractable_OBJ obj = null;
+        for (int i = 0; i < nums; i++)
+        {
+            obj = selectedObjects.Dequeue();
+            queue.Enqueue(obj);
+        }
+        return queue;
     }
 }
 

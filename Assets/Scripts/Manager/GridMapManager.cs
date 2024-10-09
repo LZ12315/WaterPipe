@@ -9,15 +9,24 @@ public class Cushion
     public Cell cell;
     public Vector2 corePos;
 
-    public void CushionInit(Cell cell, Vector2 pos, GridMapManager gridMap)
+    private int column;
+    private int row;
+    private Cushion westCushion;
+    private Cushion eastCushion;
+    private Cushion northCushion;
+    private Cushion southCushion;
+
+    public void CushionInit(GridMapManager gridMap, Cell cell, Vector2 pos, int column, int row)
     {
         this.gridMap = gridMap;
         this.cell = cell;
         corePos = pos;
         cell.CellInit(pos, this);
+        this.column = column;
+        this.row = row;
     }
 
-    public void ChangeCell(Cell newCell)
+    public void ChangeCell(Cell newCell, CellDirection newCellDirection)
     {
         if (cell != null)
         {
@@ -26,7 +35,27 @@ public class Cushion
 
         this.cell = newCell;
         newCell.gameObject.SetActive(true);
-        newCell.CellInit(corePos, this);
+        newCell.CellInit(corePos, this, newCellDirection);
+    }
+
+    public void SetCushionEast(Cushion cushion)
+    {
+        eastCushion = cushion;
+    }
+
+    public void SetCushionSouth(Cushion cushion)
+    {
+        southCushion = cushion;
+    }
+
+    public void SetCushionWest(Cushion cushion)
+    {
+        westCushion = cushion;
+    }
+
+    public void SetCushionNorth(Cushion cushion)
+    {
+        northCushion = cushion;
     }
 }
 
@@ -81,7 +110,19 @@ public class GridMapManager : MonoBehaviour
                 newCell.gameObject.SetActive(true);
                 Cell newCellComp = newCell.GetComponent<Cell>();
 
-                gridArray[i, j].CushionInit(newCellComp, CalculateCellPos(i, j), this);
+                if (i > 0 && gridArray[i - 1,j] != null)
+                {
+                    newCushion.SetCushionNorth(gridArray[i - 1, j]);
+                    gridArray[i - 1, j].SetCushionSouth(newCushion);
+                }
+                if (j > 0 && gridArray[i, j - 1] != null)
+                {
+                    newCushion.SetCushionWest(gridArray[i, j - 1]);
+                    gridArray[i, j - 1].SetCushionEast(newCushion);
+                }
+
+
+                gridArray[i, j].CushionInit(this, newCellComp, CalculateCellPos(i, j), i, j);
             }
         }
     }
@@ -98,7 +139,7 @@ public class GridMapManager : MonoBehaviour
 
             newLineComp.LineInit(startPos, endPos);
             newLineComp.DrawLine();
-            newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
+            //newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
             lineList.Add(newLineComp);
         }
         for (int i = 0; i <= width; i++)
@@ -111,7 +152,7 @@ public class GridMapManager : MonoBehaviour
 
             newLineComp.LineInit(startPos, endPos);
             newLineComp.DrawLine();
-            newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
+            //newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
             lineList.Add(newLineComp);
         }
     }

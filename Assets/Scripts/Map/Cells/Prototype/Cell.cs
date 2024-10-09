@@ -13,6 +13,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     public int resolution = 312;
     private float sideLength;
     private Cushion cushion;
+    public CellDirection direction = CellDirection.North;
 
     [Header("动画表现")]
     public Vector3 enlargeScale = new Vector3(1.2f, 1.2f, 1.2f);
@@ -23,6 +24,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     [Header("物体操作")]
     protected MouseButton mouseButton;
+    public float rotateAngle = 90;
 
     private void Awake()
     {
@@ -40,27 +42,46 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
             scaleTween.Kill();
     }
 
-    public virtual void CellInit(Vector2 pos, Cushion cushion)
+    public virtual void CellInit(Vector2 pos, Cushion cushion, CellDirection newCellDirection = CellDirection.North)
     {
         this.cushion = cushion;
         gameObject.transform.position = pos;
+        direction = newCellDirection;
+
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
         boxCollider.size = new Vector2(sideLength, sideLength);
+        if (newCellDirection != CellDirection.North)
+            transform.Rotate(0, 0, rotateAngle * (newCellDirection - CellDirection.North));
     }
 
-    protected virtual void CellCover(Cell newCell)
+    protected virtual void CellCover(Cell newCell, CellDirection cellDirection)
     {
         Cell instantiatedCell = Instantiate(newCell, cushion.corePos, Quaternion.identity);
+        SelectionManager.instance.SetFormerPlacedCell(instantiatedCell);
         instantiatedCell.gameObject.SetActive(false);
 
         if (cushion != null)
         {
-            cushion.ChangeCell(instantiatedCell);
+            cushion.ChangeCell(instantiatedCell,cellDirection);
+        }
+    }
+
+    protected virtual void CellRotate(int num)
+    {
+        for (int i = 0; i < num; i++)
+        {
+            if (direction == CellDirection.West && i < num - 1)
+                direction = CellDirection.North;
+            else
+                direction++;
+            transform.Rotate(0, 0, rotateAngle);
         }
     }
 
     public void ReceiveInteraction(MouseButton mouseButton)
     {
+        this.mouseButton = mouseButton;
+
         if (CheckIfInteractable())
             ExcutiveAction();
     }
@@ -107,6 +128,11 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     {
         CalculateSide();
         return sideLength;
+    }
+
+    public CellDirection returnCellDirection()
+    {
+        return direction;
     }
 
     #endregion

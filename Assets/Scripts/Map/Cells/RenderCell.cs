@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class RenderCell : Cell
-{
+{//1
     public override void ExcutiveAction()
     {
         base.ExcutiveAction();
@@ -23,7 +23,16 @@ public class RenderCell : Cell
         if (BagManager.instance.ReturnCellOnHand() != null)
         {
             Cell newCell = BagManager.instance.ReturnCellOnHand();
-            CellCover(newCell);
+            if(SelectionManager.instance.ReturnRecentSelectedCells() != null)
+            {
+                Cell formerPlacedCell = SelectionManager.instance.ReturnRecentSelectedCells();
+                CellDirection newCellDirection = formerPlacedCell.returnCellDirection();
+                CellCover(newCell, newCellDirection);
+            }
+            else
+            {
+                CellCover(newCell, CellDirection.North);
+            }
         }
     }
 }
