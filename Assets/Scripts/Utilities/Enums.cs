@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// 一个不搭载到任何物体上的脚本 负责写一些Enum变量供开发者使用

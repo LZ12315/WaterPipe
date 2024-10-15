@@ -8,12 +8,12 @@ public class GridMapSO : ScriptableObject
 {
     public int width;
     public int height;
-    public List<int> gridMap = new List<int>();
+    public List<IntListWrapper> gridMap = new List<IntListWrapper>();
     public List<CellEntry> dictionary = new List<CellEntry>();
 
-    public void AddToArray(int value)
+    public void AddToArray(List<int> values)
     {
-        gridMap.Add(value);
+        gridMap.Add(new IntListWrapper { values = values });
         EditorUtility.SetDirty(this);
     }
 
@@ -26,14 +26,14 @@ public class GridMapSO : ScriptableObject
         }
     }
 
-    public int GetValue(int x, int y)
+    public Cell ReturnMapCell(int i, int j)
     {
-        return gridMap[y * width + x];
-    }
-
-    public void SetValue(int x, int y, int value)
-    {
-        gridMap[y * width + x] = value;
+        foreach (CellEntry cellEntry in dictionary)
+        {
+            if(gridMap[i].values[j] == cellEntry.key)
+                return cellEntry.value;
+        }
+        return null;
     }
 }
 
@@ -42,4 +42,10 @@ public class CellEntry
 {
     public int key;
     public Cell value;
+}
+
+[System.Serializable]
+public class IntListWrapper
+{
+    public List<int> values;
 }

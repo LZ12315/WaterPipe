@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -12,21 +13,27 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     public Sprite cellSprite;
     public int resolution = 312;
     private float sideLength;
-    private Cushion cushion;
+    protected Cushion cushion;
+
     public CellDirection direction = CellDirection.North;
+    public List<CellDirection> cellConnectors = new List<CellDirection>();
 
     [Header("动画表现")]
     public Vector3 enlargeScale = new Vector3(1.2f, 1.2f, 1.2f);
     public Vector3 shrinkScale = new Vector3(0.8f, 0.8f, 0.8f);
     public float duration = 0.2f;
-    private Vector3 originScale;
-    private Tween scaleTween;
+    protected Vector3 originScale;
+    protected Tween scaleTween;
 
     [Header("物体操作")]
     protected MouseButton mouseButton;
     public float rotateAngle = 90;
 
-    private void Awake()
+    [Header("引水")]
+    protected List<Cell> connectedCells = new List<Cell>();
+    [SerializeField] protected bool containsWater = false;
+
+    protected virtual void Awake()
     {
         CalculateSide();
     }
@@ -52,6 +59,8 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         boxCollider.size = new Vector2(sideLength, sideLength);
         if (newCellDirection != CellDirection.North)
             transform.Rotate(0, 0, rotateAngle * (newCellDirection - CellDirection.North));
+
+        TeaseConnectedCells();
     }
 
     protected virtual void CellCover(Cell newCell, CellDirection cellDirection)
@@ -68,15 +77,36 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     protected virtual void CellRotate(int num)
     {
-        for (int i = 0; i < num; i++)
+        direction = direction.Rotate(num);
+        transform.Rotate(0, 0, num * rotateAngle);
+        if(cellConnectors.Count > 0)
         {
-            if (direction == CellDirection.West && i < num - 1)
-                direction = CellDirection.North;
-            else
-                direction++;
-            transform.Rotate(0, 0, rotateAngle);
+            for (int i = 0; i < cellConnectors.Count; i++)
+                cellConnectors[i].Rotate(num);
+        }
+
+        TeaseConnectedCells();
+    }
+
+    protected virtual void TeaseConnectedCells()
+    {
+        if(cushion.ReturnNearCushions().Count == 0 || cellConnectors.Count == 0)
+            return;
+
+        connectedCells.Clear();
+        foreach (var cu in cushion.ReturnNearCushions())
+        {
+            if(ListComparison.HaveCommonElements(cu.ReturnCell().ReturnCellConnectors(),cellConnectors))
+                connectedCells.Add(cu.ReturnCell());
         }
     }
+
+    public virtual void CellInteract(Cell interactCell)
+    {
+
+    }
+
+    #region 交互相关
 
     public void ReceiveInteraction(MouseButton mouseButton)
     {
@@ -101,6 +131,8 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     }
 
+    #endregion
+
     #region 动画表现
 
     private void OnMouseEnter()
@@ -124,6 +156,11 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         sideLength = resolution / cellSprite.pixelsPerUnit;
     }
 
+    public List<CellDirection> ReturnCellConnectors()
+    {
+        return cellConnectors;
+    }
+
     public float ReturnSideLength()
     {
         CalculateSide();
@@ -133,6 +170,11 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     public CellDirection returnCellDirection()
     {
         return direction;
+    }
+
+    public bool ReturnIfContainsWater()
+    {
+        return containsWater;
     }
 
     #endregion

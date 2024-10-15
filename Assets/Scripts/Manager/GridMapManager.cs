@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build.Pipeline;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
 public class Cushion
 {
-    private GridMapManager gridMap;
+    private Cushion[,] gridMap;
     public Cell cell;
     public Vector2 corePos;
 
-    private int column;
-    private int row;
+    public int column;
+    public int row;
+    private List<Cushion> nearCushions = new List<Cushion>();
     private Cushion westCushion;
     private Cushion eastCushion;
     private Cushion northCushion;
     private Cushion southCushion;
 
-    public void CushionInit(GridMapManager gridMap, Cell cell, Vector2 pos, int column, int row)
+    public void CushionInit(Cushion[,] gridMap, Cell cell, Vector2 pos, int column, int row)
     {
         this.gridMap = gridMap;
         this.cell = cell;
@@ -28,9 +30,9 @@ public class Cushion
 
     public void ChangeCell(Cell newCell, CellDirection newCellDirection)
     {
-        if (cell != null)
+        if (cell != null && cell.boxCollider != null)
         {
-            GameObject.Destroy(cell.gameObject);
+            cell.boxCollider.enabled = false;
         }
 
         this.cell = newCell;
@@ -38,30 +40,45 @@ public class Cushion
         newCell.CellInit(corePos, this, newCellDirection);
     }
 
+    public Cell ReturnCell()
+    {
+        return cell;
+    }
+
+    public List<Cushion> ReturnNearCushions()
+    {
+        return nearCushions;
+    }
+
     public void SetCushionEast(Cushion cushion)
     {
         eastCushion = cushion;
+        nearCushions.Add(cushion);
     }
 
     public void SetCushionSouth(Cushion cushion)
     {
         southCushion = cushion;
+        nearCushions.Add(cushion);
     }
 
     public void SetCushionWest(Cushion cushion)
     {
         westCushion = cushion;
+        nearCushions.Add(cushion);
     }
 
     public void SetCushionNorth(Cushion cushion)
     {
         northCushion = cushion;
+        nearCushions.Add(cushion);
     }
 }
 
 public class GridMapManager : MonoBehaviour
 {
-    private Cushion[,] gridArray;
+    public GridMapSO gridMapSO;
+    private Cushion[,] Map;
     private List<Line> lineList;
 
     [Header("Õ¯∏Ò Ù–‘")]
@@ -77,6 +94,8 @@ public class GridMapManager : MonoBehaviour
 
     private void Start()
     {
+        height = gridMapSO.height;
+        width = gridMapSO.width;
         GridInit(height, width);
         CreateGrid();
     }
@@ -87,7 +106,7 @@ public class GridMapManager : MonoBehaviour
         this.width = width;
         leftTopPos = leftTopPoint.transform.position;
         sideLength = GetNowSideLength();
-        gridArray = new Cushion[height, width];
+        Map = new Cushion[height, width];
         lineList = new List<Line>();
     }
 
@@ -104,25 +123,24 @@ public class GridMapManager : MonoBehaviour
             for (int j = 0; j < width; j++)
             {
                 Cushion newCushion = new Cushion();
-                gridArray[i, j] = newCushion;
+                Map[i, j] = newCushion;
 
-                GameObject newCell = Instantiate(emptyCell.gameObject);
+                GameObject newCell = Instantiate(gridMapSO.ReturnMapCell(i,j).gameObject);
                 newCell.gameObject.SetActive(true);
                 Cell newCellComp = newCell.GetComponent<Cell>();
 
-                if (i > 0 && gridArray[i - 1,j] != null)
+                if (i > 0 && Map[i - 1, j] != null)
                 {
-                    newCushion.SetCushionNorth(gridArray[i - 1, j]);
-                    gridArray[i - 1, j].SetCushionSouth(newCushion);
+                    newCushion.SetCushionNorth(Map[i - 1, j]);
+                    Map[i - 1, j].SetCushionSouth(newCushion);
                 }
-                if (j > 0 && gridArray[i, j - 1] != null)
+                if (j > 0 && Map[i, j - 1] != null)
                 {
-                    newCushion.SetCushionWest(gridArray[i, j - 1]);
-                    gridArray[i, j - 1].SetCushionEast(newCushion);
+                    newCushion.SetCushionWest(Map[i, j - 1]);
+                    Map[i, j - 1].SetCushionEast(newCushion);
                 }
 
-
-                gridArray[i, j].CushionInit(this, newCellComp, CalculateCellPos(i, j), i, j);
+                Map[i, j].CushionInit(Map, newCellComp, CalculateCellPos(i, j), i, j);
             }
         }
     }

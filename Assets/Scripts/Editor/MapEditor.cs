@@ -5,7 +5,7 @@ using UnityEngine;
 [CustomEditor(typeof(GridMapSO))]
 public class MapEditor : Editor
 {
-    private int newArrayValue;
+    private string newArrayValue;
     private int newDictKey;
     private GameObject newCellObject;
 
@@ -13,30 +13,51 @@ public class MapEditor : Editor
     {
         base.OnInspectorGUI();
 
-        GridMapSO map = (GridMapSO)target;
+        GridMapSO mapSO = (GridMapSO)target;
 
         // 显示数组
         EditorGUILayout.LabelField("2D Array:");
-        for (int i = 0; i < map.gridMap.Count; i++)
+        for (int i = 0; i < mapSO.gridMap.Count; i++)
         {
-            int newValue = EditorGUILayout.IntField(map.gridMap[i]);
+            EditorGUILayout.LabelField($"Row {i}:");
+            for (int j = 0; j < mapSO.gridMap[i].values.Count; j++)
+            {   //确保元素被添加到数组里
+                mapSO.gridMap[i].values[j] = EditorGUILayout.IntField(mapSO.gridMap[i].values[j]);
+                EditorUtility.SetDirty(mapSO);
+            }
             EditorGUILayout.Space();
         }
 
         // 添加元素到数组
         EditorGUILayout.LabelField("Add to 2D Array:");
-        newArrayValue = EditorGUILayout.IntField("New Value:", newArrayValue);
+        newArrayValue = EditorGUILayout.TextField("New Value:", newArrayValue);
         if (GUILayout.Button("Add Row"))
         {
-            map.gridMap.Add(newArrayValue);
-
-
-            EditorUtility.SetDirty(map);
+            string[] values = newArrayValue.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
+            List<int> valuesList = new List<int>();
+            foreach (string str in values)
+            {
+                // 尝试解析整数值
+                if (int.TryParse(str.Trim(), out int value) && valuesList.Count < mapSO.width)
+                {
+                    valuesList.Add(value);
+                }
+            }
+            if (valuesList.Count > 0 && mapSO.gridMap.Count < mapSO.height) // 只在有有效值并且高度未超出的情况下添加
+            {
+                mapSO.gridMap.Add(new IntListWrapper { values = valuesList });
+                newArrayValue = "";
+                EditorUtility.SetDirty(mapSO);
+            }
+            else
+            {
+                Debug.LogWarning("No valid integer values were provided or off the map");
+            }
         }
 
         // 显示字典
         EditorGUILayout.LabelField("Dictionary:");
-        foreach (var kvp in map.dictionary)
+        foreach (var kvp in mapSO.dictionary)
         {
             if (kvp.value != null)
             {
@@ -55,11 +76,11 @@ public class MapEditor : Editor
 
         if (GUILayout.Button("Add Entry"))
         {
-            map.AddToDictionary(newDictKey, newCellObject.GetComponent<Cell>());
+            mapSO.AddToDictionary(newDictKey, newCellObject.GetComponent<Cell>());
             newDictKey = 0;
             newCellObject = new GameObject();
 
-            EditorUtility.SetDirty(map);
+            EditorUtility.SetDirty(mapSO);
         }
     }
 }

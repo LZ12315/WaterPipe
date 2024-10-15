@@ -12,7 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34a04aee7499f484886cbf6cb1a915fd, type: 3}
   m_Name: Map01
   m_EditorClassIdentifier: 
-  width: 0
-  height: 0
-  gridMap: 
-  dictionary: []
+  width: 5
+  height: 5
+  gridMap:
+  - values: 0100000001000000010000000100000001000000
+  - values: 0100000001000000010000000100000001000000
+  - values: 0100000002000000010000000100000003000000
+  - values: 0100000001000000010000000100000001000000
+  - values: 0100000001000000010000000100000001000000
+  dictionary:
+  - key: 1
+    value: {fileID: -7391508821734551883, guid: e9371d478e7f2124aa2a5fb17479fdf7, type: 3}
+  - key: 2
+    value: {fileID: -4093447674568260620, guid: d4d24356933b16b4ba92db6fa3594b72, type: 3}
+  - key: 3
+    value: {fileID: 3931410196130687118, guid: a6bec2664b49e8d48a938e64e3c585db, type: 3}
