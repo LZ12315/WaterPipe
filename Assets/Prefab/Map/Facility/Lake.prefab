@@ -70,15 +70,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Name
-      value: WaterSource
+      value: Lake
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Size.x
-      value: 2.2
+      value: 5.3706665
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Size.y
-      value: 2.2
+      value: 7.0915885
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_Offset.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
@@ -134,15 +142,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 8948542982700747197}
+  polygonCollider: {fileID: 0}
   cellSprite: {fileID: -3430148116964526550, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
-  resolution: 300
+  resolution: {x: 255, y: 348}
   direction: 0
-  cellConnectors: 00000000010000000200000003000000
+  cellConnectors: 
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
   duration: 0.2
   rotateAngle: 90
-  containsWater: 0
+  connectedCells: []
+  afterMapInitializedEvent: {fileID: 11400000, guid: 31ba069413c072745899ff30cfd54ddb, type: 2}
 --- !u!61 &8948542982700747197 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}

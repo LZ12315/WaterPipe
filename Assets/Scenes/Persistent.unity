@@ -382,6 +382,7 @@ MonoBehaviour:
   leftTopPos: {x: 0, y: 0}
   emptyCell: {fileID: 2301260504092294030, guid: e9371d478e7f2124aa2a5fb17479fdf7, type: 3}
   line: {fileID: 1095673162914627584, guid: ccd68b3319a8a504eadec5d2b0ea7e50, type: 3}
+  afterInitializedEvent: {fileID: 11400000, guid: 31ba069413c072745899ff30cfd54ddb, type: 2}
 --- !u!1 &1934015627
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +427,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90805189b8650a14283ad6af8b95158b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cell: {fileID: 4388782334862219349, guid: a62f0626b993a8646982c86a83df242e, type: 3}
+  straightPipe: {fileID: 4388782334862219349, guid: a62f0626b993a8646982c86a83df242e, type: 3}
+  elbowPipe: {fileID: 2043699183459055068, guid: a6962299a54764c4c9efeeddfa4007c5, type: 3}
   cellOnHand: {fileID: 0}
 --- !u!1 &2131447373
 GameObject:

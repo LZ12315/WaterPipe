@@ -479,8 +479,8 @@ ScriptedImporter:
     spritePosition: {x: 155, y: 205}
   - name: "\u5F2F\u7BA1"
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.32, y: 0.68}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2

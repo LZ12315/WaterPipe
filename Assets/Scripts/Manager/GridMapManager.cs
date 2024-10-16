@@ -12,11 +12,7 @@ public class Cushion
 
     public int column;
     public int row;
-    private List<Cushion> nearCushions = new List<Cushion>();
-    private Cushion westCushion;
-    private Cushion eastCushion;
-    private Cushion northCushion;
-    private Cushion southCushion;
+    private Dictionary<CellDirection, Cushion> nearCushions = new Dictionary<CellDirection, Cushion>();
 
     public void CushionInit(Cushion[,] gridMap, Cell cell, Vector2 pos, int column, int row)
     {
@@ -35,9 +31,14 @@ public class Cushion
             cell.boxCollider.enabled = false;
         }
 
-        this.cell = newCell;
+        cell = newCell;
         newCell.gameObject.SetActive(true);
         newCell.CellInit(corePos, this, newCellDirection);
+    }
+
+    public void SetNearCushion(Cushion cushion, CellDirection direction)
+    {
+        nearCushions[direction] = cushion;
     }
 
     public Cell ReturnCell()
@@ -45,34 +46,35 @@ public class Cushion
         return cell;
     }
 
-    public List<Cushion> ReturnNearCushions()
+    public Dictionary<CellDirection, Cushion> ReturnNearCushions()
     {
         return nearCushions;
     }
 
-    public void SetCushionEast(Cushion cushion)
-    {
-        eastCushion = cushion;
-        nearCushions.Add(cushion);
-    }
+    //public void SetCushionEast(Cushion cushion)
+    //{
+    //    eastCushion = cushion;
+    //    nearCushions[(int)CellDirection.East] = cushion;
+    //    //nearCushions.Add(cushion);
+    //}
 
-    public void SetCushionSouth(Cushion cushion)
-    {
-        southCushion = cushion;
-        nearCushions.Add(cushion);
-    }
+    //public void SetCushionSouth(Cushion cushion)
+    //{
+    //    southCushion = cushion;
+    //    nearCushions[(int)CellDirection.South] = cushion;
+    //}
 
-    public void SetCushionWest(Cushion cushion)
-    {
-        westCushion = cushion;
-        nearCushions.Add(cushion);
-    }
+    //public void SetCushionWest(Cushion cushion)
+    //{
+    //    westCushion = cushion;
+    //    nearCushions[(int)CellDirection.West] = cushion;
+    //}
 
-    public void SetCushionNorth(Cushion cushion)
-    {
-        northCushion = cushion;
-        nearCushions.Add(cushion);
-    }
+    //public void SetCushionNorth(Cushion cushion)
+    //{
+    //    northCushion = cushion;
+    //    nearCushions[(int)CellDirection.North] = cushion;
+    //}
 }
 
 public class GridMapManager : MonoBehaviour
@@ -91,6 +93,9 @@ public class GridMapManager : MonoBehaviour
     [Header("填充物")]
     public GameObject emptyCell;
     public GameObject line;
+
+    [Header("事件广播")]
+    public VoidEventSO afterInitializedEvent;
 
     private void Start()
     {
@@ -114,6 +119,7 @@ public class GridMapManager : MonoBehaviour
     {
         CreateGridCell();
         CreateLine();
+        afterInitializedEvent.RaiseVoidEvent();    
     }
 
     private void CreateGridCell()
@@ -131,13 +137,13 @@ public class GridMapManager : MonoBehaviour
 
                 if (i > 0 && Map[i - 1, j] != null)
                 {
-                    newCushion.SetCushionNorth(Map[i - 1, j]);
-                    Map[i - 1, j].SetCushionSouth(newCushion);
+                    newCushion.SetNearCushion(Map[i - 1, j], CellDirection.North);
+                    Map[i - 1, j].SetNearCushion(newCushion,CellDirection.South);
                 }
                 if (j > 0 && Map[i, j - 1] != null)
                 {
-                    newCushion.SetCushionWest(Map[i, j - 1]);
-                    Map[i, j - 1].SetCushionEast(newCushion);
+                    newCushion.SetNearCushion(Map[i, j - 1],CellDirection.West);
+                    Map[i, j - 1].SetNearCushion(newCushion, CellDirection.East);
                 }
 
                 Map[i, j].CushionInit(Map, newCellComp, CalculateCellPos(i, j), i, j);
@@ -190,7 +196,7 @@ public class GridMapManager : MonoBehaviour
     private float GetNowSideLength()
     {
         GameObject cell = Instantiate(emptyCell.gameObject);
-        float side = emptyCell.GetComponent<Cell>().ReturnSideLength();
+        float side = Mathf.Sqrt(emptyCell.GetComponent<Cell>().ReturnSideLength().x * emptyCell.GetComponent<Cell>().ReturnSideLength().y);
         Destroy(cell.gameObject);
         return side;
     }

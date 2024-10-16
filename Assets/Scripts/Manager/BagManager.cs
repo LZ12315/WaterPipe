@@ -12,9 +12,13 @@ public class BagManager : MonoBehaviour
     private List<Cell> usedCells;
 
     [Header("物品使用")]
-    public Cell cell;
+    public Cell straightPipe;
+    public Cell elbowPipe;
     public Cell cellOnHand;
     private Cell nowCell;
+
+    [Header("鼠标输入检测")]
+    private float scrollInput;
 
     private void Awake()
     {
@@ -23,7 +27,12 @@ public class BagManager : MonoBehaviour
         else
             Destroy(this);
 
-        cellOnHand = cell;
+        cellOnHand = straightPipe;
+    }
+
+    private void Update()
+    {
+        GetMouseScroll();
     }
 
     public void SetWareHouse(WareHouse wareHouse)
@@ -43,6 +52,19 @@ public class BagManager : MonoBehaviour
     public void StoreCell(Cell newCell)
     {
         usedCells.Add(newCell);
+    }
+
+    private void GetMouseScroll()
+    {
+        scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        if (scrollInput > 0)
+        {
+            cellOnHand = straightPipe;
+        }
+        else if (scrollInput < 0)
+        {
+            cellOnHand = elbowPipe;
+        }
     }
 
     public Cell ReturnCellOnHand()

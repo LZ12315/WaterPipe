@@ -3,18 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 [System.Serializable]
 public class Cell : MonoBehaviour, IInteractable_OBJ
 {
     public BoxCollider2D boxCollider;
+    public PolygonCollider2D polygonCollider;
 
     [Header("物体属性")]
     public Sprite cellSprite;
-    public int resolution = 312;
-    private float sideLength;
+    public Vector2 resolution = new Vector2(100,100);
+    private float sideLengthMean;
+    private Vector2 sideLength;
     protected Cushion cushion;
-
     public CellDirection direction = CellDirection.North;
     public List<CellDirection> cellConnectors = new List<CellDirection>();
 
@@ -29,9 +31,9 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     protected MouseButton mouseButton;
     public float rotateAngle = 90;
 
-    [Header("引水")]
-    protected List<Cell> connectedCells = new List<Cell>();
-    [SerializeField] protected bool containsWater = false;
+    [Header("引水相关")]
+    public List<Cell> connectedCells = new List<Cell>();
+    protected bool containsWater = false;
 
     protected virtual void Awake()
     {
@@ -49,17 +51,19 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
             scaleTween.Kill();
     }
 
-    public virtual void CellInit(Vector2 pos, Cushion cushion, CellDirection newCellDirection = CellDirection.North)
+    public virtual void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
     {
         this.cushion = cushion;
         gameObject.transform.position = pos;
-        direction = newCellDirection;
+        direction = cellDirection;
+        sideLengthMean = Mathf.Sqrt(sideLength.x * sideLength.y);
 
-        boxCollider = gameObject.GetComponent<BoxCollider2D>();
-        boxCollider.size = new Vector2(sideLength, sideLength);
-        if (newCellDirection != CellDirection.North)
-            transform.Rotate(0, 0, rotateAngle * (newCellDirection - CellDirection.North));
+        boxCollider = gameObject?.GetComponent<BoxCollider2D>();
+        polygonCollider = gameObject?.GetComponent<PolygonCollider2D>();
+        if(boxCollider != null)
+            boxCollider.size = new Vector2(sideLengthMean, sideLengthMean);
 
+        InitialCellRotate(cellDirection);
         TeaseConnectedCells();
     }
 
@@ -75,6 +79,21 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         }
     }
 
+    private void InitialCellRotate(CellDirection initialCellDirection)
+    {
+        int rotateNum = 0;
+        if (initialCellDirection != CellDirection.North)
+            rotateNum = initialCellDirection - CellDirection.North;
+        transform.Rotate(0, 0, rotateAngle * rotateNum);
+        if (cellConnectors.Count > 0)
+        {
+            for (int i = 0; i < cellConnectors.Count; i++)
+            {
+                cellConnectors[i] = cellConnectors[i].Rotate(rotateNum);
+            }
+        }
+    }
+
     protected virtual void CellRotate(int num)
     {
         direction = direction.Rotate(num);
@@ -82,7 +101,9 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         if(cellConnectors.Count > 0)
         {
             for (int i = 0; i < cellConnectors.Count; i++)
-                cellConnectors[i].Rotate(num);
+            {
+                cellConnectors[i] = cellConnectors[i].Rotate(num);
+            }
         }
 
         TeaseConnectedCells();
@@ -96,8 +117,19 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         connectedCells.Clear();
         foreach (var cu in cushion.ReturnNearCushions())
         {
-            if(ListComparison.HaveCommonElements(cu.ReturnCell().ReturnCellConnectors(),cellConnectors))
-                connectedCells.Add(cu.ReturnCell());
+            Cell nearCell = cu.Value.ReturnCell();
+            if(nearCell.ReturnCellConnectors().Count == 0)
+                continue;
+
+            CellDirection nearCellDir = cu.Key;
+            if (!cellConnectors.Contains(nearCellDir))
+                continue;
+
+            foreach (CellDirection dir in nearCell.ReturnCellConnectors())
+            {
+                if (dir == nearCellDir.GetOppositeDirection())
+                    connectedCells.Add(cu.Value.ReturnCell());
+            }
         }
     }
 
@@ -161,7 +193,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         return cellConnectors;
     }
 
-    public float ReturnSideLength()
+    public Vector2 ReturnSideLength()
     {
         CalculateSide();
         return sideLength;

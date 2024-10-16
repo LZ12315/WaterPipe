@@ -16,16 +16,7 @@ public class PipeCell : Cell
 
     protected override void TeaseConnectedCells()
     {
-        if (cushion.ReturnNearCushions().Count == 0)
-            return;
-
-        connectedCells.Clear();
-        foreach (var cu in cushion.ReturnNearCushions())
-        {
-            if (ListComparison.HaveCommonElements(cu.ReturnCell().ReturnCellConnectors(), cellConnectors))
-                connectedCells.Add(cu.ReturnCell());
-        }
-
+        base.TeaseConnectedCells();
         WaterDiversion();
     }
 

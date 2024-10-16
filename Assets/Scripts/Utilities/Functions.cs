@@ -16,6 +16,11 @@ public static class DirectionExtensions
     {
         return (CellDirection)(((int)direction + num) % Enum.GetValues(typeof(CellDirection)).Length);
     }
+
+    public static CellDirection GetOppositeDirection(this CellDirection direction)
+    {
+        return direction.Rotate(2);
+    }
 }
 
 public class ListComparison
