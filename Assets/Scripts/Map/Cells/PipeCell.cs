@@ -23,10 +23,14 @@ public class PipeCell : Cell
     public override void CellInteract(Cell interactCell)
     {
         base.CellInteract(interactCell);
-        if(!connectedCells.Contains(interactCell))
-            TeaseConnectedCells();
-        else
-            WaterDiversion();
+        if(interactCell.ReturnIfContainsWater() && !containsWater)
+        {
+            GetWater();
+            foreach (var cell in connectedCells)
+            {
+                cell.CellInteract(this);
+            }
+        }
     }
 
     private void WaterDiversion()
@@ -34,28 +38,15 @@ public class PipeCell : Cell
         foreach(var cell in connectedCells)
         {
             if (cell.ReturnIfContainsWater())
-                OpenWater();
-        }
-        if (containsWater)
-        {
-            foreach (var cell in connectedCells)
             {
-                if (!cell.ReturnIfContainsWater())
-                    cell.CellInteract(this);
+                GetWater();
+                break;
             }
         }
-
-    }
-
-    public void OpenWater()
-    {
-        containsWater = true;
-        if (GetComponent<Transform>() != null)
+        foreach (var cell in connectedCells)
         {
-            Sequence scaleSequence = DOTween.Sequence();
-            scaleSequence.Append(transform.DOScale(shrinkScale, duration).SetEase(Ease.OutBack));
-            scaleSequence.Append(transform.DOScale(originScale, duration).SetEase(Ease.OutBack));
-            scaleSequence.Play();
+            cell.CellInteract(this);
         }
+
     }
 }

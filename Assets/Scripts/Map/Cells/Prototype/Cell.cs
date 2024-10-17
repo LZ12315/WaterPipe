@@ -32,8 +32,8 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     public float rotateAngle = 90;
 
     [Header("引水相关")]
-    public List<Cell> connectedCells = new List<Cell>();
-    protected bool containsWater = false;
+    [SerializeField] protected List<Cell> connectedCells = new List<Cell>();
+    [SerializeField] protected bool containsWater = false;
 
     protected virtual void Awake()
     {
@@ -84,7 +84,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         int rotateNum = 0;
         if (initialCellDirection != CellDirection.North)
             rotateNum = initialCellDirection - CellDirection.North;
-        transform.Rotate(0, 0, rotateAngle * rotateNum);
+        transform.Rotate(0, 0, rotateAngle * -rotateNum);
         if (cellConnectors.Count > 0)
         {
             for (int i = 0; i < cellConnectors.Count; i++)
@@ -97,7 +97,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     protected virtual void CellRotate(int num)
     {
         direction = direction.Rotate(num);
-        transform.Rotate(0, 0, num * rotateAngle);
+        transform.Rotate(0, 0, num * -rotateAngle);
         if(cellConnectors.Count > 0)
         {
             for (int i = 0; i < cellConnectors.Count; i++)
@@ -128,15 +128,35 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
             foreach (CellDirection dir in nearCell.ReturnCellConnectors())
             {
                 if (dir == nearCellDir.GetOppositeDirection())
-                    connectedCells.Add(cu.Value.ReturnCell());
+                {
+                    connectedCells.Add(nearCell);
+                    nearCell.CellInteract(this);
+                }
             }
         }
     }
 
     public virtual void CellInteract(Cell interactCell)
     {
-
+        if(!connectedCells.Contains(interactCell))
+            connectedCells.Add(interactCell);
     }
+
+    #region 引水相关
+
+    protected virtual void GetWater()
+    {
+        containsWater = true;
+        if (GetComponent<Transform>() != null)
+        {
+            Sequence scaleSequence = DOTween.Sequence();
+            scaleSequence.Append(transform.DOScale(shrinkScale, duration).SetEase(Ease.OutBack));
+            scaleSequence.Append(transform.DOScale(originScale, duration).SetEase(Ease.OutBack));
+            scaleSequence.Play();
+        }
+    }
+
+    #endregion
 
     #region 交互相关
 
