@@ -164,7 +164,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 1723814264779822083}
   cellSprite: {fileID: 7078902532667114818, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
-  resolution: 100
+  resolution: {x: 100, y: 100}
+  sideLength: 0
+  direction: 0
+  cellConnectors: 
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
   duration: 0.2
+  rotateAngle: 90
+  connectedCells: []
+  containsWater: 0

@@ -1,38 +1,86 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build.Pipeline;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
 public class Cushion
 {
-    private GridMapManager gridMap;
+    private Cushion[,] gridMap;
     public Cell cell;
     public Vector2 corePos;
 
-    public void CushionInit(Cell cell, Vector2 pos, GridMapManager gridMap)
+    public int column;
+    public int row;
+    private Dictionary<CellDirection, Cushion> nearCushions = new Dictionary<CellDirection, Cushion>();
+
+    public void CushionInit(Cushion[,] gridMap, Cell cell, Vector2 pos, int column, int row)
     {
         this.gridMap = gridMap;
         this.cell = cell;
         corePos = pos;
         cell.CellInit(pos, this);
+        this.column = column;
+        this.row = row;
     }
 
-    public void ChangeCell(Cell newCell)
+    public void ChangeCell(Cell newCell, CellDirection newCellDirection)
     {
-        if (cell != null)
+        if (cell != null && cell.boxCollider != null)
         {
-            GameObject.Destroy(cell.gameObject);
+            cell.boxCollider.enabled = false;
         }
 
-        this.cell = newCell;
+        cell = newCell;
         newCell.gameObject.SetActive(true);
-        newCell.CellInit(corePos, this);
+        newCell.CellInit(corePos, this, newCellDirection);
     }
+
+    public void SetNearCushion(Cushion cushion, CellDirection direction)
+    {
+        nearCushions[direction] = cushion;
+    }
+
+    public Cell ReturnCell()
+    {
+        return cell;
+    }
+
+    public Dictionary<CellDirection, Cushion> ReturnNearCushions()
+    {
+        return nearCushions;
+    }
+
+    //public void SetCushionEast(Cushion cushion)
+    //{
+    //    eastCushion = cushion;
+    //    nearCushions[(int)CellDirection.East] = cushion;
+    //    //nearCushions.Add(cushion);
+    //}
+
+    //public void SetCushionSouth(Cushion cushion)
+    //{
+    //    southCushion = cushion;
+    //    nearCushions[(int)CellDirection.South] = cushion;
+    //}
+
+    //public void SetCushionWest(Cushion cushion)
+    //{
+    //    westCushion = cushion;
+    //    nearCushions[(int)CellDirection.West] = cushion;
+    //}
+
+    //public void SetCushionNorth(Cushion cushion)
+    //{
+    //    northCushion = cushion;
+    //    nearCushions[(int)CellDirection.North] = cushion;
+    //}
 }
 
 public class GridMapManager : MonoBehaviour
 {
-    private Cushion[,] gridArray;
+    public GridMapSO gridMapSO;
+    private Cushion[,] Map;
     private List<Line> lineList;
 
     [Header("网格属性")]
@@ -46,8 +94,13 @@ public class GridMapManager : MonoBehaviour
     public GameObject emptyCell;
     public GameObject line;
 
+    [Header("事件广播")]
+    public VoidEventSO afterInitializedEvent;
+
     private void Start()
     {
+        height = gridMapSO.height;
+        width = gridMapSO.width;
         GridInit(height, width);
         CreateGrid();
     }
@@ -58,7 +111,7 @@ public class GridMapManager : MonoBehaviour
         this.width = width;
         leftTopPos = leftTopPoint.transform.position;
         sideLength = GetNowSideLength();
-        gridArray = new Cushion[height, width];
+        Map = new Cushion[height, width];
         lineList = new List<Line>();
     }
 
@@ -66,6 +119,7 @@ public class GridMapManager : MonoBehaviour
     {
         CreateGridCell();
         CreateLine();
+        afterInitializedEvent.RaiseVoidEvent();    
     }
 
     private void CreateGridCell()
@@ -75,13 +129,24 @@ public class GridMapManager : MonoBehaviour
             for (int j = 0; j < width; j++)
             {
                 Cushion newCushion = new Cushion();
-                gridArray[i, j] = newCushion;
+                Map[i, j] = newCushion;
 
-                GameObject newCell = Instantiate(emptyCell.gameObject);
+                GameObject newCell = Instantiate(gridMapSO.ReturnMapCell(i,j).gameObject);
                 newCell.gameObject.SetActive(true);
                 Cell newCellComp = newCell.GetComponent<Cell>();
 
-                gridArray[i, j].CushionInit(newCellComp, CalculateCellPos(i, j), this);
+                if (i > 0 && Map[i - 1, j] != null)
+                {
+                    newCushion.SetNearCushion(Map[i - 1, j], CellDirection.North);
+                    Map[i - 1, j].SetNearCushion(newCushion,CellDirection.South);
+                }
+                if (j > 0 && Map[i, j - 1] != null)
+                {
+                    newCushion.SetNearCushion(Map[i, j - 1],CellDirection.West);
+                    Map[i, j - 1].SetNearCushion(newCushion, CellDirection.East);
+                }
+
+                Map[i, j].CushionInit(Map, newCellComp, CalculateCellPos(i, j), i, j);
             }
         }
     }
@@ -98,7 +163,7 @@ public class GridMapManager : MonoBehaviour
 
             newLineComp.LineInit(startPos, endPos);
             newLineComp.DrawLine();
-            newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
+            //newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
             lineList.Add(newLineComp);
         }
         for (int i = 0; i <= width; i++)
@@ -111,7 +176,7 @@ public class GridMapManager : MonoBehaviour
 
             newLineComp.LineInit(startPos, endPos);
             newLineComp.DrawLine();
-            newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
+            //newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
             lineList.Add(newLineComp);
         }
     }
@@ -131,7 +196,7 @@ public class GridMapManager : MonoBehaviour
     private float GetNowSideLength()
     {
         GameObject cell = Instantiate(emptyCell.gameObject);
-        float side = emptyCell.GetComponent<Cell>().ReturnSideLength();
+        float side = Mathf.Sqrt(emptyCell.GetComponent<Cell>().ReturnSideLength().x * emptyCell.GetComponent<Cell>().ReturnSideLength().y);
         Destroy(cell.gameObject);
         return side;
     }
