@@ -13,12 +13,12 @@ public class Data : MonoBehaviour
     public Text MoneyText;
     private void Start()
     {
-        Scoretext.text = "分数："+score;
-        MoneyText.text = "金钱：" + money;
+        Scoretext.text=""+ score;
+        MoneyText.text =  ""+ money;
     }
     private void Update()
     {
-        Scoretext.text = "分数：" + score;
-        MoneyText.text = "金钱：" + money;
+        Scoretext.text =  "" + score;
+        MoneyText.text =  "" + money;
     }
 }
