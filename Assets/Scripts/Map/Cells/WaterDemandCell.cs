@@ -9,6 +9,10 @@ public class WaterDemandCell : Cell
     {
         base.CellInteract(interactCell);
         if (interactCell.ReturnIfContainsWater())
-            GetWater();
+        {
+            containsWater = true;
+            WaterRunning(this);
+        }
     }
+
 }

@@ -144,15 +144,19 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     #region 引水相关
 
-    protected virtual void GetWater()
+    public virtual void WaterRunning(Cell interactCell)
     {
-        containsWater = true;
         if (GetComponent<Transform>() != null)
         {
             Sequence scaleSequence = DOTween.Sequence();
             scaleSequence.Append(transform.DOScale(shrinkScale, duration).SetEase(Ease.OutBack));
             scaleSequence.Append(transform.DOScale(originScale, duration).SetEase(Ease.OutBack));
             scaleSequence.Play();
+        }
+        foreach (var cell in connectedCells)
+        {
+            if(cell.ReturnIfContainsWater() && cell != interactCell)
+                cell.WaterRunning(this);
         }
     }
 

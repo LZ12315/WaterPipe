@@ -25,10 +25,11 @@ public class PipeCell : Cell
         base.CellInteract(interactCell);
         if(interactCell.ReturnIfContainsWater() && !containsWater)
         {
-            GetWater();
+            containsWater = true;
             foreach (var cell in connectedCells)
             {
-                cell.CellInteract(this);
+                if(cell != interactCell)
+                    cell.CellInteract(this);
             }
         }
     }
@@ -39,7 +40,7 @@ public class PipeCell : Cell
         {
             if (cell.ReturnIfContainsWater())
             {
-                GetWater();
+                containsWater = true;
                 break;
             }
         }
