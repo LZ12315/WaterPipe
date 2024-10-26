@@ -10,16 +10,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Size.x
-      value: 0.16
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Size.y
-      value: 0.16
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -8204598928321609741, guid: 1b511d2bd8215a9499d78225270f0fab, type: 3}
+      objectReference: {fileID: 9042922844101739531, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SortingLayer
       value: 2
@@ -114,11 +114,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
-      value: 0.16
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.y
-      value: 0.16
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -164,7 +164,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 1723814264779822083}
   polygonCollider: {fileID: 0}
-  cellSprite: {fileID: -8204598928321609741, guid: 1b511d2bd8215a9499d78225270f0fab, type: 3}
+  cellSprite: {fileID: 9042922844101739531, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
+  canWrite: 0
   resolution: {x: 100, y: 100}
   direction: 0
   cellConnectors: 
@@ -173,4 +174,5 @@ MonoBehaviour:
   duration: 0.2
   rotateAngle: 90
   connectedCells: []
+  waterSources: []
   containsWater: 0

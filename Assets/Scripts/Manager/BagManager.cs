@@ -6,16 +6,10 @@ public class BagManager : MonoBehaviour
 {
     public static BagManager instance;
 
-    [Header("物品存储")]
-    private WareHouse wareHouse;
-    private List<CellInThisLevel> storedCells;
-    private List<Cell> usedCells;
-
     [Header("物品使用")]
-    public Cell straightPipe;
-    public Cell elbowPipe;
-    public Cell cellOnHand;
-    private Cell nowCell;
+    public List<Cell> workCells = new List<Cell>();
+    private int index = 0;
+    public Cell nowCell;
 
     [Header("鼠标输入检测")]
     private float scrollInput;
@@ -27,7 +21,7 @@ public class BagManager : MonoBehaviour
         else
             Destroy(this);
 
-        cellOnHand = straightPipe;
+        nowCell = workCells[index];
     }
 
     private void Update()
@@ -35,40 +29,37 @@ public class BagManager : MonoBehaviour
         GetMouseScroll();
     }
 
-    public void SetWareHouse(WareHouse wareHouse)
-    {
-        this.wareHouse = wareHouse;
-        this.storedCells = wareHouse.ReturnStoredCells();
-    }
-
-    public void StoreCell(List<Cell> newCells)
-    {
-        foreach (Cell cell in newCells)
-        {
-            usedCells.Add(cell);
-        }
-    }
-
-    public void StoreCell(Cell newCell)
-    {
-        usedCells.Add(newCell);
-    }
 
     private void GetMouseScroll()
     {
         scrollInput = Input.GetAxis("Mouse ScrollWheel");
-        if (scrollInput > 0)
+        SwitchCell(scrollInput);
+    }
+
+    private void SwitchCell(float changeDir)
+    {
+        if(changeDir < 0)
         {
-            cellOnHand = straightPipe;
+            if (index == workCells.Count - 1)
+                index = 0;
+            else
+                index++;
+
+            nowCell = workCells[index];
         }
-        else if (scrollInput < 0)
+        else if (changeDir > 0)
         {
-            cellOnHand = elbowPipe;
+            if (index == 0)
+                index = workCells.Count - 1;
+            else
+                index--;
+
+            nowCell = workCells[index];
         }
     }
 
     public Cell ReturnCellOnHand()
     {
-        return cellOnHand;
+        return nowCell;
     }
 }

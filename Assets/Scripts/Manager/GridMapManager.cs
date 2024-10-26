@@ -88,7 +88,8 @@ public class GridMapManager : MonoBehaviour
     public GameObject emptyCell;
     public GameObject line;
 
-    [Header("事件广播")]
+    [Header("事件")]
+    public VoidEventSO afterSceneLoadEvent;
     public VoidEventSO afterInitializedEvent;
 
     private void Start()
@@ -96,7 +97,16 @@ public class GridMapManager : MonoBehaviour
         height = gridMapSO.height;
         width = gridMapSO.width;
         GridInit(height, width);
-        CreateGrid();
+    }
+
+    private void OnEnable()
+    {
+        afterSceneLoadEvent.voidEvent += CreateGrid;
+    }
+
+    private void OnDisable()
+    {
+        afterSceneLoadEvent.voidEvent -= CreateGrid;
     }
 
     private void GridInit(int height, int width)

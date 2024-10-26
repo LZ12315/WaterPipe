@@ -45,7 +45,7 @@ public class SceneLoadManager : MonoBehaviour
     private void OnEnable()
     {
         sceneLoadEvent.sceneLoadEvent += OnLoadScene;
-    }
+    }   
 
     private void OnDisable()
     {
@@ -55,22 +55,17 @@ public class SceneLoadManager : MonoBehaviour
     private void OnLoadScene(GameSceneSO sceneToLoad, bool fadeScreen, float fadeTime)
     {
         if(isLoading)
-        {
             return;
-        }
+
         isLoading = true;
         this.sceneToLoad = sceneToLoad;
         this.fadeScreen = fadeScreen;
         this.fadeTime = fadeTime;
 
         if(currentScene != null )
-        {
             StartCoroutine(UnLoadCurrentScene());
-        }
         else
-        {
             LoadNewScene();
-        }
     }
 
     private IEnumerator UnLoadCurrentScene()
@@ -80,8 +75,8 @@ public class SceneLoadManager : MonoBehaviour
             //fade in
         }
         DataManager.instance.SaveSceneData();
-        yield return new WaitForSeconds(fadeTime);
         yield return currentScene.sceneReference.UnLoadScene();
+        yield return new WaitForSeconds(fadeTime);
         LoadNewScene() ;
     }
 
@@ -96,16 +91,17 @@ public class SceneLoadManager : MonoBehaviour
         DataManager.instance.LoadSavedSceneData();
         currentScene = sceneToLoad;
         isLoading = false;
-        afterLoadEvent.RaiseVoidEvent();
         if (fadeScreen)
         {
             //Fadeout
         }
-        
+
         Scene sceneToActive = handle.Result.Scene;
         if (sceneToActive.IsValid())
         {
             SceneManager.SetActiveScene(sceneToActive);
         }
+        afterLoadEvent.RaiseVoidEvent();
     }
+
 }

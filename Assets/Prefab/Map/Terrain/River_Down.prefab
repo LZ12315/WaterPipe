@@ -19,7 +19,7 @@ PrefabInstance:
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -4342067739708742481, guid: 1b511d2bd8215a9499d78225270f0fab, type: 3}
+      objectReference: {fileID: 5289465007842921798, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -139,7 +139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 2945852640089597605}
   polygonCollider: {fileID: 0}
-  cellSprite: {fileID: -4342067739708742481, guid: 1b511d2bd8215a9499d78225270f0fab, type: 3}
+  cellSprite: {fileID: 5289465007842921798, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
+  canWrite: 0
   resolution: {x: 213, y: 467}
   direction: 1
   cellConnectors: 
@@ -148,6 +149,7 @@ MonoBehaviour:
   duration: 0.2
   rotateAngle: 90
   connectedCells: []
+  waterSources: []
   containsWater: 0
   afterMapInitializedEvent: {fileID: 11400000, guid: 31ba069413c072745899ff30cfd54ddb, type: 2}
 --- !u!61 &2945852640089597605 stripped
