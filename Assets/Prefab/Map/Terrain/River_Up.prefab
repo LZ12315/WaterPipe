@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &7526861141519833617
+--- !u!1001 &4125312515814405923
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,20 +10,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Size.x
-      value: 1.9
+      value: 4.26
       objectReference: {fileID: 0}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Size.y
-      value: 2.38
+      value: 9.34
       objectReference: {fileID: 0}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2556481310325869677, guid: 1b511d2bd8215a9499d78225270f0fab, type: 3}
-    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
+      objectReference: {fileID: -4342067739708742481, guid: 1b511d2bd8215a9499d78225270f0fab, type: 3}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -70,7 +66,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Name
-      value: CropLand
+      value: River_Up
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
@@ -82,19 +82,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
-      value: 1.9
+      value: 4.26
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.y
-      value: 2.38
+      value: 9.34
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1.81
+      value: 4.26
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1.8
+      value: 9.34
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
@@ -106,39 +106,148 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1294475436584966912}
+      addedObject: {fileID: 6277930625451225045}
+    - targetCorrespondingSourceObject: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6653946652606787376}
   m_SourcePrefab: {fileID: 100100000, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
---- !u!61 &3464123425264922562 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
-  m_PrefabInstance: {fileID: 7526861141519833617}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4039876382341922895 stripped
+--- !u!1 &7576254820916866429 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
-  m_PrefabInstance: {fileID: 7526861141519833617}
+  m_PrefabInstance: {fileID: 4125312515814405923}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1294475436584966912
+--- !u!60 &6277930625451225045
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576254820916866429}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4.26, y: 9.34}
+    newSize: {x: 4.26, y: 9.34}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.22999999, y: -4.31}
+      - {x: 0.45, y: -4.33}
+      - {x: 0.71, y: -4.49}
+      - {x: 0.93, y: -4.5899997}
+      - {x: 1.17, y: -4.5699997}
+      - {x: 1.51, y: -4.47}
+      - {x: 1.77, y: -4.15}
+      - {x: 1.8299999, y: -4.0499997}
+      - {x: 1.81, y: -3.87}
+      - {x: 1.7099999, y: -3.81}
+      - {x: 1.67, y: -3.1499999}
+      - {x: 1.5699999, y: -2.71}
+      - {x: 1.43, y: -2.29}
+      - {x: 1.23, y: -1.77}
+      - {x: 1.15, y: -1.5899999}
+      - {x: 0.71, y: -0.72999996}
+      - {x: 0.72999996, y: -0.25}
+      - {x: 0.84999996, y: 0.25}
+      - {x: 0.93, y: 0.41}
+      - {x: 1.11, y: 0.90999997}
+      - {x: 1.27, y: 1.5699999}
+      - {x: 1.8299999, y: 2.99}
+      - {x: 1.91, y: 3.23}
+      - {x: 2.01, y: 3.55}
+      - {x: 2.07, y: 3.99}
+      - {x: 2.1299999, y: 4.0499997}
+      - {x: 2.1299999, y: 4.39}
+      - {x: 2.07, y: 4.47}
+      - {x: 1.9699999, y: 4.5299997}
+      - {x: 1.61, y: 4.5099998}
+      - {x: 1.51, y: 4.5499997}
+      - {x: 1.17, y: 4.63}
+      - {x: 0.77, y: 4.5899997}
+      - {x: 0.69, y: 4.5299997}
+      - {x: 0.41, y: 4.49}
+      - {x: 0.25, y: 4.5899997}
+      - {x: -0.049999997, y: 4.67}
+      - {x: -0.61, y: 4.67}
+      - {x: -0.71, y: 4.63}
+      - {x: -0.90999997, y: 4.39}
+      - {x: -0.84999996, y: 4.0899997}
+      - {x: -1.43, y: 2.6299999}
+      - {x: -1.65, y: 1.99}
+      - {x: -1.81, y: 1.29}
+      - {x: -1.89, y: 1.13}
+      - {x: -2.05, y: 0.61}
+      - {x: -2.11, y: 0.31}
+      - {x: -2.1299999, y: 0.14999999}
+      - {x: -2.1299999, y: -1.1899999}
+      - {x: -2.11, y: -1.31}
+      - {x: -2.01, y: -1.67}
+      - {x: -1.8499999, y: -2.05}
+      - {x: -1.51, y: -2.69}
+      - {x: -1.51, y: -2.73}
+      - {x: -1.25, y: -3.4099998}
+      - {x: -1.17, y: -3.79}
+      - {x: -1.3299999, y: -3.8899999}
+      - {x: -1.43, y: -4.13}
+      - {x: -1.43, y: -4.41}
+      - {x: -1.27, y: -4.65}
+      - {x: -1.2099999, y: -4.67}
+      - {x: -0.66999996, y: -4.67}
+      - {x: -0.42999998, y: -4.5899997}
+      - {x: -0.17, y: -4.47}
+      - {x: -0.01, y: -4.35}
+  m_UseDelaunayMesh: 0
+--- !u!114 &6653946652606787376
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4039876382341922895}
+  m_GameObject: {fileID: 7576254820916866429}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19daaaaf7d7c02a43bb577ef6c8e6e25, type: 3}
+  m_Script: {fileID: 11500000, guid: 8698eb4407d99374fbd2273cfcac74c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider: {fileID: 3464123425264922562}
-  polygonCollider: {fileID: 0}
-  cellSprite: {fileID: -2556481310325869677, guid: 1b511d2bd8215a9499d78225270f0fab, type: 3}
+  boxCollider: {fileID: 0}
+  polygonCollider: {fileID: 6277930625451225045}
+  cellSprite: {fileID: -4342067739708742481, guid: 1b511d2bd8215a9499d78225270f0fab, type: 3}
   resolution: {x: 100, y: 100}
-  direction: 0
-  cellConnectors: 00000000010000000200000003000000
+  direction: 3
+  cellConnectors: 
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
   duration: 0.2
   rotateAngle: 90
   connectedCells: []
   containsWater: 0
+  afterMapInitializedEvent: {fileID: 11400000, guid: 31ba069413c072745899ff30cfd54ddb, type: 2}

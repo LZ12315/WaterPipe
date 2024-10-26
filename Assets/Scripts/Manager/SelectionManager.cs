@@ -50,6 +50,12 @@ public class SelectionManager : MonoBehaviour
                 HandleMouseClick();
             }
 
+            if (Input.GetMouseButtonDown(2) && mouseButton == MouseButton.None)
+            {
+                mouseButton = MouseButton.Middle;
+                HandleMouseClick();
+            }
+
             if (mouseDragCounter < minMouseDragTime)
                 mouseDragCounter += Time.deltaTime;
             else
@@ -58,7 +64,9 @@ public class SelectionManager : MonoBehaviour
             mouseOriginPos = Input.mousePosition;
         }
 
-        if ((Input.GetMouseButtonUp(0) && mouseButton == MouseButton.Left) || (Input.GetMouseButtonUp(1) && mouseButton == MouseButton.Right))
+        if ((Input.GetMouseButtonUp(0) && mouseButton == MouseButton.Left) || 
+            (Input.GetMouseButtonUp(1) && mouseButton == MouseButton.Right) || 
+            (Input.GetMouseButtonUp(2) && mouseButton == MouseButton.Middle))
         {
             mouseButton = MouseButton.None;
 

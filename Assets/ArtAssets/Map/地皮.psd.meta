@@ -165,7 +165,7 @@ ScriptedImporter:
   - name: "\u51B7\u5374\u5854"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2

@@ -5,21 +5,22 @@ using UnityEngine.EventSystems;
 
 public class RenderCell : Cell,IDaughterCell
 {
-
-    public override void ExcutiveAction()
-    {
-        base.ExcutiveAction();
-    }
-
     public override void HandleSelection()
     {
+        base.HandleSelection();
         if (mouseButton == MouseButton.Left)
         {
-            PlaceCell();
+            PlacePipeCell();
         }
     }
 
-    private void PlaceCell()
+    public override void CellInteract(Cell interactCell)
+    {
+        base.CellInteract(interactCell);
+        PlaceCell(interactCell);
+    }
+
+    private void PlacePipeCell()
     {
         if (BagManager.instance.ReturnCellOnHand() != null)
         {
@@ -35,6 +36,11 @@ public class RenderCell : Cell,IDaughterCell
                 CellCover(newCell, CellDirection.North);
             }
         }
+    }
+
+    public void PlaceCell(Cell newCell)
+    {
+        CellCover(newCell, CellDirection.North);
     }
 
     #region 子物体设置

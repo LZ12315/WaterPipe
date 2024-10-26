@@ -13,6 +13,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     [Header("物体属性")]
     public Sprite cellSprite;
+    public bool canWrite = false;
     public Vector2 resolution = new Vector2(100,100);
     private float sideLengthMean;
     private Vector2 sideLength;
@@ -33,6 +34,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     [Header("引水相关")]
     [SerializeField] protected List<Cell> connectedCells = new List<Cell>();
+    [SerializeField] protected List<Cell> waterSources = new List<Cell>();
     [SerializeField] protected bool containsWater = false;
 
     protected virtual void Awake()
@@ -49,6 +51,21 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     {
         if (scaleTween != null && scaleTween.IsActive())
             scaleTween.Kill();
+    }
+
+    public virtual void CellInit(Vector2 pos, Cushion cushion)
+    {
+        this.cushion = cushion;
+        gameObject.transform.position = pos;
+        sideLengthMean = Mathf.Sqrt(sideLength.x * sideLength.y);
+
+        boxCollider = gameObject?.GetComponent<BoxCollider2D>();
+        polygonCollider = gameObject?.GetComponent<PolygonCollider2D>();
+        if (boxCollider != null)
+            boxCollider.size = new Vector2(sideLengthMean, sideLengthMean);
+
+        InitialCellRotate(direction);
+        TeaseConnectedCells();
     }
 
     public virtual void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
@@ -77,6 +94,16 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         {
             cushion.ChangeCell(instantiatedCell,cellDirection);
         }
+    }
+
+    protected virtual void RemoveCell()
+    {
+        cushion.RemoveCell();
+        foreach (var cell in connectedCells)
+        {
+            cell.CellDisConnect(this,this);
+        }
+        Destroy(gameObject);
     }
 
     private void InitialCellRotate(CellDirection initialCellDirection)
@@ -117,7 +144,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         connectedCells.Clear();
         foreach (var cu in cushion.ReturnNearCushions())
         {
-            Cell nearCell = cu.Value.ReturnCell();
+            Cell nearCell = cu.Value.ReturnWorkCell();
             if(nearCell.ReturnCellConnectors().Count == 0)
                 continue;
 
@@ -130,22 +157,38 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
                 if (dir == nearCellDir.GetOppositeDirection())
                 {
                     connectedCells.Add(nearCell);
-                    nearCell.CellInteract(this);
+                    nearCell.CellConnect(this);
                 }
             }
         }
     }
 
-    public virtual void CellInteract(Cell interactCell)
+    public virtual void CellConnect(Cell interactCell)
     {
         if(!connectedCells.Contains(interactCell))
             connectedCells.Add(interactCell);
     }
 
+    public virtual void CellDisConnect(Cell cellToRemove, Cell interactCell)
+    {
+        if(connectedCells.Contains(cellToRemove))
+            connectedCells.Remove(cellToRemove);
+    }
+
     #region 引水相关
+
+    private int recursionDepth = 0;
+    private const int maxRecursionDepth = 4;
 
     public virtual void WaterRunning(Cell interactCell)
     {
+        if (recursionDepth > maxRecursionDepth)
+        {
+            recursionDepth = 0;
+            return;
+        }
+        recursionDepth++;
+
         if (GetComponent<Transform>() != null)
         {
             Sequence scaleSequence = DOTween.Sequence();
@@ -153,9 +196,10 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
             scaleSequence.Append(transform.DOScale(originScale, duration).SetEase(Ease.OutBack));
             scaleSequence.Play();
         }
+
         foreach (var cell in connectedCells)
         {
-            if(cell.ReturnIfContainsWater() && cell != interactCell)
+            if (cell.ReturnIfContainsWater() && cell != interactCell)
                 cell.WaterRunning(this);
         }
     }
@@ -168,7 +212,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     {
         this.mouseButton = mouseButton;
 
-        if (CheckIfInteractable())
+        if(CheckIfInteractable())
             ExcutiveAction();
     }
 
@@ -183,6 +227,14 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     }
 
     public virtual void HandleSelection()
+    {
+        if (mouseButton == MouseButton.Middle && canWrite)
+        {
+            RemoveCell();
+        }
+    }
+
+    public virtual void CellInteract(Cell interactCell)
     {
 
     }

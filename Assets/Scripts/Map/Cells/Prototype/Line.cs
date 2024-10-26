@@ -11,7 +11,6 @@ public class Line : MonoBehaviour
     [Header("∑÷∏Óœﬂ Ù–‘")]
     public float maxWidth = 0.1f;
     private float nowWidth;
-    public Color lineColor = new Color(176,176,176);
     private Vector2 startPos;
     private Vector2 endPos;
 
@@ -36,8 +35,6 @@ public class Line : MonoBehaviour
         this.startPos = startPos;
         this.endPos = endPos;
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.startColor = lineColor;
-        lineRenderer.endColor = lineColor;
         lineRenderer.startWidth = maxWidth;
         lineRenderer.endWidth = maxWidth;
     }

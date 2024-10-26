@@ -6,7 +6,7 @@ public class MultiCell : Cell
 {
     [Header("多方块管理")]
     public VoidEventSO afterMapInitializedEvent;
-    [SerializeField]protected List<IDaughterCell> daughterCells = new List<IDaughterCell>();
+    [SerializeField] protected List<IDaughterCell> daughterCells = new List<IDaughterCell>();
 
     protected override void Awake()
     {
@@ -22,6 +22,7 @@ public class MultiCell : Cell
 
         if (polygonCollider != null)
             polygonCollider.OverlapCollider(contactFilter, overlappingColliders);
+
         else if(boxCollider != null)
             boxCollider.OverlapCollider(contactFilter, overlappingColliders);
 

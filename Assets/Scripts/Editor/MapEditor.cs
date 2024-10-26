@@ -6,6 +6,8 @@ using UnityEngine;
 public class MapEditor : Editor
 {
     private string newArrayValue;
+    private Vector2 newCellPos;
+    private int newCellValue;
     private int newDictKey;
     private GameObject newCellObject;
 
@@ -16,19 +18,19 @@ public class MapEditor : Editor
         GridMapSO mapSO = (GridMapSO)target;
 
         // 显示数组
-        EditorGUILayout.LabelField("2D Array:");
-        for (int i = 0; i < mapSO.gridMap.Count; i++)
-        {
-            EditorGUILayout.LabelField($"Row {i}:");
-            for (int j = 0; j < mapSO.gridMap[i].values.Count; j++)
-            {   //确保元素被添加到数组里
-                mapSO.gridMap[i].values[j] = EditorGUILayout.IntField(mapSO.gridMap[i].values[j]);
-                EditorUtility.SetDirty(mapSO);
-            }
-            EditorGUILayout.Space();
-        }
+        //EditorGUILayout.LabelField("2D Array:");
+        //for (int i = 0; i < mapSO.gridMap.Count; i++)
+        //{
+        //    EditorGUILayout.LabelField($"Row {i}:");
+        //    for (int j = 0; j < mapSO.gridMap[i].values.Count; j++)
+        //    {   //确保元素被添加到数组里
+        //        mapSO.gridMap[i].values[j] = EditorGUILayout.IntField(mapSO.gridMap[i].values[j]);
+        //        EditorUtility.SetDirty(mapSO);
+        //    }
+        //    EditorGUILayout.Space();
+        //}
 
-        // 添加元素到数组
+        // 添加元素到地图
         EditorGUILayout.LabelField("Add to 2D Array:");
         newArrayValue = EditorGUILayout.TextField("New Value:", newArrayValue);
         if (GUILayout.Button("Add Row"))
@@ -53,6 +55,34 @@ public class MapEditor : Editor
             {
                 Debug.LogWarning("No valid integer values were provided or off the map");
             }
+        }
+
+        //显示地块元素
+        EditorGUILayout.LabelField("WorkCells:");
+        foreach (var cell in mapSO.workCells)
+        {
+            if (cell.position != null)
+            {
+                EditorGUILayout.LabelField($"X: {cell.position.x} | Y: {cell.position.y} | Value: {cell.value}");
+            }
+            else
+            {
+                EditorGUILayout.LabelField($"Cell: null");
+            }
+        }
+
+        // 添加元素到地块
+        EditorGUILayout.LabelField("Add to workCells:");
+        newCellPos = EditorGUILayout.Vector2Field("New Pos:", newCellPos);
+        newCellValue = EditorGUILayout.IntField("Key (int):", newCellValue);
+        if (GUILayout.Button("Add WorkCell"))
+        {
+            WorkCells newWorkCell = new WorkCells(newCellPos,newCellValue);
+            mapSO.AddToWorkCells(newWorkCell);
+
+            newCellPos = Vector2.zero;
+            newCellValue = 0;
+            EditorUtility.SetDirty(mapSO);
         }
 
         // 显示字典

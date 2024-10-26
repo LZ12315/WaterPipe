@@ -7,7 +7,8 @@ using static UnityEditor.PlayerSettings;
 public class Cushion
 {
     private Cushion[,] gridMap;
-    public Cell cell;
+    public Cell renderCell;
+    public Cell workCell;
     public Vector2 corePos;
 
     public int column;
@@ -17,7 +18,8 @@ public class Cushion
     public void CushionInit(Cushion[,] gridMap, Cell cell, Vector2 pos, int column, int row)
     {
         this.gridMap = gridMap;
-        this.cell = cell;
+        renderCell = cell;
+        workCell = cell;
         corePos = pos;
         cell.CellInit(pos, this);
         this.column = column;
@@ -26,14 +28,24 @@ public class Cushion
 
     public void ChangeCell(Cell newCell, CellDirection newCellDirection)
     {
-        if (cell != null && cell.boxCollider != null)
+        if (renderCell != null && renderCell.boxCollider != null)
         {
-            cell.boxCollider.enabled = false;
+            renderCell.boxCollider.enabled = false;
         }
 
-        cell = newCell;
+        workCell = newCell;
         newCell.gameObject.SetActive(true);
         newCell.CellInit(corePos, this, newCellDirection);
+    }
+
+    public void RemoveCell()
+    {
+        if(workCell != null)
+        {
+            workCell = null;
+            renderCell.boxCollider.enabled = true;
+            workCell = renderCell;
+        }
     }
 
     public void SetNearCushion(Cushion cushion, CellDirection direction)
@@ -41,9 +53,14 @@ public class Cushion
         nearCushions[direction] = cushion;
     }
 
-    public Cell ReturnCell()
+    public Cell ReturnWorkCell()
     {
-        return cell;
+        return workCell;
+    }
+
+    public Cell ReturnRenderCell()
+    {
+        return renderCell;
     }
 
     public Dictionary<CellDirection, Cushion> ReturnNearCushions()
@@ -51,36 +68,13 @@ public class Cushion
         return nearCushions;
     }
 
-    //public void SetCushionEast(Cushion cushion)
-    //{
-    //    eastCushion = cushion;
-    //    nearCushions[(int)CellDirection.East] = cushion;
-    //    //nearCushions.Add(cushion);
-    //}
-
-    //public void SetCushionSouth(Cushion cushion)
-    //{
-    //    southCushion = cushion;
-    //    nearCushions[(int)CellDirection.South] = cushion;
-    //}
-
-    //public void SetCushionWest(Cushion cushion)
-    //{
-    //    westCushion = cushion;
-    //    nearCushions[(int)CellDirection.West] = cushion;
-    //}
-
-    //public void SetCushionNorth(Cushion cushion)
-    //{
-    //    northCushion = cushion;
-    //    nearCushions[(int)CellDirection.North] = cushion;
-    //}
 }
 
 public class GridMapManager : MonoBehaviour
 {
     public GridMapSO gridMapSO;
     private Cushion[,] Map;
+    private List<WorkCells> workCells;
     private List<Line> lineList;
 
     [Header("Õ¯∏Ò Ù–‘")]
@@ -118,6 +112,7 @@ public class GridMapManager : MonoBehaviour
     private void CreateGrid()
     {
         CreateGridCell();
+        SetWorkCells();
         CreateLine();
         afterInitializedEvent.RaiseVoidEvent();    
     }
@@ -148,6 +143,20 @@ public class GridMapManager : MonoBehaviour
 
                 Map[i, j].CushionInit(Map, newCellComp, CalculateCellPos(i, j), i, j);
             }
+        }
+    }
+
+    private void SetWorkCells()
+    {
+        workCells = gridMapSO.ReturnWorkCells();
+        foreach (var cell in workCells)
+        {
+            Vector2 pos = cell.position;
+            int x = (int)pos.x;
+            int y = (int)pos.y;
+            Cell renderCell = Map[x - 1,y - 1].ReturnRenderCell();
+            Cell workCell = gridMapSO.ReturnDicCell(cell.value);
+            renderCell.CellInteract(workCell);
         }
     }
 
