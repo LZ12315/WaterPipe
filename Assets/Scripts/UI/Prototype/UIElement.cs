@@ -2,13 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIElement : MonoBehaviour, IInteractable
+public class UIElement : MonoBehaviour, IInteractable_UI
 {
-    public void Click()
-    {
-        ReceiveInteraction();
-    }
-
     public virtual void ReceiveInteraction()
     {
         if(CheckIfInteractable())

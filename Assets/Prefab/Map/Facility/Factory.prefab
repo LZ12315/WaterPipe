@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8424635038321485721
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_Size.x
+      value: 2.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_Size.y
+      value: 3.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 8132038558134733204, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089213366628660632, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089213366628660632, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089213366628660632, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089213366628660632, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089213366628660632, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089213366628660632, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089213366628660632, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089213366628660632, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089213366628660632, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2089213366628660632, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_Name
+      value: Factory
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 2.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 3.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 3.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
+      value: 0.5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 962509412253973793}
+  m_SourcePrefab: {fileID: 100100000, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+--- !u!1 &2634076438591323591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+  m_PrefabInstance: {fileID: 8424635038321485721}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &962509412253973793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2634076438591323591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a5ce13f260e804ab47256fd1280d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxCollider: {fileID: 0}
+  polygonCollider: {fileID: 0}
+  cellSprite: {fileID: 8132038558134733204, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
+  canWrite: 0
+  resolution: {x: 100, y: 100}
+  direction: 0
+  cellConnectors: 00000000010000000200000003000000
+  enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
+  shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
+  duration: 0.2
+  rotateAngle: 90
+  connectedCells: []
+  waterSources: []
+  containsWater: 0

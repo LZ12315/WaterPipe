@@ -1,61 +1,258 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
-public class Cell : MonoBehaviour
+[System.Serializable]
+public class Cell : MonoBehaviour, IInteractable_OBJ
 {
     public BoxCollider2D boxCollider;
+    public PolygonCollider2D polygonCollider;
 
     [Header("物体属性")]
     public Sprite cellSprite;
-    public int resolution = 312;
-    private float sideLength;
-    private Cushion cushion;
+    public bool canWrite = false;
+    public Vector2 resolution = new Vector2(100,100);
+    private float sideLengthMean;
+    private Vector2 sideLength;
+    protected Cushion cushion;
+    public CellDirection direction = CellDirection.North;
+    public List<CellDirection> cellConnectors = new List<CellDirection>();
 
     [Header("动画表现")]
-    public Vector3 enlargeScale = new Vector3(1.2f,1.2f,1.2f);
+    public Vector3 enlargeScale = new Vector3(1.2f, 1.2f, 1.2f);
     public Vector3 shrinkScale = new Vector3(0.8f, 0.8f, 0.8f);
     public float duration = 0.2f;
-    private Vector3 originScale;
+    protected Vector3 originScale;
+    protected Tween scaleTween;
 
-    private void Awake()
+    [Header("物体操作")]
+    protected MouseButton mouseButton;
+    public float rotateAngle = 90;
+
+    [Header("引水相关")]
+    [SerializeField] protected List<Cell> connectedCells = new List<Cell>();
+    [SerializeField] protected List<Cell> waterSources = new List<Cell>();
+    [SerializeField] protected bool containsWater = false;
+
+    protected virtual void Awake()
     {
         CalculateSide();
     }
 
-    public virtual void CellInit(Vector2 pos,Cushion cushion)
+    private void OnEnable()
+    {
+        originScale = transform.localScale;
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (scaleTween != null && scaleTween.IsActive())
+            scaleTween.Kill();
+    }
+
+    public virtual void CellInit(Vector2 pos, Cushion cushion)
     {
         this.cushion = cushion;
         gameObject.transform.position = pos;
-        boxCollider = gameObject.GetComponent<BoxCollider2D>();
-        boxCollider.size = new Vector2(sideLength, sideLength);
+        sideLengthMean = Mathf.Sqrt(sideLength.x * sideLength.y);
+
+        boxCollider = gameObject?.GetComponent<BoxCollider2D>();
+        polygonCollider = gameObject?.GetComponent<PolygonCollider2D>();
+        if (boxCollider != null)
+            boxCollider.size = new Vector2(sideLengthMean, sideLengthMean);
+
+        InitialCellRotate(direction);
+        TeaseConnectedCells();
     }
 
-    public void CellCover(Cell newCell)
+    public virtual void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
     {
-        Instantiate(newCell);
-        newCell.gameObject.SetActive(false);
+        this.cushion = cushion;
+        gameObject.transform.position = pos;
+        direction = cellDirection;
+        sideLengthMean = Mathf.Sqrt(sideLength.x * sideLength.y);
 
-        if (cushion != null ) 
+        boxCollider = gameObject?.GetComponent<BoxCollider2D>();
+        polygonCollider = gameObject?.GetComponent<PolygonCollider2D>();
+        if(boxCollider != null)
+            boxCollider.size = new Vector2(sideLengthMean, sideLengthMean);
+
+        InitialCellRotate(cellDirection);
+        TeaseConnectedCells();
+    }
+
+    protected virtual void CellCover(Cell newCell, CellDirection cellDirection)
+    {
+        Cell instantiatedCell = Instantiate(newCell, cushion.corePos, Quaternion.identity);
+        SelectionManager.instance.SetFormerPlacedCell(instantiatedCell);
+        instantiatedCell.gameObject.SetActive(false);
+
+        if (cushion != null)
         {
-            cushion.ChangeCell(newCell);
+            cushion.ChangeCell(instantiatedCell,cellDirection);
         }
+    }
 
+    protected virtual void RemoveCell()
+    {
+        cushion.RemoveCell();
+        foreach (var cell in connectedCells)
+        {
+            cell.CellDisConnect(this,this);
+        }
         Destroy(gameObject);
     }
+
+    private void InitialCellRotate(CellDirection initialCellDirection)
+    {
+        int rotateNum = 0;
+        if (initialCellDirection != CellDirection.North)
+            rotateNum = initialCellDirection - CellDirection.North;
+        transform.Rotate(0, 0, rotateAngle * -rotateNum);
+        if (cellConnectors.Count > 0)
+        {
+            for (int i = 0; i < cellConnectors.Count; i++)
+            {
+                cellConnectors[i] = cellConnectors[i].Rotate(rotateNum);
+            }
+        }
+    }
+
+    protected virtual void CellRotate(int num)
+    {
+        direction = direction.Rotate(num);
+        transform.Rotate(0, 0, num * -rotateAngle);
+        if(cellConnectors.Count > 0)
+        {
+            for (int i = 0; i < cellConnectors.Count; i++)
+            {
+                cellConnectors[i] = cellConnectors[i].Rotate(num);
+            }
+        }
+
+        TeaseConnectedCells();
+    }
+
+    protected virtual void TeaseConnectedCells()
+    {
+        if(cushion.ReturnNearCushions().Count == 0 || cellConnectors.Count == 0)
+            return;
+
+        connectedCells.Clear();
+        foreach (var cu in cushion.ReturnNearCushions())
+        {
+            Cell nearCell = cu.Value.ReturnWorkCell();
+            if(nearCell.ReturnCellConnectors().Count == 0)
+                continue;
+
+            CellDirection nearCellDir = cu.Key;
+            if (!cellConnectors.Contains(nearCellDir))
+                continue;
+
+            foreach (CellDirection dir in nearCell.ReturnCellConnectors())
+            {
+                if (dir == nearCellDir.GetOppositeDirection())
+                {
+                    connectedCells.Add(nearCell);
+                    nearCell.CellConnect(this);
+                }
+            }
+        }
+    }
+
+    public virtual void CellConnect(Cell interactCell)
+    {
+        if(!connectedCells.Contains(interactCell))
+            connectedCells.Add(interactCell);
+    }
+
+    public virtual void CellDisConnect(Cell cellToRemove, Cell interactCell)
+    {
+        if(connectedCells.Contains(cellToRemove))
+            connectedCells.Remove(cellToRemove);
+    }
+
+    #region 引水相关
+
+    private int recursionDepth = 0;
+    private const int maxRecursionDepth = 4;
+
+    public virtual void WaterRunning(Cell interactCell)
+    {
+        if (recursionDepth > maxRecursionDepth)
+        {
+            recursionDepth = 0;
+            return;
+        }
+        recursionDepth++;
+
+        if (GetComponent<Transform>() != null)
+        {
+            Sequence scaleSequence = DOTween.Sequence();
+            scaleSequence.Append(transform.DOScale(shrinkScale, duration).SetEase(Ease.OutBack));
+            scaleSequence.Append(transform.DOScale(originScale, duration).SetEase(Ease.OutBack));
+            scaleSequence.Play();
+        }
+
+        foreach (var cell in connectedCells)
+        {
+            if (cell.ReturnIfContainsWater() && cell != interactCell)
+                cell.WaterRunning(this);
+        }
+    }
+
+    #endregion
+
+    #region 交互相关
+
+    public void ReceiveInteraction(MouseButton mouseButton)
+    {
+        this.mouseButton = mouseButton;
+
+        if(CheckIfInteractable())
+            ExcutiveAction();
+    }
+
+    public virtual bool CheckIfInteractable()
+    {
+        return true;
+    }
+
+    public virtual void ExcutiveAction()
+    {
+        HandleSelection();
+    }
+
+    public virtual void HandleSelection()
+    {
+        if (mouseButton == MouseButton.Middle && canWrite)
+        {
+            RemoveCell();
+        }
+    }
+
+    public virtual void CellInteract(Cell interactCell)
+    {
+
+    }
+
+    #endregion
 
     #region 动画表现
 
     private void OnMouseEnter()
     {
-        originScale = transform.localScale;
-        transform.DOScale(enlargeScale, duration).SetEase(Ease.OutBack);
+        if (GetComponent<Transform>() != null)
+            scaleTween = transform.DOScale(enlargeScale, duration).SetEase(Ease.OutBack);
     }
 
     private void OnMouseExit()
     {
-        transform.DOScale(originScale, duration).SetEase(Ease.OutBack);
+        if (GetComponent<Transform>() != null)
+            scaleTween = transform.DOScale(originScale, duration).SetEase(Ease.OutBack);
     }
 
     #endregion
@@ -67,10 +264,25 @@ public class Cell : MonoBehaviour
         sideLength = resolution / cellSprite.pixelsPerUnit;
     }
 
-    public float ReturnSideLength()
+    public List<CellDirection> ReturnCellConnectors()
+    {
+        return cellConnectors;
+    }
+
+    public Vector2 ReturnSideLength()
     {
         CalculateSide();
         return sideLength;
+    }
+
+    public CellDirection returnCellDirection()
+    {
+        return direction;
+    }
+
+    public bool ReturnIfContainsWater()
+    {
+        return containsWater;
     }
 
     #endregion

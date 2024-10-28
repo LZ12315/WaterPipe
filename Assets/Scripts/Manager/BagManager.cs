@@ -6,15 +6,13 @@ public class BagManager : MonoBehaviour
 {
     public static BagManager instance;
 
-    [Header("物品存储")]
-    private WareHouse wareHouse;
-    private List<CellInThisLevel> storedCells;
-    private List<Cell> usedCells;
-
     [Header("物品使用")]
-    public Cell cell;
-    public Cell cellOnHand;
-    private Cell nowCell;
+    public List<Cell> workCells = new List<Cell>();
+    private int index = 0;
+    public Cell nowCell;
+
+    [Header("鼠标输入检测")]
+    private float scrollInput;
 
     private void Awake()
     {
@@ -23,30 +21,45 @@ public class BagManager : MonoBehaviour
         else
             Destroy(this);
 
-        cellOnHand = cell;
+        nowCell = workCells[index];
     }
 
-    public void SetWareHouse(WareHouse wareHouse)
+    private void Update()
     {
-        this.wareHouse = wareHouse;
-        this.storedCells = wareHouse.ReturnStoredCells();
+        GetMouseScroll();
     }
 
-    public void StoreCell(List<Cell> newCells)
+
+    private void GetMouseScroll()
     {
-        foreach (Cell cell in newCells)
+        scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        SwitchCell(scrollInput);
+    }
+
+    private void SwitchCell(float changeDir)
+    {
+        if(changeDir < 0)
         {
-            usedCells.Add(cell);
-        }
-    }
+            if (index == workCells.Count - 1)
+                index = 0;
+            else
+                index++;
 
-    public void StoreCell(Cell newCell)
-    {
-        usedCells.Add(newCell);
+            nowCell = workCells[index];
+        }
+        else if (changeDir > 0)
+        {
+            if (index == 0)
+                index = workCells.Count - 1;
+            else
+                index--;
+
+            nowCell = workCells[index];
+        }
     }
 
     public Cell ReturnCellOnHand()
     {
-        return cellOnHand;
+        return nowCell;
     }
 }
