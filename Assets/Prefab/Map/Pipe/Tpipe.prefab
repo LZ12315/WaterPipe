@@ -64,6 +64,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 2.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 1.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Name
       value: Tpipe
@@ -74,7 +102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
@@ -135,6 +163,9 @@ MonoBehaviour:
   connectedCells: []
   waterSources: []
   containsWater: 0
+  developmentnValue: 0
+  budgetValue: 3000
+  contaminationValue: 0
 --- !u!61 &2067807525069107766 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}

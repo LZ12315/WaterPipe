@@ -64,6 +64,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 2.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 2.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Name
       value: House
@@ -129,6 +157,7 @@ MonoBehaviour:
   boxCollider: {fileID: 5011064825047428565}
   polygonCollider: {fileID: 0}
   cellSprite: {fileID: -2933749329650418898, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
+  canWrite: 0
   resolution: {x: 100, y: 100}
   direction: 0
   cellConnectors: 00000000010000000200000003000000
@@ -137,4 +166,7 @@ MonoBehaviour:
   duration: 0.2
   rotateAngle: 90
   connectedCells: []
+  waterSources: []
   containsWater: 0
+  developmentnValue: 30
+  contaminationValue: 4

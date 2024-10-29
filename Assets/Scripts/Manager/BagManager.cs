@@ -58,6 +58,11 @@ public class BagManager : MonoBehaviour
         }
     }
 
+    public void PlaceCell()
+    {
+        
+    }
+
     public Cell ReturnCellOnHand()
     {
         return nowCell;

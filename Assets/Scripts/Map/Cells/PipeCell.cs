@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PipeCell : Cell
+public class PipeCell : Cell, INumricalChange
 {
+    [Header("发展数值")]
+    public double budgetValue;
 
     private void Start()
     {
@@ -19,6 +21,18 @@ public class PipeCell : Cell
         {
             CellRotate(1);
         }
+    }
+
+    public override void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
+    {
+        base.CellInit(pos, cushion, cellDirection);
+        NumericalValueChange();
+    }
+
+    protected override void RemoveCell()
+    {
+        base.RemoveCell();
+        NumericalValueReChange();
     }
 
     protected override void TeaseConnectedCells()
@@ -99,4 +113,13 @@ public class PipeCell : Cell
         return false;
     }
 
+    public void NumericalValueChange()
+    {
+        NumericalManager.instance.ChangeBudget(this,-budgetValue);
+    }
+
+    public void NumericalValueReChange()
+    {
+        NumericalManager.instance.ChangeBudget(this, -budgetValue);
+    }
 }
