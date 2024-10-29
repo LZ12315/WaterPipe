@@ -179,9 +179,7 @@ MonoBehaviour:
   connectedCells: []
   waterSources: []
   containsWater: 0
-  developmentnValue: 0
   budgetValue: 2000
-  contaminationValue: 0
 --- !u!61 &7676852210152902418 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}

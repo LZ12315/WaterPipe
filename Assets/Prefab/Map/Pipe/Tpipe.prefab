@@ -21,6 +21,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -220342035802043471, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
@@ -163,9 +167,7 @@ MonoBehaviour:
   connectedCells: []
   waterSources: []
   containsWater: 0
-  developmentnValue: 0
   budgetValue: 3000
-  contaminationValue: 0
 --- !u!61 &2067807525069107766 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}

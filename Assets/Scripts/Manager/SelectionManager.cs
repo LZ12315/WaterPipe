@@ -37,7 +37,6 @@ public class SelectionManager : MonoBehaviour
     {
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))
         {
-            Debug.Log("1");
             if (Input.GetMouseButtonDown(0) && mouseButton == MouseButton.None)
             {
                 mouseButton = MouseButton.Left;

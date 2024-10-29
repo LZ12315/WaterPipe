@@ -181,7 +181,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a2d086e81407670489478a9e924afe68, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 02c956de871600747ade77536239af53, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -307,7 +307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4583699420709531508, guid: 1bfec457a6a875e4d9e3730c5f42d49f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7136029524031941647, guid: 1bfec457a6a875e4d9e3730c5f42d49f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -377,6 +377,14 @@ PrefabInstance:
     - target: {fileID: 2975951085606155722, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3111535062743919724, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 3111535062743919724, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 3759075818334322127, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
       propertyPath: m_Pivot.x
@@ -458,18 +466,66 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5461263664269367357, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b9d1e70fe56fc0e4383d9af9b62f7ea7, type: 3}
     - target: {fileID: 5751243804504443867, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826426605080051481, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205839876245466575, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205839876245466575, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205839876245466575, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205839876245466575, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205839876245466575, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205839876245466575, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205839876245466575, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7623342677617905392, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
       propertyPath: sceneLoadEvent
       value: 
       objectReference: {fileID: 11400000, guid: e2474a04195c0a74fa318cb3cc0add55, type: 2}
+    - target: {fileID: 8079328276444798858, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 53f801668eaebb2478bca005d404f5ec, type: 3}
     - target: {fileID: 8655833603517880789, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
       propertyPath: sceneToLoad
       value: 
       objectReference: {fileID: 11400000, guid: 4a27d0ebd7b98194f8a8a937943e6bd6, type: 2}
+    - target: {fileID: 8709659395364115288, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 8709659395364115288, guid: 2d6010fed1ff60441bcf1f7a3d3a7b1e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1024
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
