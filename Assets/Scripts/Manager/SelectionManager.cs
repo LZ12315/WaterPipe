@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
-{//0
+{
     public static SelectionManager instance;
     private Camera mainCamera;
 
@@ -38,6 +37,7 @@ public class SelectionManager : MonoBehaviour
     {
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))
         {
+            Debug.Log("1");
             if (Input.GetMouseButtonDown(0) && mouseButton == MouseButton.None)
             {
                 mouseButton = MouseButton.Left;

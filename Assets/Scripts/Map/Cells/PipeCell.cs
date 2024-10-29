@@ -37,8 +37,31 @@ public class PipeCell : Cell, INumricalChange
 
     protected override void TeaseConnectedCells()
     {
-        base.TeaseConnectedCells();
+        if (cushion.ReturnNearCushions().Count == 0 || cellConnectors.Count == 0)
+            return;
+
+        connectedCells.Clear();
+        foreach (var cu in cushion.ReturnNearCushions())
+        {
+            Cell nearCell = cu.Value.ReturnWorkCell();
+            if (nearCell.ReturnCellConnectors().Count == 0)
+                continue;
+
+            CellDirection nearCellDir = cu.Key;
+            if (!cellConnectors.Contains(nearCellDir))
+                continue;
+
+            foreach (CellDirection dir in nearCell.ReturnCellConnectors())
+            {
+                if (dir == nearCellDir.GetOppositeDirection())
+                {
+                    connectedCells.Add(nearCell);
+                }
+            }
+        }
+
         WaterDiversion();
+
         foreach (var cell in connectedCells)
         {
             cell.CellConnect(this);
@@ -54,6 +77,8 @@ public class PipeCell : Cell, INumricalChange
             if(!containsWater)
             {
                 containsWater = true;
+                if (!waterSources.Contains(interactCell))
+                    waterSources.Add(interactCell);
                 foreach (var cell in connectedCells)
                 {
                     if (cell != interactCell)
@@ -62,8 +87,6 @@ public class PipeCell : Cell, INumricalChange
             }
 
             containsWater = true;
-            if(!waterSources.Contains(interactCell))
-                waterSources.Add(interactCell);
         }
     }
 
@@ -93,13 +116,20 @@ public class PipeCell : Cell, INumricalChange
             if (cell.ReturnIfContainsWater())
             {
                 containsWater = true;
-                waterSources.Add(cell);
+                if(!waterSources.Contains(cell))
+                    waterSources.Add(cell);
             }
         }
     }
 
     private bool CheckIfCanGetWater()
     {
+        if(waterSources.Count == 0)
+        {
+            containsWater = false;
+            return false;
+        }
+
         foreach (var cell in connectedCells)
         {
             containsWater = false;
@@ -108,6 +138,8 @@ public class PipeCell : Cell, INumricalChange
                 containsWater = true;
                 return true;
             }
+            else
+                waterSources.Remove(cell);
         }
 
         return false;
@@ -120,6 +152,6 @@ public class PipeCell : Cell, INumricalChange
 
     public void NumericalValueReChange()
     {
-        NumericalManager.instance.ChangeBudget(this, -budgetValue);
+        NumericalManager.instance.ChangeBudget(this, budgetValue);
     }
 }

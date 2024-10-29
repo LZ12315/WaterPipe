@@ -935,7 +935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneLoadEvent: {fileID: 11400000, guid: e2474a04195c0a74fa318cb3cc0add55, type: 2}
-  levelSelectScene: {fileID: 11400000, guid: b15baf6a8579c34448537568622effb1, type: 2}
+  sceneToLoad: {fileID: 11400000, guid: b15baf6a8579c34448537568622effb1, type: 2}
   fadeScreen: 0
   fadeTime: 0
 --- !u!1 &1283152725
@@ -1101,9 +1101,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1488707341}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+        m_TargetAssemblyTypeName: UIButton, Assembly-CSharp
+        m_MethodName: Click
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1162,8 +1162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbbfbba9f573fa54e81f55b7adcbb0e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoadEvent: {fileID: 0}
-  levelSelectScene: {fileID: 0}
+  sceneLoadEvent: {fileID: 11400000, guid: e2474a04195c0a74fa318cb3cc0add55, type: 2}
+  sceneToLoad: {fileID: 11400000, guid: 9e7824db8e385e146a79e7a3c3e51119, type: 2}
   fadeScreen: 0
   fadeTime: 0
 --- !u!1 &1662362385

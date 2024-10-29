@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
@@ -22,7 +21,6 @@ public class GridMapSO : ScriptableObject
         if (!dictionary.Exists(entry => entry.key == key))
         {
             dictionary.Add(new CellEntry { key = key, value = value });
-            EditorUtility.SetDirty(this);
         }
     }
 

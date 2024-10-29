@@ -44,6 +44,12 @@ public class WaterDemandCell : Cell, INumricalChange
 
     private bool CheckIfCanGetWater()
     {
+        if (waterSources.Count == 0)
+        {
+            containsWater = false;
+            return false;
+        }
+
         foreach (var cell in connectedCells)
         {
             containsWater = false;
@@ -52,6 +58,8 @@ public class WaterDemandCell : Cell, INumricalChange
                 containsWater = true;
                 return true;
             }
+            else
+                waterSources.Remove(cell);
         }
 
         return false;

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [System.Serializable]
 public class Cell : MonoBehaviour, IInteractable_OBJ
@@ -100,9 +99,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     {
         cushion.RemoveCell();
         foreach (var cell in connectedCells)
-        {
-            cell.CellDisConnect(this,this);
-        }
+            cell.CellDisConnect(this, this);
         Destroy(gameObject);
     }
 
@@ -283,6 +280,11 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     public bool ReturnIfContainsWater()
     {
         return containsWater;
+    }
+
+    public Sprite ReturnCellSprite()
+    {
+        return cellSprite;
     }
 
     #endregion

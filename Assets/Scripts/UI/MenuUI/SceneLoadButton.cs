@@ -7,13 +7,13 @@ public class SceneLoadButton : UIButton
 {
     [Header("Ä¿±ê³¡¾°")]
     public SceneLoadEventSO sceneLoadEvent;
-    public GameSceneSO levelSelectScene;
+    public GameSceneSO sceneToLoad;
     public bool fadeScreen;
     public float fadeTime;
 
     public override void ExcutiveAction()
     {
         base.ExcutiveAction();
-        sceneLoadEvent.RaiseSceneLoadEvent(levelSelectScene, fadeScreen, fadeTime);
+        sceneLoadEvent.RaiseSceneLoadEvent(sceneToLoad, fadeScreen, fadeTime);
     }
 }

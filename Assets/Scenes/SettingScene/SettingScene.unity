@@ -828,9 +828,9 @@ GameObject:
   - component: {fileID: 1422411311}
   - component: {fileID: 1422411310}
   - component: {fileID: 1422411309}
-  - component: {fileID: 1422411308}
+  - component: {fileID: 1422411312}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ReturnButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -855,18 +855,6 @@ RectTransform:
   m_AnchoredPosition: {x: 824, y: 410}
   m_SizeDelta: {x: 117, y: 129}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1422411308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1422411306}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30d4b986bb2e3f6439fdd8c36b418169, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1422411309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -911,10 +899,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1422411308}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+      - m_Target: {fileID: 1422411312}
+        m_TargetAssemblyTypeName: UIButton, Assembly-CSharp
+        m_MethodName: Click
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -961,6 +949,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422411306}
   m_CullTransparentMesh: 1
+--- !u!114 &1422411312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422411306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d00742d4b31ffb14e83f0951fd9b9986, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoadEvent: {fileID: 11400000, guid: e2474a04195c0a74fa318cb3cc0add55, type: 2}
+  sceneToLoad: {fileID: 0}
+  fadeScreen: 0
+  fadeTime: 0
 --- !u!1 &1461451640
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,7 +1190,7 @@ GameObject:
   - component: {fileID: 2024007019}
   - component: {fileID: 2024007018}
   m_Layer: 0
-  m_Name: bg
+  m_Name: BackGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
