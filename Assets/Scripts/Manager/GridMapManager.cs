@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Build.Pipeline;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class Cushion
 {

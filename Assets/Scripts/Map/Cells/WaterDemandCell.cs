@@ -3,8 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaterDemandCell : Cell
+public class WaterDemandCell : Cell, INumricalChange
 {
+    [Header("发展数值")]
+    public double developmentnValue;
+    public float contaminationValue;
+
     public override void CellConnect(Cell interactCell)
     {
         base.CellConnect(interactCell);
@@ -13,6 +17,7 @@ public class WaterDemandCell : Cell
             containsWater = true;
             if (!waterSources.Contains(interactCell))
                 waterSources.Add(interactCell);
+            NumericalValueChange();
             WaterRunning(this);
         }
     }
@@ -26,7 +31,8 @@ public class WaterDemandCell : Cell
 
         if (containsWater)
         {
-            CheckIfCanGetWater();
+            if (!CheckIfCanGetWater())
+                NumericalValueReChange();
 
             foreach (var cell in connectedCells)
             {
@@ -38,6 +44,12 @@ public class WaterDemandCell : Cell
 
     private bool CheckIfCanGetWater()
     {
+        if (waterSources.Count == 0)
+        {
+            containsWater = false;
+            return false;
+        }
+
         foreach (var cell in connectedCells)
         {
             containsWater = false;
@@ -46,9 +58,22 @@ public class WaterDemandCell : Cell
                 containsWater = true;
                 return true;
             }
+            else
+                waterSources.Remove(cell);
         }
 
         return false;
     }
 
+    public void NumericalValueChange()
+    {
+        NumericalManager.instance.ChangeDevelopment(this, developmentnValue);
+        NumericalManager.instance.ChangeContamination(this, contaminationValue);
+    }
+
+    public void NumericalValueReChange()
+    {
+        NumericalManager.instance.ChangeDevelopment(this, -developmentnValue);
+        NumericalManager.instance.ChangeContamination(this, -contaminationValue);
+    }
 }

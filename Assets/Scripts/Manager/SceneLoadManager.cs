@@ -27,7 +27,8 @@ public class SceneLoadManager : MonoBehaviour
 
     [Header("≥°æ∞«–ªª")]
     private bool isLoading;
-    private GameSceneSO currentScene;
+    public static GameSceneSO currentScene;
+    public static GameSceneSO previousScene;
     private GameSceneSO sceneToLoad;
 
     [Header("º”‘ÿ∂Øª≠")]
@@ -40,6 +41,11 @@ public class SceneLoadManager : MonoBehaviour
         {
             OnLoadScene(firstLoadScene, false, 0);
         }
+    }
+
+    private void Start()
+    {
+        previousScene = firstLoadScene;
     }
 
     private void OnEnable()
@@ -75,6 +81,7 @@ public class SceneLoadManager : MonoBehaviour
             //fade in
         }
         DataManager.instance.SaveSceneData();
+        previousScene = currentScene;
         yield return currentScene.sceneReference.UnLoadScene();
         yield return new WaitForSeconds(fadeTime);
         LoadNewScene() ;

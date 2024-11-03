@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
-{//0
+{
     public static SelectionManager instance;
     private Camera mainCamera;
 

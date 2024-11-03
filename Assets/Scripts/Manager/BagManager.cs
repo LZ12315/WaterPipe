@@ -6,13 +6,19 @@ public class BagManager : MonoBehaviour
 {
     public static BagManager instance;
 
+    [Header("鼠标输入检测")]
+    private float scrollInput;
+
+    [Header("信息接收")]
+    public VoidEventSO afterGridInitEventSO;
+
+    [Header("消息广播")]
+    public VoidEventSO workCellSwitchEventSO;
+
     [Header("物品使用")]
     public List<Cell> workCells = new List<Cell>();
     private int index = 0;
     public Cell nowCell;
-
-    [Header("鼠标输入检测")]
-    private float scrollInput;
 
     private void Awake()
     {
@@ -24,11 +30,20 @@ public class BagManager : MonoBehaviour
         nowCell = workCells[index];
     }
 
+    private void OnEnable()
+    {
+        afterGridInitEventSO.voidEvent += UpdateWorkCellImage;
+    }
+
+    private void OnDisable()
+    {
+        afterGridInitEventSO.voidEvent -= UpdateWorkCellImage;
+    }
+
     private void Update()
     {
         GetMouseScroll();
     }
-
 
     private void GetMouseScroll()
     {
@@ -38,6 +53,9 @@ public class BagManager : MonoBehaviour
 
     private void SwitchCell(float changeDir)
     {
+        if (changeDir == 0)
+            return;
+
         if(changeDir < 0)
         {
             if (index == workCells.Count - 1)
@@ -56,6 +74,13 @@ public class BagManager : MonoBehaviour
 
             nowCell = workCells[index];
         }
+
+        UpdateWorkCellImage();
+    }
+
+    private void UpdateWorkCellImage()
+    {
+        workCellSwitchEventSO.RaiseVoidEvent();
     }
 
     public Cell ReturnCellOnHand()
