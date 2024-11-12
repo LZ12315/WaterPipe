@@ -6,7 +6,9 @@ using UnityEngine;
 public class WaterDemandCell : Cell, INumricalChange
 {
     [Header("发展数值")]
-    public double developmentnValue;
+    public NumericalChangeType pollutionType;
+    [SerializeField]private bool hasChangedNumerical;
+    public float developmentnValue;
     public float contaminationValue;
 
     public override void CellConnect(Cell interactCell)
@@ -17,7 +19,19 @@ public class WaterDemandCell : Cell, INumricalChange
             containsWater = true;
             if (!waterSources.Contains(interactCell))
                 waterSources.Add(interactCell);
-            NumericalValueChange();
+            if (!hasChangedNumerical)
+            {
+                NumericalValueChange();
+                foreach(var cell in connectedCells)
+                {
+                    if(cell.GetComponent<INumricalChange>() != null)
+                    {
+                        INumricalChange cellToInteract = cell.GetComponent<INumricalChange>();
+                        if(cellToInteract.numericalType == NumericalChangeType.Purify)
+                            cell.CellInteract(this);
+                    }
+                }
+            }
             WaterRunning(this);
         }
     }
@@ -31,7 +45,7 @@ public class WaterDemandCell : Cell, INumricalChange
 
         if (containsWater)
         {
-            if (!CheckIfCanGetWater())
+            if (!CheckIfCanGetWater() && hasChangedNumerical)
                 NumericalValueReChange();
 
             foreach (var cell in connectedCells)
@@ -69,11 +83,23 @@ public class WaterDemandCell : Cell, INumricalChange
     {
         NumericalManager.instance.ChangeDevelopment(this, developmentnValue);
         NumericalManager.instance.ChangeContamination(this, contaminationValue);
+        hasChangedNumerical = true;
     }
 
     public void NumericalValueReChange()
     {
         NumericalManager.instance.ChangeDevelopment(this, -developmentnValue);
         NumericalManager.instance.ChangeContamination(this, -contaminationValue);
+        hasChangedNumerical = false;
     }
+
+    public float DevelopmentnValue { get => developmentnValue; }
+
+    public float ContaminationValue { get => contaminationValue; }
+
+    public double BudgetValue { get => 0; }
+
+    public bool isActive { get => hasChangedNumerical; set => hasChangedNumerical = value; }
+
+    public NumericalChangeType numericalType { get => pollutionType; }
 }

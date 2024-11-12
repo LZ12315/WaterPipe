@@ -36,3 +36,8 @@ public enum CellDirection
 {
     North, East, South, West
 };
+
+public enum NumericalChangeType
+{
+    Money, Sewage, Purify
+}

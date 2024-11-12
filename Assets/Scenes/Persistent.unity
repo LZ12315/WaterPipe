@@ -171,7 +171,6 @@ MonoBehaviour:
   sceneLoadEvent: {fileID: 11400000, guid: e2474a04195c0a74fa318cb3cc0add55, type: 2}
   beforeUnLoadEvent: {fileID: 11400000, guid: 6d203d48844644a44aec97867a024406, type: 2}
   afterLoadEvent: {fileID: 11400000, guid: 025fda3a94239524c855dd4e1db1eceb, type: 2}
-  fadeScreen: 0
 --- !u!1 &916141566
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,6 +349,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   formerPlacedCell: {fileID: 0}
   isMousePressing: 0
+  afterMapInitEvent: {fileID: 11400000, guid: 31ba069413c072745899ff30cfd54ddb, type: 2}
+  lineContainTime: 1.5
 --- !u!1 &1934015627
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,6 +401,7 @@ MonoBehaviour:
   - {fileID: 4388782334862219349, guid: a62f0626b993a8646982c86a83df242e, type: 3}
   - {fileID: 2043699183459055068, guid: a6962299a54764c4c9efeeddfa4007c5, type: 3}
   - {fileID: -6006869628660355769, guid: e3ff6f33a09848b48951dc469d1a3014, type: 3}
+  - {fileID: 8532449873179018548, guid: bc1f8966d3277e343ab197593646fe9a, type: 3}
   nowCell: {fileID: 0}
 --- !u!1 &2131447373
 GameObject:

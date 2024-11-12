@@ -9,6 +9,7 @@ public class Line : MonoBehaviour
     private LineRenderer lineRenderer;
 
     [Header("∑÷∏Óœﬂ Ù–‘")]
+    public float minWidth = 0f;
     public float maxWidth = 0.1f;
     private float nowWidth;
     private Vector2 startPos;
@@ -57,7 +58,7 @@ public class Line : MonoBehaviour
         if (lineState == LineAnimeState.Appear)
             LineFlexAnime(nowWidth, maxWidth);
         if (lineState == LineAnimeState.DisAppear)
-            LineFlexAnime(nowWidth, 0);
+            LineFlexAnime(nowWidth, minWidth);
     }
 
     private void LineFlexAnime(float width, float targetWidth)

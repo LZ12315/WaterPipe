@@ -71,7 +71,7 @@ public class Cushion
 public class GridMapManager : MonoBehaviour
 {
     public GridMapSO gridMapSO;
-    private Cushion[,] Map;
+    private Cushion[,] renderMap;
     private List<WorkCells> workCells;
     private List<Line> lineList;
 
@@ -113,7 +113,7 @@ public class GridMapManager : MonoBehaviour
         this.width = width;
         leftTopPos = leftTopPoint.transform.position;
         sideLength = GetNowSideLength();
-        Map = new Cushion[height, width];
+        renderMap = new Cushion[height, width];
         lineList = new List<Line>();
     }
 
@@ -132,24 +132,24 @@ public class GridMapManager : MonoBehaviour
             for (int j = 0; j < width; j++)
             {
                 Cushion newCushion = new Cushion();
-                Map[i, j] = newCushion;
+                renderMap[i, j] = newCushion;
 
                 GameObject newCell = Instantiate(gridMapSO.ReturnMapCell(i,j).gameObject);
                 newCell.gameObject.SetActive(true);
                 Cell newCellComp = newCell.GetComponent<Cell>();
 
-                if (i > 0 && Map[i - 1, j] != null)
+                if (i > 0 && renderMap[i - 1, j] != null)
                 {
-                    newCushion.SetNearCushion(Map[i - 1, j], CellDirection.North);
-                    Map[i - 1, j].SetNearCushion(newCushion,CellDirection.South);
+                    newCushion.SetNearCushion(renderMap[i - 1, j], CellDirection.North);
+                    renderMap[i - 1, j].SetNearCushion(newCushion,CellDirection.South);
                 }
-                if (j > 0 && Map[i, j - 1] != null)
+                if (j > 0 && renderMap[i, j - 1] != null)
                 {
-                    newCushion.SetNearCushion(Map[i, j - 1],CellDirection.West);
-                    Map[i, j - 1].SetNearCushion(newCushion, CellDirection.East);
+                    newCushion.SetNearCushion(renderMap[i, j - 1],CellDirection.West);
+                    renderMap[i, j - 1].SetNearCushion(newCushion, CellDirection.East);
                 }
 
-                Map[i, j].CushionInit(Map, newCellComp, CalculateCellPos(i, j), i, j);
+                renderMap[i, j].CushionInit(renderMap, newCellComp, CalculateCellPos(i, j), i, j);
             }
         }
     }
@@ -162,7 +162,7 @@ public class GridMapManager : MonoBehaviour
             Vector2 pos = cell.position;
             int x = (int)pos.x;
             int y = (int)pos.y;
-            Cell renderCell = Map[x - 1,y - 1].ReturnRenderCell();
+            Cell renderCell = renderMap[x - 1,y - 1].ReturnRenderCell();
             Cell workCell = gridMapSO.ReturnDicCell(cell.value);
             renderCell.CellInteract(workCell);
         }
@@ -180,7 +180,7 @@ public class GridMapManager : MonoBehaviour
 
             newLineComp.LineInit(startPos, endPos);
             newLineComp.DrawLine();
-            //newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
+            newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
             lineList.Add(newLineComp);
         }
         for (int i = 0; i <= width; i++)
@@ -193,7 +193,7 @@ public class GridMapManager : MonoBehaviour
 
             newLineComp.LineInit(startPos, endPos);
             newLineComp.DrawLine();
-            //newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
+            newLineComp.ChangeLineAnimeState(LineAnimeState.DisAppear);
             lineList.Add(newLineComp);
         }
     }
@@ -217,4 +217,25 @@ public class GridMapManager : MonoBehaviour
         Destroy(cell.gameObject);
         return side;
     }
+
+    #region ²Ù×÷Ïà¹Ø
+
+    public void HideLine()
+    {
+        foreach (var line in lineList)
+        {
+            line.ChangeLineAnimeState(LineAnimeState.DisAppear);
+        }
+    }
+
+    public void ShowLine()
+    {
+        foreach (var line in lineList)
+        {
+            line.ChangeLineAnimeState(LineAnimeState.Appear);
+        }
+    }
+
+    #endregion
+
 }

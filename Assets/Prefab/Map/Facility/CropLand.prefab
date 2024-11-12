@@ -176,17 +176,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 3464123425264922562}
   polygonCollider: {fileID: 0}
+  direction: 0
+  cellConnectors: 00000000010000000200000003000000
+  connectedCells: []
   cellSprite: {fileID: -686465327988230780, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
   canWrite: 0
   resolution: {x: 90, y: 90}
-  direction: 0
-  cellConnectors: 00000000010000000200000003000000
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
   duration: 0.2
   rotateAngle: 90
-  connectedCells: []
   waterSources: []
   containsWater: 0
+  pollutionType: 1
   developmentnValue: 60
   contaminationValue: 8

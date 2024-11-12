@@ -19,7 +19,11 @@ PrefabInstance:
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 1d3fbabab1e05074ba5d5702be0ad436, type: 3}
+      objectReference: {fileID: -8397407390401629654, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -82,11 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 2.04
+      value: 2.29
       objectReference: {fileID: 0}
     - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 2.15
+      value: 2.39
       objectReference: {fileID: 0}
     - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
@@ -114,11 +118,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 2.04
+      value: 2.29
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 2.15
+      value: 2.39
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
@@ -127,5 +131,43 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8532449873179018548}
   m_SourcePrefab: {fileID: 100100000, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+--- !u!1 &2254162233632991652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5792841324382132830, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+  m_PrefabInstance: {fileID: 5704981994862785530}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8532449873179018548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2254162233632991652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 014c5b06de000cc43a071d0fb754b2ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxCollider: {fileID: 0}
+  polygonCollider: {fileID: 0}
+  direction: 0
+  cellConnectors: 00000000010000000200000003000000
+  connectedCells: []
+  cellSprite: {fileID: -8397407390401629654, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
+  canWrite: 0
+  resolution: {x: 100, y: 100}
+  enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
+  shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
+  duration: 0.2
+  rotateAngle: 90
+  waterSources: []
+  containsWater: 0
+  pollutionType: 2
+  developmentnValue: 0
+  contaminationValue: 0
+  budgetValue: 0

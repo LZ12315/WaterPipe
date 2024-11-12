@@ -10,7 +10,7 @@ public class RenderCell : Cell,IDaughterCell
         base.HandleSelection();
         if (mouseButton == MouseButton.Left)
         {
-            PlacePipeCell();
+            PlacePropCell();
         }
     }
 
@@ -20,27 +20,18 @@ public class RenderCell : Cell,IDaughterCell
         PlaceCell(interactCell);
     }
 
-    private void PlacePipeCell()
+    private void PlacePropCell()
     {
         if (BagManager.instance.ReturnCellOnHand() != null)
         {
             Cell newCell = BagManager.instance.ReturnCellOnHand();
-            if(SelectionManager.instance.ReturnRecentSelectedCells() != null)
-            {
-                Cell formerPlacedCell = SelectionManager.instance.ReturnRecentSelectedCells();
-                CellDirection newCellDirection = formerPlacedCell.returnCellDirection();
-                CellCover(newCell, newCellDirection);
-            }
-            else
-            {
-                CellCover(newCell, CellDirection.North);
-            }
+            CellCover(newCell);
         }
     }
 
     public void PlaceCell(Cell newCell)
     {
-        CellCover(newCell, CellDirection.North);
+        CellCover(newCell);
     }
 
     #region 子物体设置

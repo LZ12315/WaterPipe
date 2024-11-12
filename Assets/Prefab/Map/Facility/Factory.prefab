@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
@@ -86,11 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 2.01
+      value: 2.68
       objectReference: {fileID: 0}
     - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 2.44
+      value: 3.2533333
       objectReference: {fileID: 0}
     - target: {fileID: 4597983214796588068, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
@@ -106,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
@@ -118,11 +118,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 2.01
+      value: 2.68
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 2.44
+      value: 3.2533333
       objectReference: {fileID: 0}
     - target: {fileID: 6370273170485507539, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
@@ -155,18 +155,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 3210381933935284810}
   polygonCollider: {fileID: 0}
+  direction: 0
+  cellConnectors: 00000000010000000200000003000000
+  connectedCells: []
   cellSprite: {fileID: 8132038558134733204, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
   canWrite: 0
   resolution: {x: 100, y: 100}
-  direction: 0
-  cellConnectors: 00000000010000000200000003000000
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
   duration: 0.2
   rotateAngle: 90
-  connectedCells: []
   waterSources: []
   containsWater: 0
+  pollutionType: 1
   developmentnValue: 90
   contaminationValue: 12
 --- !u!61 &3210381933935284810 stripped

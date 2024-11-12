@@ -10,15 +10,17 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     public BoxCollider2D boxCollider;
     public PolygonCollider2D polygonCollider;
 
-    [Header("物体属性")]
-    public Sprite cellSprite;
-    public bool canWrite = false;
-    public Vector2 resolution = new Vector2(100,100);
-    private float sideLengthMean;
-    private Vector2 sideLength;
+    [Header("位置属性")]
     protected Cushion cushion;
     public CellDirection direction = CellDirection.North;
     public List<CellDirection> cellConnectors = new List<CellDirection>();
+    [SerializeField] protected List<Cell> connectedCells = new List<Cell>();
+
+    [Header("贴图相关")]
+    public Sprite cellSprite;
+    public Vector2 resolution = new Vector2(100,100);
+    private float sideLengthMean;
+    private Vector2 sideLength;
 
     [Header("动画表现")]
     public Vector3 enlargeScale = new Vector3(1.2f, 1.2f, 1.2f);
@@ -29,10 +31,10 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     [Header("物体操作")]
     protected MouseButton mouseButton;
+    public bool canWrite;
     public float rotateAngle = 90;
 
-    [Header("引水相关")]
-    [SerializeField] protected List<Cell> connectedCells = new List<Cell>();
+    [Header("引水相关")] //等待重构 这些属性不应该在父类中
     [SerializeField] protected List<Cell> waterSources = new List<Cell>();
     [SerializeField] protected bool containsWater = false;
 
@@ -83,7 +85,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         TeaseConnectedCells();
     }
 
-    protected virtual void CellCover(Cell newCell, CellDirection cellDirection)
+    protected virtual void CellCover(Cell newCell, CellDirection cellDirection = CellDirection.North)
     {
         Cell instantiatedCell = Instantiate(newCell, cushion.corePos, Quaternion.identity);
         SelectionManager.instance.SetFormerPlacedCell(instantiatedCell);
@@ -225,10 +227,10 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     public virtual void HandleSelection()
     {
-        if (mouseButton == MouseButton.Middle && canWrite)
-        {
-            RemoveCell();
-        }
+        //if (mouseButton == MouseButton.Middle && canWrite)
+        //{
+        //    RemoveCell();
+        //}
     }
 
     public virtual void CellInteract(Cell interactCell)

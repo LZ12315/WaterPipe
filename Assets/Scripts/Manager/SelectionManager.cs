@@ -12,11 +12,16 @@ public class SelectionManager : MonoBehaviour
     public Cell formerPlacedCell = null;
 
     [Header("鼠标选择参数")]
-    private MouseButton mouseButton = MouseButton.None;
     public bool isMousePressing = false;
+    private MouseButton mouseButton = MouseButton.None;
     private float minMouseDragTime = 0.5f;
     private float mouseDragCounter;
     private Vector2 mouseOriginPos;
+
+    [Header("操作表现")]
+    public VoidEventSO afterMapInitEvent;
+    public float lineContainTime = 3f;
+    private GridMapManager gridMapManager;
 
     private void Awake()
     {
@@ -28,9 +33,19 @@ public class SelectionManager : MonoBehaviour
         mainCamera = Camera.main;
     }
 
+    private void OnEnable()
+    {
+        afterMapInitEvent.voidEvent += afterMapInit;
+    }
+    private void OnDisEnable()
+    {
+        afterMapInitEvent.voidEvent -= afterMapInit;
+    }
+
     void Update()
     {
         HandleMouseAction();
+        LineControl();
     }
 
     private void HandleMouseAction()
@@ -68,10 +83,8 @@ public class SelectionManager : MonoBehaviour
             (Input.GetMouseButtonUp(2) && mouseButton == MouseButton.Middle))
         {
             mouseButton = MouseButton.None;
-
             isMousePressing = false;
             mouseDragCounter = 0;
-
             mouseOriginPos = Input.mousePosition;
         }
 
@@ -173,5 +186,43 @@ public class SelectionManager : MonoBehaviour
         }
         return queue;
     }
+
+    #region 操作表现
+
+    float lineShowCounter = 0;
+    private void LineControl()
+    {
+        if (gridMapManager == null)
+            return;
+
+        if (mouseDragCounter > 0 && lineShowCounter == 0)
+            gridMapManager.ShowLine();
+
+        if (mouseDragCounter > 0)
+            lineShowCounter = lineContainTime;
+        else if(lineShowCounter <= 0)
+            lineShowCounter = 0;
+
+        if (lineShowCounter > 0)
+            lineShowCounter -= Time.deltaTime;
+        else
+        {
+            gridMapManager.HideLine();
+            lineShowCounter = 0;
+        }
+    }
+
+    #endregion
+
+    #region 信号相关
+
+    private void afterMapInit()
+    {
+        GameObject manager = GameObject.FindWithTag("GridMapManager");
+        gridMapManager = manager.GetComponent<GridMapManager>();
+    }
+
+    #endregion
+
 }
 

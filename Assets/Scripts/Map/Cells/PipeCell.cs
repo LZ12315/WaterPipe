@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PipeCell : Cell, INumricalChange
+public class PipeCell : Cell, INumricalChange, IPlaceable
 {
     [Header("发展数值")]
+    public NumericalChangeType pollutionType;
     public double budgetValue;
+    private bool hasChange;
 
     private void Start()
     {
@@ -21,11 +23,17 @@ public class PipeCell : Cell, INumricalChange
         {
             CellRotate(1);
         }
+
+        if (mouseButton == MouseButton.Middle)
+        {
+            RemoveCell();
+        }
     }
 
     public override void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
     {
         base.CellInit(pos, cushion, cellDirection);
+        Align();
         NumericalValueChange();
     }
 
@@ -109,6 +117,8 @@ public class PipeCell : Cell, INumricalChange
         }
     }
 
+    #region 引水相关
+
     private void WaterDiversion()
     {
         foreach (var cell in connectedCells)
@@ -145,13 +155,61 @@ public class PipeCell : Cell, INumricalChange
         return false;
     }
 
+    #endregion
+
+    #region 发展指数相关
+
     public void NumericalValueChange()
     {
         NumericalManager.instance.ChangeBudget(this,-budgetValue);
+        hasChange = true;
     }
 
     public void NumericalValueReChange()
     {
         NumericalManager.instance.ChangeBudget(this, budgetValue);
+        hasChange = false;
     }
+
+
+    public float DevelopmentnValue { get => 0;}
+
+    public float ContaminationValue { get => 0; }
+
+    public double BudgetValue { get => budgetValue; }
+
+    public bool isActive { get => hasChange; set => hasChange = value; }
+
+    public NumericalChangeType numericalType { get => pollutionType; }
+
+    #endregion
+
+    #region  放置相关
+
+    public void Align()
+    {
+        if (cellConnectors.Count == 0 || cellConnectors.Count == 4)
+            return;
+
+        int index = 0;
+        List<CellDirection> directions = new List<CellDirection>();
+        int maxConnectedCells = connectedCells.Count;
+        directions.Add(direction);
+        for(int i=0; i<3; i++)
+        {
+            CellRotate(1);
+            directions.Add(direction);
+            if (connectedCells.Count > maxConnectedCells)
+            {
+                index = i + 1;
+                maxConnectedCells = connectedCells.Count;
+            }
+        }
+        CellRotate(direction.GetRotateNum(directions[index]));
+    }
+
+    public bool CanWrite { get => canWrite; set => canWrite = true; }
+
+    #endregion
+
 }

@@ -21,6 +21,12 @@ public static class DirectionExtensions
     {
         return direction.Rotate(2);
     }
+
+    public static int GetRotateNum(this CellDirection direction, CellDirection targetDirection)
+    {
+        int value = Enum.GetValues(typeof(CellDirection)).Length;
+        return (targetDirection > direction) ? targetDirection - direction : value - (direction - targetDirection);
+    }
 }
 
 public class ListComparison
