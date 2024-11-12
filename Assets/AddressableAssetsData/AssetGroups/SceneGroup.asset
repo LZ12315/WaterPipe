@@ -22,21 +22,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1ae3046dc19af1b4db4de8764a340fff
-    m_Address: FirstLevel
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b45beec815820804a81c07a5ed1dbd34
-    m_Address: LevelSelect
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7da44cb417bdb6a499cd170803e7724b
-    m_Address: Persistent
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eae179a310f56ac4b990227164263ab4
     m_Address: SettingScene
     m_ReadOnly: 0
