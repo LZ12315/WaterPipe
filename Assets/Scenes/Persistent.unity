@@ -171,6 +171,7 @@ MonoBehaviour:
   sceneLoadEvent: {fileID: 11400000, guid: e2474a04195c0a74fa318cb3cc0add55, type: 2}
   beforeUnLoadEvent: {fileID: 11400000, guid: 6d203d48844644a44aec97867a024406, type: 2}
   afterLoadEvent: {fileID: 11400000, guid: 025fda3a94239524c855dd4e1db1eceb, type: 2}
+  fadeScreen: 0
 --- !u!1 &916141566
 GameObject:
   m_ObjectHideFlags: 0
