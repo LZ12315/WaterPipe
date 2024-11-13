@@ -6,29 +6,34 @@ using UnityEngine.SceneManagement;
 
 public class LevelControl : MonoBehaviour
 {
+    public static SceneLoadManager sceneLoadManager;
+    public static NumericalManager numericalManager;
+
     public List<LevelControlItem> levelLists;
     public Transform LevelTran;
-    public List<string> levelState =new List<string>() { "1", "0", "0" };
     public void Start()
     {
+        if (sceneLoadManager == null)
+        {
+            sceneLoadManager = FindObjectOfType<SceneLoadManager>();
+        }
+        numericalManager = FindObjectOfType<NumericalManager>();
         InitLevel();
-       
-
     }
 
     public void InitLevel()
     {
        for(var i=0;i<levelLists.Count;i++)
         {
-            levelLists[i].InitLevelItem(levelState[i]);
+            levelLists[i].InitLevelItem(numericalManager.levelState[i]);
         }
+       
         Debug.Log("初始化完成");
     }
 
-    public void ChooseLevel(int levelid)
+    public void ChooseLevel(GameSceneSO sceneToLoad)
     {
-        print("Goto Level" + levelid);
-        SceneManager.LoadScene(levelid);
+        sceneLoadManager.OnLoadScene(sceneToLoad, false, 0);
 
     }
 
