@@ -39,7 +39,6 @@ public class PurifyFacility : PropCell
 
     private void ContaminationClear()
     {
-        Debug.Log("1");
         foreach (var cell in connectedCells)
         {
             if (cell.GetComponent<INumricalChange>() != null && !clearedCells.Contains(cell))
@@ -47,7 +46,6 @@ public class PurifyFacility : PropCell
                 INumricalChange numricalChange = cell.GetComponent<INumricalChange>();
                 if(numricalChange.numericalType == NumericalChangeType.Sewage && numricalChange.isActive)
                 {
-                    Debug.Log("2");
                     float contaminationValue = numricalChange.ContaminationValue;
                     NumericalManager.instance.ChangeContamination(this, -contaminationValue);
                     clearedCells.Add(cell);

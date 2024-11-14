@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public class RenderCell : Cell,IDaughterCell
 {
+    [Header("∑≈÷√œ‡πÿ")]
+    public RenderCellType renderCellType;
+
+
     public override void HandleSelection()
     {
         base.HandleSelection();
@@ -22,10 +26,22 @@ public class RenderCell : Cell,IDaughterCell
 
     private void PlacePropCell()
     {
-        if (BagManager.instance.ReturnCellOnHand() != null)
+        if (BagManager.instance.PlaceCell() != null)
         {
-            Cell newCell = BagManager.instance.ReturnCellOnHand();
-            CellCover(newCell);
+            bool canPlace = false;
+            Cell newCell = BagManager.instance.PlaceCell();
+            switch(renderCellType)
+            {
+                case RenderCellType.Water:
+                    if(newCell.GetComponent<IPlaceable>().CanPlaceOnWater)
+                        canPlace = true;
+                    break;
+                case RenderCellType.None:
+                    canPlace = true;
+                    break;
+            }
+            if(canPlace)
+                CellCover(newCell);
         }
     }
 

@@ -25,7 +25,7 @@ public class PropPanel : MonoBehaviour
 
     private void ChangePorpImage()
     {
-        Sprite newImage = BagManager.instance.ReturnCellOnHand().ReturnCellSprite();
+        Sprite newImage = BagManager.instance.ReturnNowCell().ReturnCellSprite();
         image.sprite = newImage;
     }
 }

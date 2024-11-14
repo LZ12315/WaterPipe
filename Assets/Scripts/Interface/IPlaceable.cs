@@ -4,6 +4,9 @@ using UnityEngine;
 
 public interface IPlaceable
 {
-    public bool CanWrite {  get; set; }
+    public bool CanWrite {  get;}
+
+    public bool CanPlaceOnWater {  get;}
+
     public void Align();
 }

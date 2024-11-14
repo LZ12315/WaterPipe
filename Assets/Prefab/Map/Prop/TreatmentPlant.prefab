@@ -159,15 +159,18 @@ MonoBehaviour:
   cellConnectors: 00000000010000000200000003000000
   connectedCells: []
   cellSprite: {fileID: -8397407390401629654, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
-  canWrite: 0
   resolution: {x: 100, y: 100}
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
   duration: 0.2
+  canRotate: 0
+  canWrite: 0
   rotateAngle: 90
   waterSources: []
   containsWater: 0
   pollutionType: 2
   developmentnValue: 0
   contaminationValue: 0
-  budgetValue: 0
+  budgetValue: 4500
+  canPlaceOnWater: 0
+  clearedCells: []

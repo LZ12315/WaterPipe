@@ -208,7 +208,9 @@ public class PipeCell : Cell, INumricalChange, IPlaceable
         CellRotate(direction.GetRotateNum(directions[index]));
     }
 
-    public bool CanWrite { get => canWrite; set => canWrite = true; }
+    public bool CanWrite { get => canWrite;}
+
+    public bool CanPlaceOnWater { get => true; }
 
     #endregion
 

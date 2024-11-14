@@ -11,6 +11,9 @@ public class PropCell : Cell, INumricalChange, IPlaceable
     public double budgetValue;
     private bool hasChange;
 
+    [Header("·ÅÖÃÏà¹Ø")]
+    public bool canPlaceOnWater;
+
     private void Start()
     {
         canWrite = true;
@@ -20,6 +23,11 @@ public class PropCell : Cell, INumricalChange, IPlaceable
     {
         base.CellInit(pos, cushion, cellDirection);
         Align();
+    }
+    protected override void RemoveCell()
+    {
+        base.RemoveCell();
+        NumericalValueReChange();
     }
 
     public override void HandleSelection()
@@ -92,6 +100,8 @@ public class PropCell : Cell, INumricalChange, IPlaceable
         }
         CellRotate(direction.GetRotateNum(directions[index]));
     }
+
+    public bool CanPlaceOnWater { get => canPlaceOnWater; }
 
     public bool CanWrite { get => canWrite; set => canWrite = true; }
 

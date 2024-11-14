@@ -41,3 +41,8 @@ public enum NumericalChangeType
 {
     Money, Sewage, Purify
 }
+
+public enum RenderCellType
+{
+    None, Water, Mountain
+}

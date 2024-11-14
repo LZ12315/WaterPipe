@@ -11,6 +11,7 @@ public class BagManager : MonoBehaviour
 
     [Header("信息接收")]
     public VoidEventSO afterGridInitEventSO;
+    public DoubleValueEventSO budgetChangeEvent;
 
     [Header("消息广播")]
     public VoidEventSO workCellSwitchEventSO;
@@ -19,6 +20,8 @@ public class BagManager : MonoBehaviour
     public List<Cell> workCells = new List<Cell>();
     private int index = 0;
     public Cell nowCell;
+    private bool canPlace = true;
+    private double nowBudgetNum;
 
     private void Awake()
     {
@@ -33,17 +36,21 @@ public class BagManager : MonoBehaviour
     private void OnEnable()
     {
         afterGridInitEventSO.voidEvent += UpdateWorkCellImage;
+        budgetChangeEvent.doubleValueEvent += GetBudgetUpdate;
     }
 
     private void OnDisable()
     {
         afterGridInitEventSO.voidEvent -= UpdateWorkCellImage;
+        budgetChangeEvent.doubleValueEvent -= GetBudgetUpdate;
     }
 
     private void Update()
     {
         GetMouseScroll();
     }
+
+    #region 物体放置
 
     private void GetMouseScroll()
     {
@@ -83,8 +90,29 @@ public class BagManager : MonoBehaviour
         workCellSwitchEventSO.RaiseVoidEvent();
     }
 
-    public Cell ReturnCellOnHand()
+    public Cell PlaceCell()
+    {
+        double cellBudget = nowCell.GetComponent<INumricalChange>().BudgetValue;
+        if(cellBudget <= nowBudgetNum && canPlace)
+            return nowCell;
+        else
+            return null;
+    }
+
+    #endregion
+
+    #region 信息接收&值函数
+
+    private void GetBudgetUpdate(double value)
+    {
+        nowBudgetNum = value;
+    }
+
+    public Cell ReturnNowCell()
     {
         return nowCell;
     }
+
+    #endregion
+
 }

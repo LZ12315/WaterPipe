@@ -30,8 +30,9 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     protected Tween scaleTween;
 
     [Header("物体操作")]
-    protected MouseButton mouseButton;
+    public bool canRotate = true;
     public bool canWrite;
+    protected MouseButton mouseButton;
     public float rotateAngle = 90;
 
     [Header("引水相关")] //等待重构 这些属性不应该在父类中
@@ -122,6 +123,8 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     protected virtual void CellRotate(int num)
     {
+        if (!canRotate)
+            return;
         direction = direction.Rotate(num);
         transform.Rotate(0, 0, num * -rotateAngle);
         if(cellConnectors.Count > 0)
