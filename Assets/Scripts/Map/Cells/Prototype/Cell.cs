@@ -55,20 +55,20 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
             scaleTween.Kill();
     }
 
-    public virtual void CellInit(Vector2 pos, Cushion cushion)
-    {
-        this.cushion = cushion;
-        gameObject.transform.position = pos;
-        sideLengthMean = Mathf.Sqrt(sideLength.x * sideLength.y);
+    //public virtual void CellInit(Vector2 pos, Cushion cushion)
+    //{
+    //    this.cushion = cushion;
+    //    gameObject.transform.position = pos;
+    //    sideLengthMean = Mathf.Sqrt(sideLength.x * sideLength.y);
 
-        boxCollider = gameObject?.GetComponent<BoxCollider2D>();
-        polygonCollider = gameObject?.GetComponent<PolygonCollider2D>();
-        if (boxCollider != null)
-            boxCollider.size = new Vector2(sideLengthMean, sideLengthMean);
+    //    boxCollider = gameObject?.GetComponent<BoxCollider2D>();
+    //    polygonCollider = gameObject?.GetComponent<PolygonCollider2D>();
+    //    if (boxCollider != null)
+    //        boxCollider.size = new Vector2(sideLengthMean, sideLengthMean);
 
-        InitialCellRotate(direction);
-        TeaseConnectedCells();
-    }
+    //    InitialCellRotate(direction);
+    //    TeaseConnectedCells();
+    //}
 
     public virtual void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
     {

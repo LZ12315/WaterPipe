@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PipeCell : Cell, INumricalChange, IPlaceable
+public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
 {
     [Header("发展数值")]
     public NumericalChangeType pollutionType;
     public double budgetValue;
     private bool hasChange;
+
+    [Header("引水相关")]
+    [SerializeField] protected List<IWaterRelated> waterSourcesList = new List<IWaterRelated>();
+    [SerializeField] protected List<IWaterRelated> connectedWaterCells = new List<IWaterRelated>();
 
     private void Start()
     {
@@ -33,7 +37,7 @@ public class PipeCell : Cell, INumricalChange, IPlaceable
     public override void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
     {
         base.CellInit(pos, cushion, cellDirection);
-        Align();
+        CellAlign();
         NumericalValueChange();
     }
 
@@ -117,7 +121,37 @@ public class PipeCell : Cell, INumricalChange, IPlaceable
         }
     }
 
+    public void CellInteract(IWaterRelated relatedWaterCell)
+    {
+        if(containsWater)
+        {
+            if(!relatedWaterCell.ContainsWater)
+            {
+                if(waterSourcesList.Contains(relatedWaterCell))
+                    waterSourcesList.Remove(relatedWaterCell);
+
+                if (waterSourcesList.Count == 0)
+                    containsWater = false;
+
+                foreach (var cell in connectedWaterCells)
+                {
+                    containsWater = false;
+                    if (cell.ContainsWater && waterSourcesList.Contains(cell))
+                        containsWater = true;
+                    else
+                        waterSourcesList.Remove(cell);
+                }
+            }
+        }
+    }
+
     #region 引水相关
+
+    bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
+
+    public List<IWaterRelated> WaterSources { get => waterSourcesList; set => waterSourcesList = value; }
+
+    public List<IWaterRelated> ConnectedWaterCells { get => connectedWaterCells; set => connectedWaterCells = value; }
 
     private void WaterDiversion()
     {
@@ -186,7 +220,7 @@ public class PipeCell : Cell, INumricalChange, IPlaceable
 
     #region  放置相关
 
-    public void Align()
+    public void CellAlign()
     {
         if (cellConnectors.Count == 0 || cellConnectors.Count == 4)
             return;

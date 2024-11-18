@@ -8,5 +8,5 @@ public interface IPlaceable
 
     public bool CanPlaceOnWater {  get;}
 
-    public void Align();
+    public void CellAlign();
 }

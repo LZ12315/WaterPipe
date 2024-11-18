@@ -22,7 +22,7 @@ public class PropCell : Cell, INumricalChange, IPlaceable
     public override void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
     {
         base.CellInit(pos, cushion, cellDirection);
-        Align();
+        CellAlign();
     }
     protected override void RemoveCell()
     {
@@ -77,7 +77,7 @@ public class PropCell : Cell, INumricalChange, IPlaceable
 
     #region  ∑≈÷√œ‡πÿ
 
-    public void Align()
+    public void CellAlign()
     {
         if (cellConnectors.Count == 0 || cellConnectors.Count == 4)
             return;
