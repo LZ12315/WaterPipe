@@ -13,6 +13,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     [Header("位置属性")]
     protected Cushion cushion;
     public CellDirection direction = CellDirection.North;
+    public CellAltitude altitude;
     public List<CellDirection> cellConnectors = new List<CellDirection>();
     [SerializeField] protected List<Cell> connectedCells = new List<Cell>();
 
@@ -35,9 +36,9 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     protected MouseButton mouseButton;
     public float rotateAngle = 90;
 
-    [Header("引水相关")] //等待重构 这些属性不应该在父类中
-    [SerializeField] protected List<Cell> waterSources = new List<Cell>();
-    [SerializeField] protected bool containsWater = false;
+    //[Header("引水相关")] //等待重构 这些属性不应该在父类中
+    //[SerializeField] protected List<Cell> waterSources = new List<Cell>();
+    //[SerializeField] protected bool containsWater = false;
 
     protected virtual void Awake()
     {
@@ -169,44 +170,15 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     {
         if(!connectedCells.Contains(interactCell))
             connectedCells.Add(interactCell);
+        TeaseConnectedCells();
     }
 
     public virtual void CellDisConnect(Cell cellToRemove, Cell interactCell)
     {
         if(connectedCells.Contains(cellToRemove))
             connectedCells.Remove(cellToRemove);
+        TeaseConnectedCells();
     }
-
-    #region 引水相关
-
-    private int recursionDepth = 0;
-    private const int maxRecursionDepth = 4;
-
-    public virtual void WaterRunning(Cell interactCell)
-    {
-        if (recursionDepth > maxRecursionDepth)
-        {
-            recursionDepth = 0;
-            return;
-        }
-        recursionDepth++;
-
-        if (GetComponent<Transform>() != null)
-        {
-            Sequence scaleSequence = DOTween.Sequence();
-            scaleSequence.Append(transform.DOScale(shrinkScale, duration).SetEase(Ease.OutBack));
-            scaleSequence.Append(transform.DOScale(originScale, duration).SetEase(Ease.OutBack));
-            scaleSequence.Play();
-        }
-
-        foreach (var cell in connectedCells)
-        {
-            if (cell.ReturnIfContainsWater() && cell != interactCell)
-                cell.WaterRunning(this);
-        }
-    }
-
-    #endregion
 
     #region 交互相关
 
@@ -230,10 +202,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     public virtual void HandleSelection()
     {
-        //if (mouseButton == MouseButton.Middle && canWrite)
-        //{
-        //    RemoveCell();
-        //}
+
     }
 
     public virtual void CellInteract(Cell interactCell)
@@ -255,6 +224,17 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     {
         if (GetComponent<Transform>() != null)
             scaleTween = transform.DOScale(originScale, duration).SetEase(Ease.OutBack);
+    }
+
+    protected void OnInteract()
+    {
+        if (GetComponent<Transform>() != null)
+        {
+            Sequence scaleSequence = DOTween.Sequence();
+            scaleSequence.Append(transform.DOScale(shrinkScale, duration).SetEase(Ease.OutBack));
+            scaleSequence.Append(transform.DOScale(originScale, duration).SetEase(Ease.OutBack));
+            scaleSequence.Play();
+        }
     }
 
     #endregion
@@ -282,14 +262,14 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         return direction;
     }
 
-    public bool ReturnIfContainsWater()
-    {
-        return containsWater;
-    }
-
     public Sprite ReturnCellSprite()
     {
         return cellSprite;
+    }
+
+    public CellAltitude ReturnCellAltitude()
+    {
+        return altitude;
     }
 
     #endregion

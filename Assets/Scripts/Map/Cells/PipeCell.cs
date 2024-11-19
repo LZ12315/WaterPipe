@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
 {
+    [Header("水相关")]
+    [SerializeField] private bool containsWater = false;
+    [SerializeField] protected List<IWaterRelated> waterCells = new List<IWaterRelated>();
+
     [Header("发展数值")]
     public NumericalChangeType pollutionType;
     public double budgetValue;
     private bool hasChange;
-
-    [Header("引水相关")]
-    [SerializeField] protected List<IWaterRelated> waterSourcesList = new List<IWaterRelated>();
-    [SerializeField] protected List<IWaterRelated> connectedWaterCells = new List<IWaterRelated>();
 
     private void Start()
     {
@@ -26,11 +26,15 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
         if (mouseButton == MouseButton.Right)
         {
             CellRotate(1);
+            IWaterRelated thisWaterCell = this;
+            thisWaterCell.PassInformation(this, WaterInformationType.CheckConnect);
         }
 
         if (mouseButton == MouseButton.Middle)
         {
             RemoveCell();
+            IWaterRelated thisWaterCell = this;
+            thisWaterCell.PassInformation(this, WaterInformationType.CheckConnect);
         }
     }
 
@@ -49,145 +53,90 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
 
     protected override void TeaseConnectedCells()
     {
-        if (cushion.ReturnNearCushions().Count == 0 || cellConnectors.Count == 0)
-            return;
+        base.TeaseConnectedCells();
 
-        connectedCells.Clear();
-        foreach (var cu in cushion.ReturnNearCushions())
-        {
-            Cell nearCell = cu.Value.ReturnWorkCell();
-            if (nearCell.ReturnCellConnectors().Count == 0)
-                continue;
-
-            CellDirection nearCellDir = cu.Key;
-            if (!cellConnectors.Contains(nearCellDir))
-                continue;
-
-            foreach (CellDirection dir in nearCell.ReturnCellConnectors())
-            {
-                if (dir == nearCellDir.GetOppositeDirection())
-                {
-                    connectedCells.Add(nearCell);
-                }
-            }
-        }
-
-        WaterDiversion();
-
+        waterCells.Clear();
         foreach (var cell in connectedCells)
         {
-            cell.CellConnect(this);
-        }
-    }
-
-    public override void CellConnect(Cell interactCell)
-    {
-        base.CellConnect(interactCell);
-
-        if(interactCell.ReturnIfContainsWater())
-        {
-            if(!containsWater)
+            if (cell.GetComponent<IWaterRelated>() != null)
             {
-                containsWater = true;
-                if (!waterSources.Contains(interactCell))
-                    waterSources.Add(interactCell);
-                foreach (var cell in connectedCells)
-                {
-                    if (cell != interactCell)
-                        cell.CellConnect(this);
-                }
+                IWaterRelated waterCell = cell.GetComponent<IWaterRelated>();
+                waterCells.Add(waterCell);
             }
-
-            containsWater = true;
-        }
-    }
-
-    public override void CellDisConnect(Cell cellToRemove ,Cell interactCell)
-    {
-        base.CellDisConnect(cellToRemove,interactCell);
-
-        if(waterSources.Contains(cellToRemove))
-            waterSources.Remove(cellToRemove);
-
-        if (containsWater)
-        {
-            CheckIfCanGetWater();
-
-            foreach (var cell in connectedCells)
-            {
-                if (cell != interactCell)
-                    cell.CellDisConnect(cellToRemove,this);
-            }
-        }
-    }
-
-    public void CellInteract(IWaterRelated relatedWaterCell)
-    {
-        if(containsWater)
-        {
-            if(!relatedWaterCell.ContainsWater)
-            {
-                if(waterSourcesList.Contains(relatedWaterCell))
-                    waterSourcesList.Remove(relatedWaterCell);
-
-                if (waterSourcesList.Count == 0)
-                    containsWater = false;
-
-                foreach (var cell in connectedWaterCells)
-                {
-                    containsWater = false;
-                    if (cell.ContainsWater && waterSourcesList.Contains(cell))
-                        containsWater = true;
-                    else
-                        waterSourcesList.Remove(cell);
-                }
-            }
+                
         }
     }
 
     #region 引水相关
 
     bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
+    public List<IWaterRelated> WaterCells { get => waterCells; set => waterCells = value; }
+    public CellAltitude Altitude { get => altitude; }
 
-    public List<IWaterRelated> WaterSources { get => waterSourcesList; set => waterSourcesList = value; }
 
-    public List<IWaterRelated> ConnectedWaterCells { get => connectedWaterCells; set => connectedWaterCells = value; }
-
-    private void WaterDiversion()
+    public bool CanPassInformation(IWaterRelated cell, WaterInformationType type)
     {
-        foreach (var cell in connectedCells)
+        switch (type)
         {
-            if (cell.ReturnIfContainsWater())
-            {
-                containsWater = true;
-                if(!waterSources.Contains(cell))
-                    waterSources.Add(cell);
-            }
-        }
-    }
-
-    private bool CheckIfCanGetWater()
-    {
-        if(waterSources.Count == 0)
-        {
-            containsWater = false;
-            return false;
-        }
-
-        foreach (var cell in connectedCells)
-        {
-            containsWater = false;
-            if (cell.ReturnIfContainsWater() && waterSources.Contains(cell))
-            {
-                containsWater = true;
+            case WaterInformationType.CheckConnect:
                 return true;
-            }
-            else
-                waterSources.Remove(cell);
+            case WaterInformationType.Divertion:
+                CellAltitude alt = cell.Altitude;
+                if (alt < altitude)
+                    return false;
+                return true;
+            default:
+                return true;
         }
-
-        return false;
     }
+
+
+    public void ConnectCheck(IWaterRelated cell)
+    {
+        containsWater = false;
+    }
+
+
+    public void WaterDiversionCheck(IWaterRelated cell)
+    {
+        containsWater = true;
+    }
+
+    //private void WaterDiversion()
+    //{
+    //    foreach (var cell in connectedCells)
+    //    {
+    //        if (cell.ReturnIfContainsWater())
+    //        {
+    //            containsWater = true;
+    //            if(!waterSources.Contains(cell))
+    //                waterSources.Add(cell);
+    //        }
+    //    }
+    //}
+
+    //private bool CheckIfCanGetWater()
+    //{
+    //    if(waterSources.Count == 0)
+    //    {
+    //        containsWater = false;
+    //        return false;
+    //    }
+
+    //    foreach (var cell in connectedCells)
+    //    {
+    //        containsWater = false;
+    //        if (cell.ReturnIfContainsWater() && waterSources.Contains(cell))
+    //        {
+    //            containsWater = true;
+    //            return true;
+    //        }
+    //        else
+    //            waterSources.Remove(cell);
+    //    }
+
+    //    return false;
+    //}
 
     #endregion
 
@@ -220,6 +169,10 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
 
     #region  放置相关
 
+    public bool CanWrite { get => canWrite;}
+
+    public bool CanPlaceOnWater { get => true; }
+
     public void CellAlign()
     {
         if (cellConnectors.Count == 0 || cellConnectors.Count == 4)
@@ -241,10 +194,6 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
         }
         CellRotate(direction.GetRotateNum(directions[index]));
     }
-
-    public bool CanWrite { get => canWrite;}
-
-    public bool CanPlaceOnWater { get => true; }
 
     #endregion
 

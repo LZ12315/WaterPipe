@@ -37,6 +37,16 @@ public enum CellDirection
     North, East, South, West
 };
 
+public enum CellAltitude
+{
+    Zero, Low, Middle, High
+}
+
+public enum WaterInformationType
+{
+    CheckConnect, Divertion
+};
+
 public enum NumericalChangeType
 {
     Money, Sewage, Purify
