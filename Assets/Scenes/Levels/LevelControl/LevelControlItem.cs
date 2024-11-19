@@ -8,18 +8,24 @@ public class LevelControlItem : MonoBehaviour
     public GameObject MonIco;
     public LevelControl LevelControl;
 
-    public int LevelID;
+    public GameSceneSO ConnectedScene;
     
     public void InitLevelItem(string state)
     {
+        if (LevelControl == null)
+        {
+            LevelControl=FindObjectOfType<LevelControl>();
+        }
         LockTip.SetActive(false);
         MonIco.SetActive(false);
         if (state == "0")
         {
             LockTip.SetActive(true);
+            MonIco.SetActive(false);
         }
         else
         {
+            LockTip.SetActive(false);
             MonIco.SetActive(true) ;
         }
     }
@@ -30,7 +36,7 @@ public class LevelControlItem : MonoBehaviour
         {
             LevelControl=GameObject.Find("MainController").gameObject.GetComponent<LevelControl>();
         }
-        LevelControl.ChooseLevel(LevelID);
+        LevelControl.ChooseLevel(ConnectedScene);
     }
  
 }

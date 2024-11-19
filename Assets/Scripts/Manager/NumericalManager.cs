@@ -19,6 +19,9 @@ public class NumericalManager : MonoBehaviour
     [Header("信息接收")]
     public VoidEventSO afterSceneLoadInitEvent;
 
+    [Header("关卡解锁状况")]
+    public List<string> levelState = new List<string>() { "1", "0", "0" };
+
     private void Awake()
     {
         if(instance == null)

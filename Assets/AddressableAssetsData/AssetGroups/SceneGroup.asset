@@ -32,6 +32,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8e575fba58175d488eb8ee4d82cce8c
+    m_Address: Assets/Scenes/Levels/SecondLevel.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6507d135753e9e24bb3e59dea04ef7ca
+    m_Address: Assets/Scenes/Levels/ThirdLevel.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7af6555825ab515478799463110c5786, type: 2}
   m_SchemaSet:

@@ -155,11 +155,8 @@ MonoBehaviour:
   levelLists:
   - {fileID: 1684951479}
   - {fileID: 421675947}
+  - {fileID: 978976465}
   LevelTran: {fileID: 514295316}
-  levelState:
-  - 1
-  - 0
-  - 0
 --- !u!4 &190759052
 Transform:
   m_ObjectHideFlags: 0
@@ -377,9 +374,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 514295316}
     m_Modifications:
+    - target: {fileID: 198475761588738779, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+      propertyPath: LevelControl
+      value: 
+      objectReference: {fileID: 190759051}
+    - target: {fileID: 198475761588738779, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+      propertyPath: ConnectedScene
+      value: 
+      objectReference: {fileID: 11400000, guid: c7f5bb2eff7f68042b325d735f65d940, type: 2}
     - target: {fileID: 1032914946467327642, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
       propertyPath: m_Name
       value: Levelbox3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776483526862773316, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+      propertyPath: m_Name
+      value: Level3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4808027826161480049, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+      propertyPath: m_Name
+      value: Lock _3
       objectReference: {fileID: 0}
     - target: {fileID: 7200822977250896578, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
       propertyPath: m_Pivot.x
@@ -470,6 +483,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+--- !u!114 &978976465 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 198475761588738779, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+  m_PrefabInstance: {fileID: 978976464}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db0eaa1bbc89e3f40932ba569c84db34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1111316380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -478,9 +502,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 514295316}
     m_Modifications:
+    - target: {fileID: 198475761588738779, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+      propertyPath: LevelControl
+      value: 
+      objectReference: {fileID: 190759051}
+    - target: {fileID: 198475761588738779, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+      propertyPath: ConnectedScene
+      value: 
+      objectReference: {fileID: 11400000, guid: 0000617768bc9d9468ffbdcda231a0b4, type: 2}
     - target: {fileID: 1032914946467327642, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
       propertyPath: m_Name
       value: Levelbox2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776483526862773316, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+      propertyPath: m_Name
+      value: Level2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4808027826161480049, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+      propertyPath: m_Name
+      value: Lock _2
       objectReference: {fileID: 0}
     - target: {fileID: 7200822977250896578, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
       propertyPath: m_Pivot.x
@@ -772,9 +812,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 514295316}
     m_Modifications:
     - target: {fileID: 198475761588738779, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+      propertyPath: LevelID
+      value: FirstLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 198475761588738779, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
       propertyPath: LevelControl
       value: 
       objectReference: {fileID: 190759051}
+    - target: {fileID: 198475761588738779, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
+      propertyPath: ConnectedScene
+      value: 
+      objectReference: {fileID: 11400000, guid: d414192bd9ee2c44c92ad7cd45edb316, type: 2}
     - target: {fileID: 1032914946467327642, guid: 3f7489b71d4cf41448d98c4e4af687ed, type: 3}
       propertyPath: m_Name
       value: Levelbox1

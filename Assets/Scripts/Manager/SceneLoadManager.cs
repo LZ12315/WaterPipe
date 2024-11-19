@@ -58,7 +58,7 @@ public class SceneLoadManager : MonoBehaviour
         sceneLoadEvent.sceneLoadEvent -= OnLoadScene;
     }
 
-    private void OnLoadScene(GameSceneSO sceneToLoad, bool fadeScreen, float fadeTime)
+    public void OnLoadScene(GameSceneSO sceneToLoad, bool fadeScreen, float fadeTime)
     {
         if(isLoading)
             return;
