@@ -57,7 +57,7 @@ public class RenderCell : Cell,IDaughterCell
     public void GetAdhibition(MultiCell parentCell)
     {
         boxCollider.enabled = false;
-        containsWater = true;
+        //containsWater = true;
         for (int i = 0; i < 4; i++)
         {
             cellConnectors.Add((CellDirection)i);

@@ -6,6 +6,7 @@ using UnityEngine;
 public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
 {
     [Header("水相关")]
+    public WaterNodeType waterNodeType;
     [SerializeField] private bool containsWater = false;
     [SerializeField] protected List<IWaterRelated> waterCells = new List<IWaterRelated>();
 
@@ -25,16 +26,35 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
 
         if (mouseButton == MouseButton.Right)
         {
+            List<IWaterRelated> tmpList = new List<IWaterRelated>();
+            foreach (var cell in waterCells)
+                tmpList.Add(cell);
+
             CellRotate(1);
+
             IWaterRelated thisWaterCell = this;
             thisWaterCell.PassInformation(this, WaterInformationType.CheckConnect);
+            foreach (var cell in tmpList)
+                cell.PassInformation(this, WaterInformationType.CheckConnect);
+            tmpList.Clear();
         }
 
         if (mouseButton == MouseButton.Middle)
         {
+            //RemoveCell();
+            //IWaterRelated thisWaterCell = this;
+            //thisWaterCell.PassInformation(this, WaterInformationType.CheckConnect);
+            List<IWaterRelated> tmpList = new List<IWaterRelated>();
+            foreach (var cell in waterCells)
+                tmpList.Add(cell);
+
             RemoveCell();
+
             IWaterRelated thisWaterCell = this;
             thisWaterCell.PassInformation(this, WaterInformationType.CheckConnect);
+            foreach (var cell in tmpList)
+                cell.PassInformation(this, WaterInformationType.CheckConnect);
+            tmpList.Clear();
         }
     }
 
@@ -43,6 +63,9 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
         base.CellInit(pos, cushion, cellDirection);
         CellAlign();
         NumericalValueChange();
+
+        IWaterRelated thisWaterCell = this;
+        thisWaterCell.PassInformation(this, WaterInformationType.CheckConnect);
     }
 
     protected override void RemoveCell()
@@ -54,7 +77,24 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
     protected override void TeaseConnectedCells()
     {
         base.TeaseConnectedCells();
+        UpdateWaterCells();
+    }
 
+    public override void CellConnect(Cell interactCell)
+    {
+        base.CellConnect(interactCell);
+        UpdateWaterCells();
+    }
+
+    #region 水相关
+
+    public WaterNodeType WaterCellType { get => waterNodeType; }
+    bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
+    public List<IWaterRelated> WaterCells { get => waterCells; set => waterCells = value; }
+    public CellAltitude Altitude { get => altitude; }
+
+    private void UpdateWaterCells()
+    {
         waterCells.Clear();
         foreach (var cell in connectedCells)
         {
@@ -63,18 +103,18 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
                 IWaterRelated waterCell = cell.GetComponent<IWaterRelated>();
                 waterCells.Add(waterCell);
             }
-                
+
         }
     }
 
-    #region 引水相关
+    public bool CanPassInformation(IWaterRelated connectCell, WaterInformationType type)
+    {
+        if (connectCell.WaterCellType == WaterNodeType.Demand)
+            return false;
+        return true;
+    }
 
-    bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
-    public List<IWaterRelated> WaterCells { get => waterCells; set => waterCells = value; }
-    public CellAltitude Altitude { get => altitude; }
-
-
-    public bool CanPassInformation(IWaterRelated cell, WaterInformationType type)
+    public bool CanCheck(IWaterRelated cell, WaterInformationType type)
     {
         switch (type)
         {
@@ -90,57 +130,20 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
         }
     }
 
-
     public void ConnectCheck(IWaterRelated cell)
     {
         containsWater = false;
     }
 
-
     public void WaterDiversionCheck(IWaterRelated cell)
     {
         containsWater = true;
+        OnInteractAnim();
     }
-
-    //private void WaterDiversion()
-    //{
-    //    foreach (var cell in connectedCells)
-    //    {
-    //        if (cell.ReturnIfContainsWater())
-    //        {
-    //            containsWater = true;
-    //            if(!waterSources.Contains(cell))
-    //                waterSources.Add(cell);
-    //        }
-    //    }
-    //}
-
-    //private bool CheckIfCanGetWater()
-    //{
-    //    if(waterSources.Count == 0)
-    //    {
-    //        containsWater = false;
-    //        return false;
-    //    }
-
-    //    foreach (var cell in connectedCells)
-    //    {
-    //        containsWater = false;
-    //        if (cell.ReturnIfContainsWater() && waterSources.Contains(cell))
-    //        {
-    //            containsWater = true;
-    //            return true;
-    //        }
-    //        else
-    //            waterSources.Remove(cell);
-    //    }
-
-    //    return false;
-    //}
 
     #endregion
 
-    #region 发展指数相关
+    #region 发展指数
 
     public void NumericalValueChange()
     {

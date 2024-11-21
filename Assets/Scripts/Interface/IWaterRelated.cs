@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface IWaterRelated
 {
+    public WaterNodeType WaterCellType { get; }
+
     public CellAltitude Altitude { get;}
 
     public bool ContainsWater { get; set; }
@@ -22,9 +24,12 @@ public interface IWaterRelated
                 break;
         }
 
+        if (!CanPassInformation(connectCell, type))
+            return;
+
         foreach (var cell in WaterCells)
         {
-            if(cell != connectCell && cell.CanPassInformation(this, type))
+            if(cell != connectCell && cell.CanCheck(this, type))
                 cell.PassInformation(this, type);
         }
     }
@@ -33,5 +38,8 @@ public interface IWaterRelated
 
     public void WaterDiversionCheck(IWaterRelated cell);
 
-    public bool CanPassInformation(IWaterRelated cell, WaterInformationType type);
+    public bool CanCheck(IWaterRelated cell, WaterInformationType type);
+
+    public bool CanPassInformation(IWaterRelated connectCell, WaterInformationType type);
+
 }

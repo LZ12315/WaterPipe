@@ -6,6 +6,7 @@ public class WaterSource : Cell, IWaterRelated
 {
 
     [Header("水相关")]
+    public WaterNodeType waterNodeType;
     [SerializeField] private bool containsWater = false;
     [SerializeField] protected List<IWaterRelated> waterCells = new List<IWaterRelated>();
 
@@ -17,7 +18,23 @@ public class WaterSource : Cell, IWaterRelated
     protected override void TeaseConnectedCells()
     {
         base.TeaseConnectedCells();
+        UpdateWaterCells();
+    }
 
+    public override void CellConnect(Cell interactCell)
+    {
+        base.CellConnect(interactCell);
+        UpdateWaterCells();
+    }
+
+
+    public WaterNodeType WaterCellType { get => waterNodeType; }
+    bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
+    public List<IWaterRelated> WaterCells { get => waterCells; set => waterCells = value; }
+    public CellAltitude Altitude { get => altitude; }
+
+    private void UpdateWaterCells()
+    {
         waterCells.Clear();
         foreach (var cell in connectedCells)
         {
@@ -30,11 +47,14 @@ public class WaterSource : Cell, IWaterRelated
         }
     }
 
-    bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
-    public List<IWaterRelated> WaterCells { get => waterCells; set => waterCells = value; }
-    public CellAltitude Altitude { get => altitude; }
+    public bool CanPassInformation(IWaterRelated connectCell, WaterInformationType type)
+    {
+        if (type == WaterInformationType.Divertion)
+            return true;
+        return false;
+    }
 
-    public bool CanPassInformation(IWaterRelated cell, WaterInformationType type)
+    public bool CanCheck(IWaterRelated cell, WaterInformationType type)
     {
         switch (type)
         {
@@ -54,12 +74,12 @@ public class WaterSource : Cell, IWaterRelated
     {
         IWaterRelated thisWaterCell = this;
         WaterDiversionCheck(thisWaterCell);
-        thisWaterCell.PassInformation(this, WaterInformationType.Divertion);
+        cell.PassInformation(this, WaterInformationType.Divertion);
     }
 
     public void WaterDiversionCheck(IWaterRelated cell)
     {
-        //等待动画实现
+
     }
 
 }

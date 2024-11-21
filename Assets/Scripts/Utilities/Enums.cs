@@ -45,7 +45,12 @@ public enum CellAltitude
 public enum WaterInformationType
 {
     CheckConnect, Divertion
-};
+}
+
+public enum WaterNodeType
+{
+    Pipe, Source ,Demand
+}
 
 public enum NumericalChangeType
 {

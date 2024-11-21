@@ -156,18 +156,21 @@ MonoBehaviour:
   boxCollider: {fileID: 3210381933935284810}
   polygonCollider: {fileID: 0}
   direction: 0
+  altitude: 0
   cellConnectors: 00000000010000000200000003000000
   connectedCells: []
   cellSprite: {fileID: 8132038558134733204, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
-  canWrite: 0
   resolution: {x: 100, y: 100}
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
   duration: 0.2
+  canRotate: 1
+  canWrite: 0
   rotateAngle: 90
-  waterSources: []
+  waterNodeType: 2
   containsWater: 0
   pollutionType: 1
+  hasChangedNumerical: 0
   developmentnValue: 90
   contaminationValue: 12
 --- !u!61 &3210381933935284810 stripped

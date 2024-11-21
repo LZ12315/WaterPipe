@@ -6,6 +6,7 @@ using UnityEngine;
 public class WaterDemandCell : Cell, INumricalChange, IWaterRelated
 {
     [Header("水相关")]
+    public WaterNodeType waterNodeType;
     [SerializeField] private bool containsWater = false;
     [SerializeField] protected List<IWaterRelated> waterCells = new List<IWaterRelated>();
 
@@ -15,34 +16,50 @@ public class WaterDemandCell : Cell, INumricalChange, IWaterRelated
     public float developmentnValue;
     public float contaminationValue;
 
-    public override void CellDisConnect(Cell cellToRemove, Cell interactCell)
+    protected override void TeaseConnectedCells()
     {
-        base.CellDisConnect(cellToRemove, interactCell);
+        base.TeaseConnectedCells();
+        UpdateWaterCells();
+    }
 
-        if (containsWater)
-        {//等待处理断水的逻辑
-            //if (!CheckIfCanGetWater() && hasChangedNumerical)
-            //    NumericalValueReChange();
-
-            //foreach (var cell in connectedCells)
-            //{
-            //    if (cell != interactCell)
-            //        cell.CellDisConnect(cellToRemove, this);
-            //}
-        }
+    public override void CellConnect(Cell interactCell)
+    {
+        base.CellConnect(interactCell);
+        UpdateWaterCells();
     }
 
     #region 水相关
+
+    public WaterNodeType WaterCellType { get => waterNodeType; }
     bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
     public List<IWaterRelated> WaterCells { get => waterCells; set => waterCells = value; }
     public CellAltitude Altitude { get => altitude; }
 
-    public bool CanPassInformation(IWaterRelated cell, WaterInformationType type)
+    private void UpdateWaterCells()
+    {
+        waterCells.Clear();
+        foreach (var cell in connectedCells)
+        {
+            if (cell.GetComponent<IWaterRelated>() != null)
+            {
+                IWaterRelated waterCell = cell.GetComponent<IWaterRelated>();
+                waterCells.Add(waterCell);
+            }
+
+        }
+    }
+
+    public bool CanPassInformation(IWaterRelated connectCell, WaterInformationType type)
+    {
+        return false;
+    }
+
+    public bool CanCheck(IWaterRelated cell, WaterInformationType type)
     {
         switch (type)
         {
             case WaterInformationType.CheckConnect:
-                return false;
+                return true;
             case WaterInformationType.Divertion:
                 CellAltitude alt = cell.Altitude;
                 if (alt < altitude)
@@ -55,14 +72,26 @@ public class WaterDemandCell : Cell, INumricalChange, IWaterRelated
 
     public void ConnectCheck(IWaterRelated cell)
     {
-        IWaterRelated thisWaterCell = this;
-        WaterDiversionCheck(thisWaterCell);
-        thisWaterCell.PassInformation(this, WaterInformationType.Divertion);
+        foreach (var item in waterCells)
+        {
+            if (item.ContainsWater)
+                return;
+        }
+
+        if(containsWater)
+        {
+            NumericalValueReChange();
+            containsWater = false;
+        }
     }
 
     public void WaterDiversionCheck(IWaterRelated waterCell)
     {
+        if (containsWater)
+            return;
+
         containsWater = true;
+        OnInteractAnim();
         if (!hasChangedNumerical)
         {
             NumericalValueChange();
@@ -80,6 +109,7 @@ public class WaterDemandCell : Cell, INumricalChange, IWaterRelated
 
     #endregion
 
+    #region 发展数值
 
     public void NumericalValueChange()
     {
@@ -104,4 +134,6 @@ public class WaterDemandCell : Cell, INumricalChange, IWaterRelated
     public bool isActive { get => hasChangedNumerical; set => hasChangedNumerical = value; }
 
     public NumericalChangeType numericalType { get => pollutionType; }
+
+    #endregion
 }

@@ -136,6 +136,9 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
             }
         }
 
+        foreach (var cell in connectedCells)
+            cell.CellDisConnect(this, this);
+
         TeaseConnectedCells();
     }
 
@@ -148,11 +151,8 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         foreach (var cu in cushion.ReturnNearCushions())
         {
             Cell nearCell = cu.Value.ReturnWorkCell();
-            if(nearCell.ReturnCellConnectors().Count == 0)
-                continue;
-
             CellDirection nearCellDir = cu.Key;
-            if (!cellConnectors.Contains(nearCellDir))
+            if(nearCell.ReturnCellConnectors().Count == 0 || !cellConnectors.Contains(nearCellDir) || connectedCells.Contains(nearCell))
                 continue;
 
             foreach (CellDirection dir in nearCell.ReturnCellConnectors())
@@ -161,6 +161,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
                 {
                     connectedCells.Add(nearCell);
                     nearCell.CellConnect(this);
+                    break;
                 }
             }
         }
@@ -170,7 +171,6 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     {
         if(!connectedCells.Contains(interactCell))
             connectedCells.Add(interactCell);
-        TeaseConnectedCells();
     }
 
     public virtual void CellDisConnect(Cell cellToRemove, Cell interactCell)
@@ -214,7 +214,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
 
     #region ∂Øª≠±Ìœ÷
 
-    private void OnMouseEnter()
+    protected virtual void OnMouseEnter()
     {
         if (GetComponent<Transform>() != null)
             scaleTween = transform.DOScale(enlargeScale, duration).SetEase(Ease.OutBack);
@@ -226,7 +226,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
             scaleTween = transform.DOScale(originScale, duration).SetEase(Ease.OutBack);
     }
 
-    protected void OnInteract()
+    protected void OnInteractAnim()
     {
         if (GetComponent<Transform>() != null)
         {
