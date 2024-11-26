@@ -72,6 +72,8 @@ public class WaterDemandCell : Cell, INumricalChange, IWaterRelated
 
     public void ConnectCheck(IWaterRelated cell)
     {
+        Debug.Log("-1");
+
         foreach (var item in waterCells)
         {
             if (item.ContainsWater)
@@ -87,8 +89,12 @@ public class WaterDemandCell : Cell, INumricalChange, IWaterRelated
 
     public void WaterDiversionCheck(IWaterRelated waterCell)
     {
+        Debug.Log("0");
         if (containsWater)
+        {
+            Debug.Log("1");
             return;
+        }
 
         containsWater = true;
         OnInteractAnim();

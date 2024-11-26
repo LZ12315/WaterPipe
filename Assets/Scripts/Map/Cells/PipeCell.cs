@@ -86,6 +86,12 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
         UpdateWaterCells();
     }
 
+    protected override void OnMouseEnter()
+    {
+        base.OnMouseEnter();
+        Debug.Log(waterCells.Count);
+    }
+
     #region Ë®Ïà¹Ø
 
     public WaterNodeType WaterCellType { get => waterNodeType; }
