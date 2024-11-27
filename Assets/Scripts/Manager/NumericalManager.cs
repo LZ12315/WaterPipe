@@ -8,7 +8,7 @@ public class NumericalManager : MonoBehaviour
 
     [Header("局内评价数值")]
     [SerializeField] private double developmentnValue;
-    [SerializeField] public double budgetValue = 800000;
+    [SerializeField] public double budgetValue;
     [SerializeField] private double contaminationValue;
 
     [Header("信息广播")]
@@ -17,6 +17,7 @@ public class NumericalManager : MonoBehaviour
     public DoubleValueEventSO contaminationChangeEvent;
 
     [Header("信息接收")]
+    public LevelNumricalSO levelNumricalSO;
     public VoidEventSO afterSceneLoadInitEvent;
 
     private void Awake()
@@ -24,7 +25,10 @@ public class NumericalManager : MonoBehaviour
         if(instance == null)
             instance = this;
         else
-            Destroy(this);
+        {
+            Destroy(instance);
+            instance = this;
+        }
     }
 
     private void OnEnable()
@@ -39,10 +43,20 @@ public class NumericalManager : MonoBehaviour
 
     private void NumericalInit()
     {
+        developmentnValue = levelNumricalSO.developmentnValue;
+        budgetValue = levelNumricalSO.budgetValue;
+        contaminationValue = levelNumricalSO.contaminationValue;
+        UpdatePanel();
+    }
+
+    private void UpdatePanel()
+    {
         developmentChangeEvent.RaiseEvent(developmentnValue);
         budgetChangeEvent.RaiseEvent(budgetValue);
         developmentChangeEvent.RaiseEvent(contaminationValue);
     }
+
+    #region 数值改变接口
 
     public void ChangeDevelopment(INumricalChange sender,double value)
     {
@@ -62,6 +76,10 @@ public class NumericalManager : MonoBehaviour
         contaminationChangeEvent.RaiseEvent(contaminationValue);
     }
 
+    #endregion
+
+    #region 值函数
+
     public double ReturnDevelopment()
     {
         return developmentnValue;
@@ -76,4 +94,6 @@ public class NumericalManager : MonoBehaviour
     {
         return contaminationValue;
     }
+
+    #endregion
 }
