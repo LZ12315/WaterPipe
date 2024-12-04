@@ -42,9 +42,9 @@ public enum CellAltitude
     Zero, Low, Middle, High
 }
 
-public enum WaterInformationType
+public enum WaterOrderType
 {
-    CheckConnect, Divertion
+    Break, Divertion
 }
 
 public enum WaterNodeType

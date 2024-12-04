@@ -16,101 +16,55 @@ public class WaterDemandCell : Cell, INumricalChange, IWaterRelated
     public float developmentnValue;
     public float contaminationValue;
 
-    protected override void TeaseConnectedCells()
+    private void Start()
     {
-        base.TeaseConnectedCells();
-        UpdateWaterCells();
+        OnCellConnectChange += (value) =>
+        {
+            List<IWaterRelated> list = new List<IWaterRelated>();
+            foreach (var cell in value)
+            {
+                IWaterRelated waterCell = cell.GetComponent<IWaterRelated>();
+                if (!containsWater && waterCell.ContainsWater)
+                    WaterDivertion();
+                list.Add(waterCell);
+            }
+            WaterCells = list;
+            WaterNodeManager.Instance.NodeChange(this, waterCells);
+        };
     }
 
-    public override void CellConnect(Cell interactCell)
+    public void InvokeTeacing(List<Cell> cells)
     {
-        base.CellConnect(interactCell);
-        UpdateWaterCells();
+        WaterNodeManager.Instance.NodeChange(this, waterCells);
+    }
+
+    public override void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
+    {
+        base.CellInit(pos, cushion, cellDirection);
+        WaterNodeManager.Instance.AddNode(this, WaterCells);
     }
 
     #region Ë®Ïà¹Ø
 
-    public WaterNodeType WaterCellType { get => waterNodeType; }
+    public WaterNodeType NodeType { get => waterNodeType; }
+
     bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
+
     public List<IWaterRelated> WaterCells { get => waterCells; set => waterCells = value; }
-    public CellAltitude Altitude { get => altitude; }
 
-    private void UpdateWaterCells()
+    public void SetWaterBreak(WaterNodeManager controller)
     {
-        waterCells.Clear();
-        foreach (var cell in connectedCells)
-        {
-            if (cell.GetComponent<IWaterRelated>() != null)
-            {
-                IWaterRelated waterCell = cell.GetComponent<IWaterRelated>();
-                waterCells.Add(waterCell);
-            }
-
-        }
-    }
-
-    public bool CanPassInformation(IWaterRelated connectCell, WaterInformationType type)
-    {
-        return false;
-    }
-
-    public bool CanCheck(IWaterRelated cell, WaterInformationType type)
-    {
-        switch (type)
-        {
-            case WaterInformationType.CheckConnect:
-                return true;
-            case WaterInformationType.Divertion:
-                CellAltitude alt = cell.Altitude;
-                if (alt < altitude)
-                    return false;
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    public void ConnectCheck(IWaterRelated cell)
-    {
-        Debug.Log("-1");
-
-        foreach (var item in waterCells)
-        {
-            if (item.ContainsWater)
-                return;
-        }
-
         if(containsWater)
-        {
             NumericalValueReChange();
-            containsWater = false;
-        }
+        containsWater = false;
     }
 
-    public void WaterDiversionCheck(IWaterRelated waterCell)
+    public void WaterDivertion()
     {
-        Debug.Log("0");
-        if (containsWater)
-        {
-            Debug.Log("1");
-            return;
-        }
-
+        if (!containsWater)
+            NumericalValueChange();
         containsWater = true;
         OnInteractAnim();
-        if (!hasChangedNumerical)
-        {
-            NumericalValueChange();
-            foreach (var cell in connectedCells)
-            {
-                if (cell.GetComponent<INumricalChange>() != null)
-                {
-                    INumricalChange cellToInteract = cell.GetComponent<INumricalChange>();
-                    if (cellToInteract.numericalType == NumericalChangeType.Purify)
-                        cell.CellInteract(this);
-                }
-            }
-        }
     }
 
     #endregion

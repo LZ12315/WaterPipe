@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,9 +16,26 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
     public double budgetValue;
     private bool hasChange;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         canWrite = true;
+        OnCellConnectChange += (value) =>
+        {
+            List<IWaterRelated> list = new List<IWaterRelated>();
+            foreach (var cell in value)
+            {
+                if (cell.GetComponent<IWaterRelated>() != null)
+                {
+                    IWaterRelated waterCell = cell.GetComponent<IWaterRelated>();
+                    if (waterCell.ContainsWater)
+                        WaterDivertion();
+                    list.Add(waterCell);
+                }
+            }
+            WaterCells = list;
+            WaterNodeManager.Instance.NodeChange(this, WaterCells);
+        };
     }
 
     public override void HandleSelection()
@@ -26,36 +44,12 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
 
         if (mouseButton == MouseButton.Right)
         {
-            List<IWaterRelated> tmpList = new List<IWaterRelated>();
-            foreach (var cell in waterCells)
-                tmpList.Add(cell);
-
             CellRotate(1);
-
-            IWaterRelated thisWaterCell = this;
-            thisWaterCell.PassInformation(this, WaterInformationType.CheckConnect);
-            foreach (var cell in tmpList)
-                cell.PassInformation(this, WaterInformationType.CheckConnect);
-            tmpList.Clear();
+            WaterNodeManager.Instance.WaterContainsCheck(this);
         }
 
         if (mouseButton == MouseButton.Middle)
-        {
-            //RemoveCell();
-            //IWaterRelated thisWaterCell = this;
-            //thisWaterCell.PassInformation(this, WaterInformationType.CheckConnect);
-            List<IWaterRelated> tmpList = new List<IWaterRelated>();
-            foreach (var cell in waterCells)
-                tmpList.Add(cell);
-
             RemoveCell();
-
-            IWaterRelated thisWaterCell = this;
-            thisWaterCell.PassInformation(this, WaterInformationType.CheckConnect);
-            foreach (var cell in tmpList)
-                cell.PassInformation(this, WaterInformationType.CheckConnect);
-            tmpList.Clear();
-        }
     }
 
     public override void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
@@ -63,88 +57,32 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
         base.CellInit(pos, cushion, cellDirection);
         CellAlign();
         NumericalValueChange();
-
-        IWaterRelated thisWaterCell = this;
-        thisWaterCell.PassInformation(this, WaterInformationType.CheckConnect);
+        WaterNodeManager.Instance.AddNode(this, WaterCells);
     }
 
     protected override void RemoveCell()
     {
         base.RemoveCell();
         NumericalValueReChange();
-    }
-
-    protected override void TeaseConnectedCells()
-    {
-        base.TeaseConnectedCells();
-        UpdateWaterCells();
-    }
-
-    public override void CellConnect(Cell interactCell)
-    {
-        base.CellConnect(interactCell);
-        UpdateWaterCells();
-    }
-
-    protected override void OnMouseEnter()
-    {
-        base.OnMouseEnter();
-        Debug.Log(waterCells.Count);
+        WaterNodeManager.Instance.DeleteNode(this);
     }
 
     #region Ë®Ïà¹Ø
 
-    public WaterNodeType WaterCellType { get => waterNodeType; }
+    public WaterNodeType NodeType { get => waterNodeType; }
+
     bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
+
     public List<IWaterRelated> WaterCells { get => waterCells; set => waterCells = value; }
-    public CellAltitude Altitude { get => altitude; }
 
-    private void UpdateWaterCells()
-    {
-        waterCells.Clear();
-        foreach (var cell in connectedCells)
-        {
-            if (cell.GetComponent<IWaterRelated>() != null)
-            {
-                IWaterRelated waterCell = cell.GetComponent<IWaterRelated>();
-                waterCells.Add(waterCell);
-            }
-
-        }
-    }
-
-    public bool CanPassInformation(IWaterRelated connectCell, WaterInformationType type)
-    {
-        if (connectCell.WaterCellType == WaterNodeType.Demand)
-            return false;
-        return true;
-    }
-
-    public bool CanCheck(IWaterRelated cell, WaterInformationType type)
-    {
-        switch (type)
-        {
-            case WaterInformationType.CheckConnect:
-                return true;
-            case WaterInformationType.Divertion:
-                CellAltitude alt = cell.Altitude;
-                if (alt < altitude)
-                    return false;
-                return true;
-            default:
-                return true;
-        }
-    }
-
-    public void ConnectCheck(IWaterRelated cell)
+    public void SetWaterBreak(WaterNodeManager controller)
     {
         containsWater = false;
     }
 
-    public void WaterDiversionCheck(IWaterRelated cell)
+    public void WaterDivertion()
     {
         containsWater = true;
-        OnInteractAnim();
     }
 
     #endregion

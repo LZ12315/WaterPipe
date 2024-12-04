@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,10 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     public CellDirection direction = CellDirection.North;
     public CellAltitude altitude;
     public List<CellDirection> cellConnectors = new List<CellDirection>();
+
+    [Header("连接相关")]
     [SerializeField] protected List<Cell> connectedCells = new List<Cell>();
+    protected event Action<List<Cell>> OnCellConnectChange;
 
     [Header("贴图相关")]
     public Sprite cellSprite;
@@ -23,7 +27,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     private float sideLengthMean;
     private Vector2 sideLength;
 
-    [Header("动画表现")]
+    [Header("动画表现")] //也不应该放在逻辑判断的脚本中 等待解耦
     public Vector3 enlargeScale = new Vector3(1.2f, 1.2f, 1.2f);
     public Vector3 shrinkScale = new Vector3(0.8f, 0.8f, 0.8f);
     public float duration = 0.2f;
@@ -35,10 +39,6 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     public bool canWrite;
     protected MouseButton mouseButton;
     public float rotateAngle = 90;
-
-    //[Header("引水相关")] //等待重构 这些属性不应该在父类中
-    //[SerializeField] protected List<Cell> waterSources = new List<Cell>();
-    //[SerializeField] protected bool containsWater = false;
 
     protected virtual void Awake()
     {
@@ -55,21 +55,6 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         if (scaleTween != null && scaleTween.IsActive())
             scaleTween.Kill();
     }
-
-    //public virtual void CellInit(Vector2 pos, Cushion cushion)
-    //{
-    //    this.cushion = cushion;
-    //    gameObject.transform.position = pos;
-    //    sideLengthMean = Mathf.Sqrt(sideLength.x * sideLength.y);
-
-    //    boxCollider = gameObject?.GetComponent<BoxCollider2D>();
-    //    polygonCollider = gameObject?.GetComponent<PolygonCollider2D>();
-    //    if (boxCollider != null)
-    //        boxCollider.size = new Vector2(sideLengthMean, sideLengthMean);
-
-    //    InitialCellRotate(direction);
-    //    TeaseConnectedCells();
-    //}
 
     public virtual void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
     {
@@ -147,7 +132,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         if(cushion.ReturnNearCushions().Count == 0 || cellConnectors.Count == 0)
             return;
 
-        connectedCells.Clear();
+        ConnectCellClear();
         foreach (var cu in cushion.ReturnNearCushions())
         {
             Cell nearCell = cu.Value.ReturnWorkCell();
@@ -159,7 +144,7 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
             {
                 if (dir == nearCellDir.GetOppositeDirection())
                 {
-                    connectedCells.Add(nearCell);
+                    ConnectCellAdd(nearCell);
                     nearCell.CellConnect(this);
                     break;
                 }
@@ -167,10 +152,10 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         }
     }
 
-    public virtual void CellConnect(Cell interactCell)
+    public virtual void CellConnect(Cell cellToAdd)
     {
-        if(!connectedCells.Contains(interactCell))
-            connectedCells.Add(interactCell);
+        if(!connectedCells.Contains(cellToAdd))
+            ConnectCellAdd(cellToAdd);
     }
 
     public virtual void CellDisConnect(Cell cellToRemove, Cell interactCell)
@@ -178,6 +163,24 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
         if(connectedCells.Contains(cellToRemove))
             connectedCells.Remove(cellToRemove);
         TeaseConnectedCells();
+    }
+
+    private void ConnectCellAdd(Cell cellToRemove)
+    {
+        connectedCells.Add(cellToRemove);
+        OnCellConnectChange?.Invoke(connectedCells);
+    }
+
+    private void ConnectCellRemove(Cell cellToRemove)
+    {
+        connectedCells.Remove(cellToRemove);
+        OnCellConnectChange?.Invoke(connectedCells);
+    }
+
+    private void ConnectCellClear()
+    {
+        connectedCells.Clear();
+        OnCellConnectChange?.Invoke(connectedCells);
     }
 
     #region 交互相关

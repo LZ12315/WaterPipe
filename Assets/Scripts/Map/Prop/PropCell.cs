@@ -90,7 +90,7 @@ public class PropCell : Cell, INumricalChange, IPlaceable
         {
             CellRotate(1);
             directions.Add(direction);
-            Debug.Log(connectedCells.Count);
+
             if (connectedCells.Count > maxConnectedCells)
             {
                 Debug.Log(direction);

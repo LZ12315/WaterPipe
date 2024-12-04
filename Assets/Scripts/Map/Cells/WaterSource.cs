@@ -7,79 +7,43 @@ public class WaterSource : Cell, IWaterRelated
 
     [Header("Ë®Ïà¹Ø")]
     public WaterNodeType waterNodeType;
-    [SerializeField] private bool containsWater = false;
+    [SerializeField] private bool containsWater = true;
     [SerializeField] protected List<IWaterRelated> waterCells = new List<IWaterRelated>();
 
     private void Start()
     {
         containsWater = true;
-    }
-
-    protected override void TeaseConnectedCells()
-    {
-        base.TeaseConnectedCells();
-        UpdateWaterCells();
-    }
-
-    public override void CellConnect(Cell interactCell)
-    {
-        base.CellConnect(interactCell);
-        UpdateWaterCells();
-    }
-
-
-    public WaterNodeType WaterCellType { get => waterNodeType; }
-    bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
-    public List<IWaterRelated> WaterCells { get => waterCells; set => waterCells = value; }
-    public CellAltitude Altitude { get => altitude; }
-
-    private void UpdateWaterCells()
-    {
-        waterCells.Clear();
-        foreach (var cell in connectedCells)
+        OnCellConnectChange += (value) =>
         {
-            if (cell.GetComponent<IWaterRelated>() != null)
+            List<IWaterRelated> list = new List<IWaterRelated>();
+            foreach (var cell in value)
             {
                 IWaterRelated waterCell = cell.GetComponent<IWaterRelated>();
-                waterCells.Add(waterCell);
+                list.Add(waterCell);
             }
-
-        }
+            WaterCells = list;
+            WaterNodeManager.Instance.NodeChange(this, waterCells);
+        };
     }
 
-    public bool CanPassInformation(IWaterRelated connectCell, WaterInformationType type)
+    public override void CellInit(Vector2 pos, Cushion cushion, CellDirection cellDirection = CellDirection.North)
     {
-        if (type == WaterInformationType.Divertion)
-            return true;
-        return false;
+        base.CellInit(pos, cushion, cellDirection);
+        WaterNodeManager.Instance.AddNode(this, WaterCells);
     }
 
-    public bool CanCheck(IWaterRelated cell, WaterInformationType type)
+    public WaterNodeType NodeType { get => waterNodeType; }
+
+    bool IWaterRelated.ContainsWater { get => containsWater; set => containsWater = value; }
+
+    public List<IWaterRelated> WaterCells { get => waterCells; set => waterCells = value; }
+
+    public void SetWaterBreak(WaterNodeManager controller)
     {
-        switch (type)
-        {
-            case WaterInformationType.CheckConnect:
-                return true;
-            case WaterInformationType.Divertion:
-                CellAltitude alt = cell.Altitude;
-                if (alt < altitude)
-                    return false;
-                return true;
-            default:
-                return true;
-        }
     }
 
-    public void ConnectCheck(IWaterRelated cell)
+    public void WaterDivertion()
     {
-        IWaterRelated thisWaterCell = this;
-        WaterDiversionCheck(thisWaterCell);
-        cell.PassInformation(this, WaterInformationType.Divertion);
-    }
-
-    public void WaterDiversionCheck(IWaterRelated cell)
-    {
-
     }
 
 }

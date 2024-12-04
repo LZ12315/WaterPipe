@@ -21,6 +21,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2159671901741319214, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
     - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370079879574698672, guid: 1fee38041e7b98d4ab32404043bb24fa, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
@@ -167,18 +171,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 7676852210152902418}
   polygonCollider: {fileID: 0}
-  cellSprite: {fileID: 2159671901741319214, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
-  canWrite: 0
-  resolution: {x: 89, y: 90}
   direction: 0
+  altitude: 0
   cellConnectors: 0100000002000000
+  connectedCells: []
+  cellSprite: {fileID: 2159671901741319214, guid: 497ecdbae0d2ba54eadd9d7120cd9623, type: 3}
+  resolution: {x: 89, y: 90}
   enlargeScale: {x: 1.2, y: 1.2, z: 1.2}
   shrinkScale: {x: 0.8, y: 0.8, z: 0.8}
   duration: 0.2
+  canRotate: 1
+  canWrite: 0
   rotateAngle: 90
-  connectedCells: []
-  waterSources: []
+  waterNodeType: 0
   containsWater: 0
+  pollutionType: 0
   budgetValue: 2000
 --- !u!61 &7676852210152902418 stripped
 BoxCollider2D:
