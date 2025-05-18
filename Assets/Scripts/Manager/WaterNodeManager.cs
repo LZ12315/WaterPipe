@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEditor.Experimental.GraphView;
 using System;
 
 [Serializable]
@@ -31,28 +30,30 @@ public class WaterNodeManager : MonoBehaviour
         }
     }
 
-    public void AddNode(IWaterRelated addedNode, List<IWaterRelated> waterNodes)
+    public void AddNode(IWaterRelated nodeToAdd, List<IWaterRelated> waterNodes)
     {
-        if (pipeDictionary.ContainsKey(addedNode))
+        if (pipeDictionary.ContainsKey(nodeToAdd))
         {
-            NodeChange(addedNode, waterNodes);
+            NodeChange(nodeToAdd, waterNodes);
             return;
         }
 
-        pipeDictionary[addedNode] = new DicNode();
-        pipeDictionary[addedNode].connectNodes = waterNodes;
-        pipeDictionary[addedNode].nodeType = addedNode.NodeType;
+        pipeDictionary[nodeToAdd] = new DicNode();
+        pipeDictionary[nodeToAdd].connectNodes = waterNodes;
+        pipeDictionary[nodeToAdd].nodeType = nodeToAdd.NodeType;
 
-        if (pipeDictionary[addedNode].nodeType == WaterNodeType.Source)
-            waterSources.Add(addedNode);
+        if (pipeDictionary[nodeToAdd].nodeType == WaterNodeType.Source)
+            waterSources.Add(nodeToAdd);
         else
-            SetWaterContainsOff += (value) => addedNode.SetWaterBreak(value);
+            SetWaterContainsOff += (value) => nodeToAdd.SetWaterBreak(value);
 
-        foreach (var pipe in pipeDictionary[addedNode].connectNodes)
+        foreach (var pipe in pipeDictionary[nodeToAdd].connectNodes)
         {
-            if (pipeDictionary.ContainsKey(pipe) && !pipeDictionary[pipe].connectNodes.Contains(addedNode))
-                pipeDictionary[pipe].connectNodes.Add(addedNode);
+            if (pipeDictionary.ContainsKey(pipe) && !pipeDictionary[pipe].connectNodes.Contains(nodeToAdd))
+                pipeDictionary[pipe].connectNodes.Add(nodeToAdd);
         }
+
+        WaterDivertion();
     }
 
     public void NodeChange(IWaterRelated addedNode, List<IWaterRelated> waterNodes)
@@ -62,20 +63,20 @@ public class WaterNodeManager : MonoBehaviour
         pipeDictionary[addedNode].connectNodes = waterNodes;
     }
 
-    public void DeleteNode(IWaterRelated addedNode)
+    public void DeleteNode(IWaterRelated nodeToDelete)
     {
-        if (!pipeDictionary.ContainsKey(addedNode))
+        if (!pipeDictionary.ContainsKey(nodeToDelete))
             return;
 
-        foreach (var pipe in pipeDictionary[addedNode].connectNodes)
+        foreach (var pipe in pipeDictionary[nodeToDelete].connectNodes)
         {
-            if (pipeDictionary.ContainsKey(pipe) && pipeDictionary[pipe].connectNodes.Contains(addedNode))
-                pipeDictionary[pipe].connectNodes.Remove(addedNode);
+            if (pipeDictionary.ContainsKey(pipe) && pipeDictionary[pipe].connectNodes.Contains(nodeToDelete))
+                pipeDictionary[pipe].connectNodes.Remove(nodeToDelete);
         }
 
-        pipeDictionary.Remove(addedNode);
-        if (waterSources.Contains(addedNode))
-            waterSources.Remove(addedNode);
+        pipeDictionary.Remove(nodeToDelete);
+        if (waterSources.Contains(nodeToDelete))
+            waterSources.Remove(nodeToDelete);
 
         WaterDivertion();
     }

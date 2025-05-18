@@ -161,13 +161,13 @@ public class Cell : MonoBehaviour, IInteractable_OBJ
     public virtual void CellDisConnect(Cell cellToRemove, Cell interactCell)
     {
         if(connectedCells.Contains(cellToRemove))
-            connectedCells.Remove(cellToRemove);
+            ConnectCellRemove(cellToRemove);
         TeaseConnectedCells();
     }
 
-    private void ConnectCellAdd(Cell cellToRemove)
+    private void ConnectCellAdd(Cell cellToAdd)
     {
-        connectedCells.Add(cellToRemove);
+        connectedCells.Add(cellToAdd);
         OnCellConnectChange?.Invoke(connectedCells);
     }
 

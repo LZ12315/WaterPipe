@@ -35,6 +35,7 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
             }
             WaterCells = list;
             WaterNodeManager.Instance.NodeChange(this, WaterCells);
+            WaterNodeManager.Instance.WaterContainsCheck(this);
         };
     }
 
@@ -43,10 +44,7 @@ public class PipeCell : Cell, INumricalChange, IPlaceable, IWaterRelated
         base.HandleSelection();
 
         if (mouseButton == MouseButton.Right)
-        {
             CellRotate(1);
-            WaterNodeManager.Instance.WaterContainsCheck(this);
-        }
 
         if (mouseButton == MouseButton.Middle)
             RemoveCell();
